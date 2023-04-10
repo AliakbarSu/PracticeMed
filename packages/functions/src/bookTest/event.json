@@ -1,0 +1,11 @@
+{
+    "data": {
+        "object": {
+            "customer_email": "test@gmail.com",
+            "id": "cs_test_a1WhshCQnyn7MegnMhXLtWfVJvAN8N40BbSzvHvffe1eRDALfnbYL3uqTQ",
+            "metadata": {
+                "userId": "auth0|6118a176201c2e00698575c4"
+            }
+        }
+    }
+}
