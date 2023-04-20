@@ -8,6 +8,7 @@ export function API({ stack }: StackContext) {
       'GET /tests': `${fnPath}/listTests/index.handler`,
       'GET /tests/{id}': `${fnPath}/getTest/index.handler`,
       'GET /test/{id}/load': `${fnPath}/loadTest/index.handler`,
+      'POST /test/{id}/result': `${fnPath}/result/index.handler`,
       'POST /pay': `${fnPath}/pay/lambda.handler`,
       'POST /bookTest': `${fnPath}/bookTest/lambda.handler`,
       'GET /getTestResult': `${fnPath}/getTestResult/lambda.handler`,
