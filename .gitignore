@@ -5,6 +5,9 @@ node_modules
 .sst
 .build
 
+# environment variables
+.env
+
 # misc
 .DS_Store
 

@@ -1,11 +1,11 @@
 import { SSTConfig } from 'sst'
-import { API } from './stacks/Mpt'
+import { API } from './stacks/PracticeMedApi'
 
 export default {
   config(_input) {
     return {
       name: 'mpt-sst',
-      region: 'us-east-1'
+      region: 'ap-southeast-2'
     }
   },
   stacks(app) {
