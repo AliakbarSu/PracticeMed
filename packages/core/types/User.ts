@@ -1,6 +1,7 @@
 import { UserPlan } from './Plan'
+import { TestPerformanceResult } from './Result'
 
 export interface UserAppMetadata {
-  previous_tests: []
+  test_history: TestPerformanceResult[]
   plan: UserPlan
 }

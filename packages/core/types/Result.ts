@@ -25,6 +25,7 @@ export interface UserSubmittedResult {
 }
 
 export interface TestPerformanceResult {
+  test_id: string
   averageTimeTaken: number
   averageTimeTakenPerField: { [key: string]: number }
   totalPoints: number

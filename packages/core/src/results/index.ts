@@ -6,6 +6,8 @@ import {
   UserSubmittedResult
 } from '../../types/Result'
 import { UserTest } from '../../types/Test'
+import { UserAppMetadata } from '../../types/User'
+import { getUserAppMetadata, updateUserAppMetadata } from '../auth0'
 import { getTest } from '../test'
 import {
   calculateAverageTimeTaken,
@@ -52,10 +54,27 @@ export const analyze = async (
   const totalPointsPerField = calculateTotalPointPerCategory(analyzedAnswers)
   const result = calculateTestResult(totalPoints)
   return {
+    test_id,
     totalPoints,
     averageTimeTaken,
     averageTimeTakenPerField,
     totalPointsPerField,
     result
   }
+}
+
+export const saveTestResult = async ({
+  user_id,
+  result
+}: {
+  user_id: string
+  result: TestPerformanceResult
+}): Promise<UserAppMetadata> => {
+  const user_app_metadata = await getUserAppMetadata(user_id)
+  const { test_history } = user_app_metadata
+  const updated_app_metadata: UserAppMetadata = {
+    ...user_app_metadata,
+    test_history: [...test_history, result]
+  }
+  return updateUserAppMetadata({ id: user_id, data: updated_app_metadata })
 }

@@ -44,7 +44,6 @@ export const updateUserAppMetadata = async ({
   id: string
   data: UserAppMetadata
 }): Promise<UserAppMetadata> => {
-  console.log(data)
   const result = (await patch(`users/${id}`, {
     app_metadata: data
   })) as Promise<User>
