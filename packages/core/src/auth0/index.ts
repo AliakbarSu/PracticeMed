@@ -1,7 +1,8 @@
 import { User } from 'auth0'
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
-import { UserAppMetadata } from '../../types/User'
+import { Auth0User, UserAppMetadata } from '../../types/User'
+
 
 const query = async (path: string) => {
   const response = fetch(`${Config.AUTH0_DOMAIN}/${path}`, {
@@ -27,7 +28,7 @@ const patch = async (path: string, data: unknown) => {
 }
 
 export const getUser = (id: string) => {
-  return query(`users/${id}`) as Promise<User>
+  return query(`users/${id}`) as Promise<Auth0User>
 }
 
 export const getUserAppMetadata = async (

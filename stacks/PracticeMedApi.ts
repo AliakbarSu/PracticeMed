@@ -5,6 +5,7 @@ export function API({ stack }: StackContext) {
   const api = new Api(stack, 'api', {
     routes: {
       'GET /plans': `${fnPath}/plans/index.handler`,
+      'POST /plans/{id}/subscribe': `${fnPath}/plans/subscribe.handler`,
       'GET /tests': `${fnPath}/listTests/index.handler`,
       'GET /tests/{id}': `${fnPath}/getTest/index.handler`,
       'GET /test/{id}/load': `${fnPath}/loadTest/index.handler`,
