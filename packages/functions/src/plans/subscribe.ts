@@ -27,7 +27,7 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
     success_url: `http://localhost:5173/dashboard?success=true`,
-    cancel_url: `http://localhost:5173/?canceled=true`
+    cancel_url: `http://localhost:5173/payment/failed?canceled=true`
   })
   return {
     body: checkoutUrl.url || ''
