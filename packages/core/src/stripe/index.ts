@@ -53,3 +53,27 @@ export const cancelSubscription = async (id: string) => {
 export const resumeSubscription = async (id: string) => {
   return stripe.subscriptions.resume(id, { billing_cycle_anchor: 'now' })
 }
+
+export const createCheckoutUrl = async (
+  params: Stripe.Checkout.SessionCreateParams
+) => {
+  return stripe.checkout.sessions.create(params)
+}
+
+export const retrieveSession = async (
+  id: string,
+  params: Stripe.Checkout.SessionRetrieveParams
+) => {
+  return stripe.checkout.sessions.retrieve(id, params)
+}
+
+export const constructEvent = ({
+  payload,
+  sig
+}: {
+  payload: string | Buffer
+  sig: string
+}) => {
+  // const endpointSecret = Config.STRIPE_ENDPOINT_SECRET
+  return stripe.webhooks.constructEvent(payload, sig, endpointSecret)
+}

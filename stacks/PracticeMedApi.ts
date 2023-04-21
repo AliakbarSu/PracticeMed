@@ -4,24 +4,26 @@ export function API({ stack }: StackContext) {
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
     routes: {
+      // PLANS
       'GET /plans': `${fnPath}/plans/index.handler`,
+      'GET /plans/{id}': `${fnPath}/plans/index.getSinglePlan`,
+      'GET /plans/{id}/subscribe': `${fnPath}/plans/subscribe.checkoutUrl`,
       'POST /plans/{id}/subscribe': `${fnPath}/plans/subscribe.handler`,
+      // TESTS
       'GET /tests': `${fnPath}/listTests/index.handler`,
       'GET /tests/{id}': `${fnPath}/getTest/index.handler`,
       'GET /test/{id}/load': `${fnPath}/loadTest/index.handler`,
       'POST /test/{id}/result': `${fnPath}/result/index.handler`,
-      'POST /pay': `${fnPath}/pay/lambda.handler`,
-      'POST /bookTest': `${fnPath}/bookTest/lambda.handler`,
-      'GET /getTestResult': `${fnPath}/getTestResult/lambda.handler`,
-      'GET /listProducts': `${fnPath}/listProducts/index.handler`,
-      'GET /listUserTests': `${fnPath}/listUserTests/lambda.handler`,
-      'POST /loadTest': `${fnPath}/loadTest/lambda.handler`,
-      'GET /fetchTestHistory': `${fnPath}/fetchTestHistory/lambda.handler`,
-      'GET /testauth0': `${fnPath}/testauth0/index.handler`
+      // WEBHOOKS
+      'POST /webhooks/stripe': `${fnPath}/webhook/stripe.handler`
     }
   })
   // STRIPE
   const STRIPE_KEY = new Config.Secret(stack, 'STRIPE_KEY')
+  const STRIPE_ENDPOINT_SECRET = new Config.Secret(
+    stack,
+    'STRIPE_ENDPOINT_SECRET'
+  )
 
   // HYGRAPH
   const HYGRAPH_TOKEN = new Config.Secret(stack, 'HYGRAPH_TOKEN')
@@ -41,7 +43,8 @@ export function API({ stack }: StackContext) {
     HYGRAPH_ENDPOINT,
     HYGRAPH_TOKEN,
     AUTH0_DOMAIN,
-    AUTH0_TOKEN
+    AUTH0_TOKEN,
+    STRIPE_ENDPOINT_SECRET
   ])
   stack.addOutputs({
     ApiEndpoint: api.url
