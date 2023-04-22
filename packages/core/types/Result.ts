@@ -24,11 +24,26 @@ export interface UserSubmittedResult {
   answers: SubmittedAnswer[]
 }
 
-export interface TestPerformanceResult {
-  test_id: string
-  averageTimeTaken: number
-  averageTimeTakenPerField: { [key: string]: number }
+export interface Stats {
   totalPoints: number
   totalPointsPerField: { [key: string]: number }
+  averageTimeTaken: number
+  averageTimeTakenPerField: { [key: string]: number }
+  correctResponseRatePerField: { [key: string]: number }
+  incorrectResponseRatePerField: { [key: string]: number }
+  correctResponseCountPerField: { [key: string]: number }
+  incorrectResponseCountPerField: { [key: string]: number }
+  correctResponseRate: number
+  incorrectResponseRate: number
+  correctResponseCount: number
+  incorrectResponseCount: number
+  correctAnswersByMinuteInterval: { [key: string]: number }
+  speedByMinuteInterval: { [key: string]: number }
+}
+
+export interface TestPerformanceResult {
+  test_id: string
+  stats: Stats
   result: ResultEnum
+  timestamp: number
 }

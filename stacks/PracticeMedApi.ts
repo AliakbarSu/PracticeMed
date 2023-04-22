@@ -11,6 +11,7 @@ export function API({ stack }: StackContext) {
       'POST /plans/{id}/subscribe': `${fnPath}/plans/subscribe.handler`,
       // TESTS
       'GET /tests': `${fnPath}/listTests/index.handler`,
+      'GET /tests/history': `${fnPath}/getTest/index.history`,
       'GET /tests/{id}': `${fnPath}/getTest/index.handler`,
       'GET /test/{id}/load': `${fnPath}/loadTest/index.handler`,
       'POST /test/{id}/result': `${fnPath}/result/index.handler`,
@@ -38,13 +39,17 @@ export function API({ stack }: StackContext) {
   })
   const AUTH0_TOKEN = new Config.Secret(stack, 'AUTH0_TOKEN')
 
+  // URL
+  const FRONT_END_URL = new Config.Secret(stack, 'FRONT_END_URL')
+
   api.bind([
     STRIPE_KEY,
     HYGRAPH_ENDPOINT,
     HYGRAPH_TOKEN,
     AUTH0_DOMAIN,
     AUTH0_TOKEN,
-    STRIPE_ENDPOINT_SECRET
+    STRIPE_ENDPOINT_SECRET,
+    FRONT_END_URL
   ])
   stack.addOutputs({
     ApiEndpoint: api.url

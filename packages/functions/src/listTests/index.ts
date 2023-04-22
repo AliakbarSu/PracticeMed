@@ -9,7 +9,8 @@ export const handler = ApiHandler(async (_evt) => {
     id: test.id,
     name: test.name,
     description: test.description,
-    type: test.type
+    type: test.type,
+    thumbnail: test.thumbnail
   }))
   return {
     body: JSON.stringify(tests)

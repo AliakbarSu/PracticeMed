@@ -19,6 +19,9 @@ export const listTestsQuery = `
             field
             correct_option_id
             correct_option_explanation
+            },
+            thumbnail {
+                url
             }
         }
     }

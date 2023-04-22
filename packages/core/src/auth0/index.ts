@@ -3,13 +3,12 @@ import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
 import { Auth0User, UserAppMetadata } from '../../types/User'
 
-const authToken =
 const query = async (path: string) => {
   const response = fetch(`${Config.AUTH0_DOMAIN}/${path}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${Config.AUTH0_TOKEN}`
     }
   })
   return (await response).json()
@@ -20,7 +19,7 @@ const patch = async (path: string, data: unknown) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${Config.AUTH0_TOKEN}`
     },
     body: JSON.stringify(data)
   })

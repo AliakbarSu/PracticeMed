@@ -74,6 +74,9 @@ export const constructEvent = ({
   payload: string | Buffer
   sig: string
 }) => {
-  // const endpointSecret = Config.STRIPE_ENDPOINT_SECRET
-  return stripe.webhooks.constructEvent(payload, sig, endpointSecret)
+  return stripe.webhooks.constructEvent(
+    payload,
+    sig,
+    Config.STRIPE_ENDPOINT_SECRET
+  )
 }

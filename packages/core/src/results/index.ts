@@ -11,6 +11,16 @@ import { getUserAppMetadata, updateUserAppMetadata } from '../auth0'
 import { getTest } from '../test'
 import {
   calculateAverageTimeTaken,
+  calculateCorrectAnswersByMinuteInterval,
+  calculateCorrectAnswersCount,
+  calculateCorrectAnswersCountPerField,
+  calculateIncorrectAnswersCount,
+  calculateIncorrectAnswersCountPerField,
+  calculatePercentageCorrectByField,
+  calculatePercentageIncorrectByField,
+  calculatePercentageOfCorrectAnswers,
+  calculatePercentageOfIncorrectAnswers,
+  calculateSpeedByMinuteIntervals,
   calculateTestResult,
   calculateTimeTaken,
   calculateTimeTakenPerCategory,
@@ -52,14 +62,50 @@ export const analyze = async (
   const averageTimeTakenPerField =
     calculateTimeTakenPerCategory(analyzedAnswers)
   const totalPointsPerField = calculateTotalPointPerCategory(analyzedAnswers)
+  // Percentages
+  const correctResponseRate =
+    calculatePercentageOfCorrectAnswers(analyzedAnswers)
+  const incorrectResponseRate =
+    calculatePercentageOfIncorrectAnswers(analyzedAnswers)
+  const correctResponseRatePerField =
+    calculatePercentageCorrectByField(analyzedAnswers)
+  const incorrectResponseRatePerField =
+    calculatePercentageIncorrectByField(analyzedAnswers)
+
+  // Counts
+  const correctResponseCount = calculateCorrectAnswersCount(analyzedAnswers)
+  const incorrectResponseCount = calculateIncorrectAnswersCount(analyzedAnswers)
+
+  const correctResponseCountPerField =
+    calculateCorrectAnswersCountPerField(analyzedAnswers)
+  const incorrectResponseCountPerField =
+    calculateIncorrectAnswersCountPerField(analyzedAnswers)
+
+  // Time performace
+  const correctAnswersByMinuteInterval =
+    calculateCorrectAnswersByMinuteInterval(analyzedAnswers)
+  const speedByMinuteInterval = calculateSpeedByMinuteIntervals(analyzedAnswers)
   const result = calculateTestResult(totalPoints)
   return {
     test_id,
-    totalPoints,
-    averageTimeTaken,
-    averageTimeTakenPerField,
-    totalPointsPerField,
-    result
+    stats: {
+      totalPoints,
+      averageTimeTaken,
+      averageTimeTakenPerField,
+      totalPointsPerField,
+      correctResponseRate,
+      incorrectResponseRate,
+      correctResponseCount,
+      incorrectResponseCount,
+      correctResponseRatePerField,
+      incorrectResponseRatePerField,
+      correctResponseCountPerField,
+      correctAnswersByMinuteInterval,
+      incorrectResponseCountPerField,
+      speedByMinuteInterval
+    },
+    result,
+    timestamp: Date.now()
   }
 }
 

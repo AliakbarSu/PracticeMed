@@ -1,10 +1,6 @@
 import { Question } from './Question'
 
-export interface UserTest {
-  id: string
-  name: string
-  type: string
-  description: string
+export interface UserTest extends Test {
   text: string
   questions: Question[]
 }
@@ -14,4 +10,5 @@ export interface Test {
   name: string
   type: string
   description: string
+  thumbnail: { url: string }[]
 }
