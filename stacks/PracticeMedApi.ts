@@ -11,6 +11,7 @@ export function API({ stack }: StackContext) {
       'GET /plans': `${fnPath}/plans/index.handler`,
       'GET /plans/{id}': `${fnPath}/plans/index.getSinglePlan`,
       'GET /plans/{id}/subscribe': `${fnPath}/plans/subscribe.checkoutUrl`,
+      'POST /plans/{id}/cancel': `${fnPath}/plans/subscribe.cancel`,
       'POST /plans/{id}/subscribe': `${fnPath}/plans/subscribe.handler`,
       // TESTS
       'GET /tests': `${fnPath}/listTests/index.handler`,

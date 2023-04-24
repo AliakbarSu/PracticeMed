@@ -4,6 +4,9 @@ export interface UserPlan {
   name: string
   limit: number
   used: number
+  subscription: {
+    id: string
+  }
 }
 
 export interface SubscribeEventPayload {
