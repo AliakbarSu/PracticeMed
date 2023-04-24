@@ -4,7 +4,8 @@ import { UserTest } from '@mpt-types/Test'
 
 export const handler = ApiHandler(async (_evt) => {
   const testId = _evt.pathParameters?.id || ''
-  const userId = _evt.queryStringParameters?.userid || ''
+  // TODO: use internal user id
+  const userId = 'auth0|64409c95c3a961d278445467'
   try {
     const result = await loadTest({ userId, testId })
     const test: UserTest = {
@@ -13,7 +14,8 @@ export const handler = ApiHandler(async (_evt) => {
       type: result.type,
       description: result.description,
       questions: result.questions,
-      text: result.text
+      text: result.text,
+      thumbnail: result.thumbnail
     }
     return {
       body: JSON.stringify(test)

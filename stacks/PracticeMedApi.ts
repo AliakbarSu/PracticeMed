@@ -4,6 +4,8 @@ export function API({ stack }: StackContext) {
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
     routes: {
+      // User
+      'GET /user/profile': `${fnPath}/user/index.profile`,
       // PLANS
       'GET /plans': `${fnPath}/plans/index.handler`,
       'GET /plans/{id}': `${fnPath}/plans/index.getSinglePlan`,
@@ -13,7 +15,7 @@ export function API({ stack }: StackContext) {
       'GET /tests': `${fnPath}/listTests/index.handler`,
       'GET /tests/history': `${fnPath}/getTest/index.history`,
       'GET /tests/{id}': `${fnPath}/getTest/index.handler`,
-      'GET /test/{id}/load': `${fnPath}/loadTest/index.handler`,
+      'GET /tests/{id}/load': `${fnPath}/loadTest/index.handler`,
       'POST /test/{id}/result': `${fnPath}/result/index.handler`,
       // WEBHOOKS
       'POST /webhooks/stripe': `${fnPath}/webhook/stripe.handler`

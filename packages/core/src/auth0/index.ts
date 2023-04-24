@@ -8,7 +8,7 @@ const query = async (path: string) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${Config.AUTH0_TOKEN}`
+      Authorization: `Bearer ${authToken}`
     }
   })
   return (await response).json()
@@ -19,7 +19,7 @@ const patch = async (path: string, data: unknown) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${Config.AUTH0_TOKEN}`
+      Authorization: `Bearer ${authToken}`
     },
     body: JSON.stringify(data)
   })

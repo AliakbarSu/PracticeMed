@@ -1,7 +1,7 @@
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
-import { getTestQuery, listTestsQuery } from './queries'
-import { Test } from '../../types/Test'
+import { getTestQuery } from './queries'
+import { UserTest } from '../../types/Test'
 import { getUserAppMetadata, updateUserAppMetadata } from '../auth0/index'
 
 const query = (query: string, variables: any) => {
@@ -54,5 +54,5 @@ export const loadTest = async ({
   // Load test
   const response = await query(getTestQuery, { id: testId })
   const parsed = await response.json()
-  return (parsed as { data: { test: Test } }).data.test
+  return (parsed as { data: { test: UserTest } }).data.test
 }

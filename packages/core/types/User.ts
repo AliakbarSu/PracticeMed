@@ -10,3 +10,10 @@ export interface UserAppMetadata {
 export interface Auth0User extends Omit<User, 'app_metadata'> {
   app_metadata: UserAppMetadata
 }
+
+export interface Profile {
+  id: string
+  name: string
+  email: string
+  plan: UserPlan
+}

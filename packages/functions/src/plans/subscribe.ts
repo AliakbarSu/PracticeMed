@@ -11,6 +11,7 @@ import { getUser, updateUserAppMetadata } from '@mpt-sst/core/auth0'
 import { StripeCustomer } from '@mpt-types/Stripe'
 import { Stripe } from 'stripe'
 import { UserAppMetadata } from '@mpt-types/User'
+import { Config } from 'sst/node/config'
 
 export const checkoutUrl = ApiHandler(async (_evt) => {
   const planId = _evt.pathParameters?.id || ''
@@ -26,8 +27,8 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
       product_id: product.id
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
-    success_url: `http://localhost:5173/dashboard?success=true`,
-    cancel_url: `http://localhost:5173/payment/failed?canceled=true`
+    success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
+    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true`
   })
   return {
     body: checkoutUrl.url || ''
