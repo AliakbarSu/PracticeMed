@@ -14,6 +14,18 @@ const query = async (path: string) => {
   return (await response).json()
 }
 
+const post = async (path: string, body: unknown) => {
+  const response = fetch(`${Config.AUTH0_DOMAIN}/${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`
+    },
+    body: JSON.stringify(body)
+  })
+  return (await response).json()
+}
+
 const patch = async (path: string, data: unknown) => {
   const response = fetch(`${Config.AUTH0_DOMAIN}/${path}`, {
     method: 'PATCH',
@@ -48,4 +60,14 @@ export const updateUserAppMetadata = async ({
     app_metadata: data
   })) as Promise<User>
   return (await result).app_metadata as UserAppMetadata
+}
+
+export const getPasswordResetLink = async (userId: string) => {
+  return post('tickets/password-change', {
+    user_id: userId,
+    client_id: Config.AUTH0_CLIENT_ID,
+    ttl_sec: 0,
+    mark_email_as_verified: false,
+    includeEmailInRedirect: false
+  })
 }

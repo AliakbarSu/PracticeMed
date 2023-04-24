@@ -6,6 +6,7 @@ export function API({ stack }: StackContext) {
     routes: {
       // User
       'GET /user/profile': `${fnPath}/user/index.profile`,
+      'GET /user/reset-password': `${fnPath}/resetPassword/index.handler`,
       // PLANS
       'GET /plans': `${fnPath}/plans/index.handler`,
       'GET /plans/{id}': `${fnPath}/plans/index.getSinglePlan`,
@@ -40,6 +41,7 @@ export function API({ stack }: StackContext) {
     value: 'https://practicemed.uk.auth0.com/api/v2'
   })
   const AUTH0_TOKEN = new Config.Secret(stack, 'AUTH0_TOKEN')
+  const AUTH0_CLIENT_ID = new Config.Secret(stack, 'AUTH0_CLIENT_ID')
 
   // URL
   const FRONT_END_URL = new Config.Secret(stack, 'FRONT_END_URL')
@@ -51,7 +53,8 @@ export function API({ stack }: StackContext) {
     AUTH0_DOMAIN,
     AUTH0_TOKEN,
     STRIPE_ENDPOINT_SECRET,
-    FRONT_END_URL
+    FRONT_END_URL,
+    AUTH0_CLIENT_ID
   ])
   stack.addOutputs({
     ApiEndpoint: api.url
