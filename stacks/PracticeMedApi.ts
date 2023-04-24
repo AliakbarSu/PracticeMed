@@ -38,11 +38,11 @@ export function API({ stack }: StackContext) {
   })
 
   // AUTH0
-  const AUTH0_DOMAIN = new Config.Parameter(stack, 'AUTH0_DOMAIN', {
-    value: 'https://practicemed.uk.auth0.com/api/v2'
+  const DOMAIN = new Config.Parameter(stack, 'DOMAIN', {
+    value: 'https://practicemed.uk.auth0.com'
   })
-  const AUTH0_TOKEN = new Config.Secret(stack, 'AUTH0_TOKEN')
   const AUTH0_CLIENT_ID = new Config.Secret(stack, 'AUTH0_CLIENT_ID')
+  const AUTH0_CLIENT_SECRET = new Config.Secret(stack, 'AUTH0_CLIENT_SECRET')
 
   // URL
   const FRONT_END_URL = new Config.Secret(stack, 'FRONT_END_URL')
@@ -51,11 +51,11 @@ export function API({ stack }: StackContext) {
     STRIPE_KEY,
     HYGRAPH_ENDPOINT,
     HYGRAPH_TOKEN,
-    AUTH0_DOMAIN,
-    AUTH0_TOKEN,
+    DOMAIN,
     STRIPE_ENDPOINT_SECRET,
     FRONT_END_URL,
-    AUTH0_CLIENT_ID
+    AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET
   ])
   stack.addOutputs({
     ApiEndpoint: api.url
