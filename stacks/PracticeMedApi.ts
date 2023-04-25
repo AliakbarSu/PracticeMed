@@ -6,18 +6,42 @@ export function API({ stack }: StackContext) {
   const HYGRAPH_TOKEN = new Config.Secret(stack, 'HYGRAPH_TOKEN')
   const HYGRAPH_ENDPOINT = new Config.Parameter(stack, 'HYGRAPH_ENDPOINT', {
     value:
-      'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
+      stack.stage === 'dev'
+        ? 'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
+        : 'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
   })
 
   // AUTH0
   const DOMAIN = new Config.Parameter(stack, 'DOMAIN', {
     value: AUTH0_DOMAIN
   })
-  const AUTH0_CLIENT_ID = new Config.Secret(stack, 'AUTH0_CLIENT_ID')
+  const AUTH0_CLIENT_ID = new Config.Parameter(stack, 'AUTH0_CLIENT_ID', {
+    value:
+      stack.stage === 'dev'
+        ? '99gQVHl3gaeIuSoXJEfOZACGmjZmtEYa'
+        : '99gQVHl3gaeIuSoXJEfOZACGmjZmtEYa'
+  })
   const AUTH0_CLIENT_SECRET = new Config.Secret(stack, 'AUTH0_CLIENT_SECRET')
 
   // URL
-  const FRONT_END_URL = new Config.Secret(stack, 'FRONT_END_URL')
+  const FRONT_END_URL = new Config.Parameter(stack, 'FRONT_END_URL', {
+    value:
+      stack.stage === 'dev'
+        ? 'http://localhost:5173'
+        : 'https://practicemed.org'
+  })
+
+  // STRIPE
+  const STRIPE_KEY = new Config.Parameter(stack, 'STRIPE_KEY', {
+    value:
+      stack.stage === 'dev'
+        ? 'sk_test_51My8G3FH6mBQAgQWJH9HjfeJ8wAC0U1JyUi1FHYsQSW1koANybmqh51XhqG7pH5ajcqF0JKWU9ayCm8pZ0GudTPI00bKVVSEJ4'
+        : 'pk_live_51My8G3FH6mBQAgQWg8xXqta4HO1GdYKgx53HJ9jsKQACZSn4znR9DhJIo1NYqcmEXu6S7Y5pe5h0OcwTFvSjP3uO00SfrRikEO'
+  })
+  const STRIPE_ENDPOINT_SECRET = new Config.Secret(
+    stack,
+    'STRIPE_ENDPOINT_SECRET'
+  )
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
@@ -78,12 +102,6 @@ export function API({ stack }: StackContext) {
       'POST /webhooks/stripe': `${fnPath}/webhook/stripe.handler`
     }
   })
-  // STRIPE
-  const STRIPE_KEY = new Config.Secret(stack, 'STRIPE_KEY')
-  const STRIPE_ENDPOINT_SECRET = new Config.Secret(
-    stack,
-    'STRIPE_ENDPOINT_SECRET'
-  )
 
   api.bind([
     STRIPE_KEY,
