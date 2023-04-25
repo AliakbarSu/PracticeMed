@@ -15,7 +15,8 @@ export const handler = ApiHandler(async (_evt) => {
         .map((item) => item.trim())
         .filter((item) => item.length > 0),
       images: plan.images,
-      mostPopular: plan.metadata.mostPopular || false
+      mostPopular: plan.metadata.mostPopular || false,
+      freeTrial: plan.metadata.free_trial_limit || false
     }))
   return {
     body: JSON.stringify(plans)
@@ -35,7 +36,8 @@ export const getSinglePlan = ApiHandler(async (_evt) => {
       .map((item) => item.trim())
       .filter((item) => item.length > 0),
     images: plan.images,
-    mostPopular: plan.metadata.mostPopular || false
+    mostPopular: plan.metadata.mostPopular || false,
+    freeTrial: plan.metadata.free_trial_limit || false
   }
 
   return {
