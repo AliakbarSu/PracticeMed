@@ -80,3 +80,31 @@ export const constructEvent = ({
     Config.STRIPE_ENDPOINT_SECRET
   )
 }
+
+export const configureCustomerPortal = async () => {
+  return stripe.billingPortal.configurations.create({
+    business_profile: {
+      headline: 'Practice Med'
+    },
+    features: {
+      subscription_cancel: {
+        enabled: true,
+        mode: 'at_period_end'
+      },
+      payment_method_update: {
+        enabled: true
+      }
+    },
+    default_return_url: `${Config.FRONT_END_URL}/account`
+  })
+}
+
+export const customerPortalLink = async (
+  customerId: string,
+  portalConfigId: string
+) => {
+  return stripe.billingPortal.sessions.create({
+    customer: customerId,
+    configuration: portalConfigId
+  })
+}
