@@ -1,11 +1,12 @@
 import { ApiHandler } from 'sst/node/api'
 import { loadTest } from '@mpt-sst/core/loadTest/index'
 import { UserTest } from '@mpt-types/Test'
+import { ApiGatewayAuth } from '@mpt-types/System'
 
 export const handler = ApiHandler(async (_evt) => {
+  const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
+    .jwt.claims.sub
   const testId = _evt.pathParameters?.id || ''
-  // TODO: use internal user id
-  const userId = 'auth0|64409c95c3a961d278445467'
   try {
     const result = await loadTest({ userId, testId })
     const test: UserTest = {

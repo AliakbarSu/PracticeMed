@@ -25,7 +25,10 @@ export const handler = ApiHandler(async (_evt) => {
         stripe_customer_id: (sessionWithLineItems.customer as string) || '',
         name: product.name,
         limit: Number(product.metadata.limit),
-        used: Number(product.metadata.limit)
+        used: Number(product.metadata.limit),
+        subscription: {
+          id: sessionWithLineItems.subscription as string
+        }
       }
     }
 

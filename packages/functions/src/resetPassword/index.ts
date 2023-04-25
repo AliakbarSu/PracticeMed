@@ -1,9 +1,10 @@
 import { ApiHandler } from 'sst/node/api'
 import { getPasswordResetLink } from '@mpt-sst/core/auth0/index'
+import { ApiGatewayAuth } from '@mpt-types/System'
 
 export const handler = ApiHandler(async (_evt) => {
-  // TODO: use user id from auth0
-  const userId = 'auth0|64409c95c3a961d278445467'
+  const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
+    .jwt.claims.sub
   const link = (await getPasswordResetLink(userId)) as string
   return {
     body: link
