@@ -37,6 +37,33 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
   }
 })
 
+export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt) => {
+  const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
+    .jwt.claims.sub
+  // TODO: Update it with production product ID
+  const planId = 'prod_NkElI8ETMlLhVb'
+  const { email } = await getUser(userId)
+  // Getting the plan
+  const product = await getPlan(planId)
+  const checkoutUrl = await createCheckoutUrl({
+    customer_email: email,
+    mode: 'subscription',
+    metadata: {
+      customer_id: userId,
+      product_id: product.id
+    },
+    subscription_data: {
+      trial_period_days: 7
+    },
+    line_items: [{ price: product.default_price as string, quantity: 1 }],
+    success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
+    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true`
+  })
+  return {
+    body: checkoutUrl.url || ''
+  }
+})
+
 // Creates a subscription from a token
 // Note: This is not used in the app, but is here for reference
 export const handler = ApiHandler(async (_evt) => {

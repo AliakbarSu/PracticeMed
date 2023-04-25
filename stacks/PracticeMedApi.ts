@@ -47,6 +47,10 @@ export function API({ stack }: StackContext) {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/plans/subscribe.checkoutUrl`
       },
+      'GET /plans/{id}/subscribe/free-trial': {
+        authorizer: 'auth0Authorizer',
+        function: `${fnPath}/plans/subscribe.checkoutUrlWithFreeTrial`
+      },
       'GET /billing/manage': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/user/index.billingLink`
