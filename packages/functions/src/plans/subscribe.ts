@@ -1,5 +1,5 @@
 import { ApiHandler } from 'sst/node/api'
-import { cancelSubscription, getPlan } from '@mpt-sst/core/plans/index'
+import { getPlan } from '@mpt-sst/core/plans/index'
 import {
   createCustomer,
   createSubscription,
@@ -92,14 +92,5 @@ export const handler = ApiHandler(async (_evt) => {
 
   return {
     body: 'Subscription created successfully'
-  }
-})
-
-export const cancel = ApiHandler(async (_evt) => {
-  const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
-    .jwt.claims.sub
-  await cancelSubscription(userId)
-  return {
-    body: `Your subscription has been canceled.`
   }
 })

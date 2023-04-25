@@ -46,10 +46,6 @@ export const createSubscription = async (
   return stripe.subscriptions.create(params)
 }
 
-export const cancelSubscription = async (id: string) => {
-  return stripe.subscriptions.del(id)
-}
-
 export const resumeSubscription = async (id: string) => {
   return stripe.subscriptions.resume(id, { billing_cycle_anchor: 'now' })
 }

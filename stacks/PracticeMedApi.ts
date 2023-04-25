@@ -51,10 +51,6 @@ export function API({ stack }: StackContext) {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/user/index.billingLink`
       },
-      'POST /plans/{id}/cancel': {
-        authorizer: 'auth0Authorizer',
-        function: `${fnPath}/plans/subscribe.cancel`
-      },
       'POST /plans/{id}/subscribe': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/plans/subscribe.handler`
