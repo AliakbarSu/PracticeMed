@@ -2,7 +2,7 @@ import { Config } from 'sst/node/config'
 import Stripe from 'stripe'
 import { StripeCustomer } from '../../types/Stripe'
 
-const stripe = new Stripe(Config.STRIPE_KEY, { apiVersion: '2022-11-15' })
+const stripe = new Stripe(Config.STRIPE_SECRET, { apiVersion: '2022-11-15' })
 
 export const getCustomer = async (id: string) => {
   return stripe.customers.retrieve(id) as unknown as Promise<
@@ -70,11 +70,7 @@ export const constructEvent = ({
   payload: string | Buffer
   sig: string
 }) => {
-  return stripe.webhooks.constructEvent(
-    payload,
-    sig,
-    Config.STRIPE_ENDPOINT_SECRET
-  )
+  return stripe.webhooks.constructEvent(payload, sig, Config.STRIPE_SECRET)
 }
 
 export const configureCustomerPortal = async () => {

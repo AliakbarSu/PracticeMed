@@ -32,16 +32,7 @@ export function API({ stack }: StackContext) {
   })
 
   // STRIPE
-  const STRIPE_KEY = new Config.Parameter(stack, 'STRIPE_KEY', {
-    value:
-      stack.stage === 'dev'
-        ? 'sk_test_51My8G3FH6mBQAgQWJH9HjfeJ8wAC0U1JyUi1FHYsQSW1koANybmqh51XhqG7pH5ajcqF0JKWU9ayCm8pZ0GudTPI00bKVVSEJ4'
-        : 'pk_live_51My8G3FH6mBQAgQWg8xXqta4HO1GdYKgx53HJ9jsKQACZSn4znR9DhJIo1NYqcmEXu6S7Y5pe5h0OcwTFvSjP3uO00SfrRikEO'
-  })
-  const STRIPE_ENDPOINT_SECRET = new Config.Secret(
-    stack,
-    'STRIPE_ENDPOINT_SECRET'
-  )
+  const STRIPE_SECRET = new Config.Secret(stack, 'STRIPE_SECRET')
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
@@ -104,11 +95,10 @@ export function API({ stack }: StackContext) {
   })
 
   api.bind([
-    STRIPE_KEY,
     HYGRAPH_ENDPOINT,
     HYGRAPH_TOKEN,
     DOMAIN,
-    STRIPE_ENDPOINT_SECRET,
+    STRIPE_SECRET,
     FRONT_END_URL,
     AUTH0_CLIENT_ID,
     AUTH0_CLIENT_SECRET
