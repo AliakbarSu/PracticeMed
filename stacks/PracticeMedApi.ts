@@ -1,6 +1,7 @@
 import { StackContext, Api, Config } from 'sst/constructs'
 
 const AUTH0_DOMAIN = 'https://practicemed.uk.auth0.com'
+
 export function API({ stack }: StackContext) {
   // HYGRAPH
   const HYGRAPH_TOKEN = new Config.Secret(stack, 'HYGRAPH_TOKEN')
@@ -33,9 +34,15 @@ export function API({ stack }: StackContext) {
 
   // STRIPE
   const STRIPE_SECRET = new Config.Secret(stack, 'STRIPE_SECRET')
+  const STRIPE_SIGNING_SECRET = new Config.Secret(
+    stack,
+    'STRIPE_SIGNING_SECRET'
+  )
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
+    customDomain:
+      stack.stage === 'dev' ? 'dev.practicemed.org' : 'api.practicemed.org',
     authorizers: {
       auth0Authorizer: {
         type: 'jwt',
@@ -101,9 +108,15 @@ export function API({ stack }: StackContext) {
     STRIPE_SECRET,
     FRONT_END_URL,
     AUTH0_CLIENT_ID,
-    AUTH0_CLIENT_SECRET
+    AUTH0_CLIENT_SECRET,
+    STRIPE_SIGNING_SECRET
   ])
   stack.addOutputs({
+    ApiDomain: api.customDomainUrl,
     ApiEndpoint: api.url
   })
+
+  return {
+    api
+  }
 }

@@ -70,7 +70,11 @@ export const constructEvent = ({
   payload: string | Buffer
   sig: string
 }) => {
-  return stripe.webhooks.constructEvent(payload, sig, Config.STRIPE_SECRET)
+  return stripe.webhooks.constructEvent(
+    payload,
+    sig,
+    Config.STRIPE_SIGNING_SECRET
+  )
 }
 
 export const configureCustomerPortal = async () => {

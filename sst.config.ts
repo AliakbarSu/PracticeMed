@@ -1,5 +1,6 @@
 import { SSTConfig } from 'sst'
 import { API } from './stacks/PracticeMedApi'
+import { WEB } from './stacks/Web'
 
 export default {
   config(_input) {
@@ -9,6 +10,6 @@ export default {
     }
   },
   stacks(app) {
-    app.stack(API)
+    app.stack(API).stack(WEB)
   }
 } satisfies SSTConfig

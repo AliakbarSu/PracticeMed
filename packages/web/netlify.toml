@@ -1,0 +1,16 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://927y2ukd22.execute-api.ap-southeast-2.amazonaws.com:splat"
+  status = 200
+  force=true
+
+[[redirects]]
+  from = "/hygraph/*"
+  to = "https://ap-southeast-2.cdn.hygraph.com/content/clgn1doxk5et901ug6uub1w1u/master:splat"
+  status = 200
+  force=true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
