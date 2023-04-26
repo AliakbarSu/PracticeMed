@@ -13,7 +13,8 @@ export function WEB({ stack }: StackContext) {
     buildCommand: 'npm run build',
     errorPage: 'redirect_to_index_page',
     environment: {
-      VITE_API_ENDPOINT: `${url}/api`
+      VITE_API_ENDPOINT: `${url}/api`,
+      VITE_HYGRAPH_ENDPOINT: process.env.VITE_HYGRAPH_ENDPOINT || ''
     }
   })
   stack.addOutputs({
