@@ -41,6 +41,11 @@ export function API({ stack }: StackContext) {
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
+    defaults: {
+      function: {
+        runtime: 'nodejs18.x'
+      }
+    },
     customDomain:
       stack.stage === 'dev' ? 'dev.practicemed.org' : 'api.practicemed.org',
     authorizers: {
