@@ -47,50 +47,50 @@ export function API({ stack }: StackContext) {
     },
     routes: {
       // User
-      'GET /user/profile': {
+      'GET /api/user/profile': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/user/index.profile`
       },
-      'GET /user/reset-password': {
+      'GET /api/user/reset-password': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/resetPassword/index.handler`
       },
       // PLANS
-      'GET /plans': `${fnPath}/plans/index.handler`,
-      'GET /plans/{id}': `${fnPath}/plans/index.getSinglePlan`,
-      'GET /plans/{id}/subscribe': {
+      'GET /api/plans': `${fnPath}/plans/index.handler`,
+      'GET /api/plans/{id}': `${fnPath}/plans/index.getSinglePlan`,
+      'GET /api/plans/{id}/subscribe': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/plans/subscribe.checkoutUrl`
       },
-      'GET /plans/{id}/subscribe/free-trial': {
+      'GET /api/plans/{id}/subscribe/free-trial': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/plans/subscribe.checkoutUrlWithFreeTrial`
       },
-      'GET /billing/manage': {
+      'GET /api/billing/manage': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/user/index.billingLink`
       },
-      'POST /plans/{id}/subscribe': {
+      'POST /api/plans/{id}/subscribe': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/plans/subscribe.handler`
       },
       // TESTS
-      'GET /tests': `${fnPath}/listTests/index.handler`,
-      'GET /tests/history': {
+      'GET /api/tests': `${fnPath}/listTests/index.handler`,
+      'GET /api/tests/history': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/getTest/index.history`
       },
-      'GET /tests/{id}': `${fnPath}/getTest/index.handler`,
-      'GET /tests/{id}/load': {
+      'GET /api/tests/{id}': `${fnPath}/getTest/index.handler`,
+      'GET /api/tests/{id}/load': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/loadTest/index.handler`
       },
-      'POST /test/{id}/result': {
+      'POST /api/test/{id}/result': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/result/index.handler`
       },
       // WEBHOOKS
-      'POST /webhooks/stripe': `${fnPath}/webhook/stripe.handler`
+      'POST /api/webhooks/stripe': `${fnPath}/webhook/stripe.handler`
     }
   })
 
