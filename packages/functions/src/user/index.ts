@@ -22,6 +22,12 @@ export const billingLink = ApiHandler(async (_evt) => {
   const {
     plan: { stripe_customer_id }
   } = await getUserAppMetadata(userId)
+  if (!stripe_customer_id) {
+    return {
+      body: 'User does not have a billing account yet!',
+      statusCode: 400
+    }
+  }
   const portalConfigId = (await configureCustomerPortal()).id
   const portalLink = await customerPortalLink(
     stripe_customer_id,

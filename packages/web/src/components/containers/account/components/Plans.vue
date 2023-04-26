@@ -3,7 +3,8 @@
     <div
       class="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none"
     >
-      <div>
+      <SubscribeCTA v-if="!subscribed" />
+      <div v-if="subscribed">
         <h2 class="text-base font-semibold leading-7 text-gray-900">Plans</h2>
         <p class="mt-1 text-sm leading-6 text-gray-500">
           View your plan's limit and usage
@@ -13,7 +14,7 @@
           class="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6"
         >
           <SkeletonLoading v-if="loading" />
-          <div v-if="!loading" class="pt-6 sm:flex">
+          <div v-if="!loading && subscribed" class="pt-6 sm:flex">
             <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
               Plan name
             </dt>
@@ -28,7 +29,7 @@
               </button>
             </dd>
           </div>
-          <div v-if="!loading" class="pt-6 sm:flex">
+          <div v-if="!loading && subscribed" class="pt-6 sm:flex">
             <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
               Limit
             </dt>
@@ -42,7 +43,7 @@
               </button> -->
             </dd>
           </div>
-          <div v-if="!loading" class="pt-6 sm:flex">
+          <div v-if="!loading && subscribed" class="pt-6 sm:flex">
             <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
               Used
             </dt>
@@ -67,11 +68,13 @@ import type { Profile } from '@/types/user'
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 import SkeletonLoading from './UI/Loading/skeletonLoading.vue'
+import SubscribeCTA from './UI/CTA/Subscribe.vue'
 
 export default defineComponent({
   name: 'Plans',
   components: {
-    SkeletonLoading
+    SkeletonLoading,
+    SubscribeCTA
   },
   props: {
     loading: Boolean,
@@ -82,6 +85,11 @@ export default defineComponent({
   methods: {
     upgradePlan() {
       this.$router.push('/plans')
+    }
+  },
+  computed: {
+    subscribed() {
+      return this.profile?.plan?.id !== null
     }
   }
 })

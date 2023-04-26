@@ -12,7 +12,8 @@ export const getProfile = async (id: string): Promise<Profile> => {
       id: app_metadata.plan.id,
       name: app_metadata.plan.name,
       limit: app_metadata.plan.limit,
-      used: app_metadata.plan.used
+      used: app_metadata.plan.used,
+      stripe_customer_id: app_metadata.plan.stripe_customer_id
     } as UserPlan
   }
   return profile

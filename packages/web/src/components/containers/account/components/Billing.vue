@@ -3,7 +3,12 @@
     <div
       class="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none"
     >
-      <div>
+      <SubscribeCTA
+        heading="You do not have a subscription yet!"
+        description="Once you subscribe, you can manage your subscription here."
+        v-if="!subscribed"
+      />
+      <div v-if="subscribed">
         <h2 class="text-base font-semibold leading-7 text-gray-900">Billing</h2>
         <p class="mt-1 text-sm leading-6 text-gray-500">
           Manage your subscription - view status, upgrade/downgrade, and cancel
@@ -22,16 +27,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import SkeletonLoading from './UI/Loading/skeletonLoading.vue'
+import SubscribeCTA from './UI/CTA/Subscribe.vue'
 
 export default defineComponent({
   components: {
-    SkeletonLoading
+    SkeletonLoading,
+    SubscribeCTA
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      subscribed: true
     }
   },
   created() {
@@ -46,7 +54,12 @@ export default defineComponent({
         )
         const link = response.data.body
         window.location.replace(link)
-      } catch (err) {
+      } catch (err: any) {
+        const statusCode = err.response.status
+        if (statusCode == 400) {
+          this.subscribed = false
+          return
+        }
         this.loading = false
       }
     }
