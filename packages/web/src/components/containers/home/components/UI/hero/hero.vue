@@ -60,7 +60,7 @@
             class="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4"
           >
             <img
-              src="/assets/example-one.jpg"
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1682630656/practiceMed/Illustrations/hero_image.png"
               alt="App screenshot"
               width="2432"
               height="1442"

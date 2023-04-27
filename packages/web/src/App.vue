@@ -26,7 +26,7 @@ export default {
     Navbar
     // Alert
   },
-  async created() {
+  async beforeCreate() {
     try {
       const token = await this.$auth0.getAccessTokenSilently()
       axios.interceptors.request.use(function (config) {
