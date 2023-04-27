@@ -10,10 +10,7 @@ export const handler = ApiHandler(async (_evt) => {
       name: plan.name,
       price: plan.metadata.price,
       description: plan.description,
-      features: plan.description
-        ?.split('-')
-        .map((item) => item.trim())
-        .filter((item) => item.length > 0),
+      features: plan.metadata.features?.split(','),
       images: plan.images,
       mostPopular: plan.metadata.mostPopular || false,
       freeTrial: plan.metadata.free_trial_limit || false
@@ -31,10 +28,7 @@ export const getSinglePlan = ApiHandler(async (_evt) => {
     name: plan.name,
     price: plan.metadata.price,
     description: plan.description,
-    features: plan.description
-      ?.split('-')
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0),
+    features: plan.metadata.features?.split(','),
     images: plan.images,
     mostPopular: plan.metadata.mostPopular || false,
     freeTrial: plan.metadata.free_trial_limit || false
