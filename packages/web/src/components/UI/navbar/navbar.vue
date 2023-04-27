@@ -1,108 +1,3 @@
-<!-- <template>
-  <div>
-    <v-app-bar color="deep-purple" dark>
-      <template v-slot:prepend>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      </template>
-      <v-toolbar-title class="font-weight-bold">MLE Prep Tests</v-toolbar-title>
-    </v-app-bar>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
-      <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title
-              ><v-list-item-title @click="goTo('/')"
-                >Home</v-list-item-title
-              ></v-list-item-title
-            >
-          </v-list-item>
-
-          <v-list-item v-if="isAuthenticated">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title
-              ><v-list-item-title @click="goTo('/account')"
-                >Account</v-list-item-title
-              ></v-list-item-title
-            >
-          </v-list-item>
-
-          <v-list-item v-if="isAuthenticated">
-            <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title
-              ><v-list-item-title @click="goTo('/dashboard')"
-                >Dashboard</v-list-item-title
-              ></v-list-item-title
-            >
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-test-tube</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title
-              ><v-list-item-title @click="goTo('/tests')"
-                >Tests</v-list-item-title
-              ></v-list-item-title
-            >
-          </v-list-item>
-
-          <v-list-item v-if="!isAuthenticated">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title @click="login">Log In</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item v-if="isAuthenticated">
-            <v-list-item-icon>
-              <v-icon>mdi-logout-variant</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title @click="logout">Log Out</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
-  </div>
-</template>
-
-<script lang="ts">
-export default {
-  data: () => ({
-    drawer: false,
-    group: 'first'
-  }),
-  computed: {
-    isAuthenticated() {
-      return this.$auth.isAuthenticated
-      return false
-    }
-  },
-  methods: {
-    logout() {
-      this.$auth.logout({
-        returnTo: window.location.origin
-      })
-    },
-    login() {
-      this.$auth.loginWithRedirect()
-    },
-    goTo(link: string) {
-      this.$router.push(link)
-    }
-  }
-}
-</script> -->
-
 <template>
   <Disclosure as="nav" class="bg-white shadow mb-1" v-slot="{ open }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -126,11 +21,11 @@ export default {
           </div>
           <div v-if="isAuth" class="hidden md:ml-6 md:flex md:space-x-8">
             <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-            <a
-              href="#"
-              class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-              @click="goTo('/dashboard')"
-              >Dashboard</a
+            <RouterLink
+              active-class="border-indigo-500 border-b-2"
+              to="/dashboard"
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+              >Dashboard</RouterLink
             >
           </div>
         </div>
