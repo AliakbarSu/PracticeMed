@@ -199,7 +199,7 @@ import SkeletonLoading from './components/UI/loading/Skeleton.vue'
 import ContentSkeleton from './components/UI/loading/ContentSkeleton.vue'
 import axios from 'axios'
 import type { UserAppMetadata } from '@/types/user'
-import type { Stats, TestHistory } from '@/types/test'
+import type { Stats } from '@/types/test'
 import LoadingIssueAlert from '@/components/UI/alerts/error.vue'
 
 export default defineComponent({
@@ -315,8 +315,8 @@ export default defineComponent({
           changeType: this.calculateChangeType('averageTimeTaken')
         },
         {
-          name: 'Average Time',
-          stat: this.testHistory.stats.averageTimeTaken,
+          name: 'Subjects Average Time',
+          stat: this.testHistory.stats.averageTimeTaken + 44,
           previousStat: this.testHistory.stats.averageTimeTaken,
           change: '4.05%',
           changeType: 'increase'
@@ -402,7 +402,10 @@ export default defineComponent({
       const labels = Object.keys(
         this.testHistory.stats.speedByMinuteInterval
       ).map((key) => {
-        return (Number(key) / 600000).toFixed(2) + ' Mins'
+        return (
+          Number(this.testHistory.stats.speedByMinuteInterval[key]).toFixed(2) +
+          ' Mins'
+        )
       })
       return {
         labels,

@@ -30,10 +30,10 @@
                     :key="item.name"
                     class="text-sm"
                   >
-                    <a
-                      :href="item.href"
+                    <RouterLink
+                      :to="item.href"
                       class="text-gray-500 hover:text-gray-600"
-                      >{{ item.name }}</a
+                      >{{ item.name }}</RouterLink
                     >
                   </li>
                 </ul>
@@ -46,10 +46,11 @@
                     :key="item.name"
                     class="text-sm"
                   >
-                    <a
-                      :href="item.href"
+                    <RouterLink
+                      active-class="border-b-2 border-indigo-500"
+                      :to="item.href"
                       class="text-gray-500 hover:text-gray-600"
-                      >{{ item.name }}</a
+                      >{{ item.name }}</RouterLink
                     >
                   </li>
                 </ul>
@@ -65,11 +66,11 @@
                   :key="item.name"
                   class="text-sm"
                 >
-                  <a
-                    @click="goTo(item.href)"
-                    :href="item.href"
+                  <RouterLink
+                    active-class="border-b-2 border-indigo-500"
+                    :to="item.href"
                     class="text-gray-500 hover:text-gray-600"
-                    >{{ item.name }}</a
+                    >{{ item.name }}</RouterLink
                   >
                 </li>
               </ul>
@@ -175,9 +176,9 @@ export default {
 }
 const items = {
   products: [
-    { name: 'MCAT', href: '#' },
-    { name: 'USMLE', href: '#' },
-    { name: 'AMC', href: '#' }
+    { name: 'MCAT', href: '/dashboard?test=mcat' },
+    { name: 'USMLE', href: '/dashboard?test=usmle' },
+    { name: 'AMC', href: '#/dashboard?test=amc' }
   ],
   company: [
     { name: 'Who we are', href: '/about' },

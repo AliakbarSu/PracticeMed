@@ -3,11 +3,24 @@
     <div class="space-y-1 pb-3 pt-2">
       <!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
       <DisclosureButton
-        as="a"
-        href="#"
-        class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
+        as="span"
+        :class="{
+          'border-l-4': isActive('/dashboard'),
+          'border-indigo-500': isActive('/dashboard')
+        }"
+        class="cursor-pointer block bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
         @click="goTo('/dashboard')"
         >Dashboard</DisclosureButton
+      >
+      <DisclosureButton
+        as="span"
+        @click="goTo('/plans')"
+        :class="{
+          'border-l-4': isActive('/plans'),
+          'border-indigo-500': isActive('/plans')
+        }"
+        class="block bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
+        >Plans</DisclosureButton
       >
     </div>
     <div v-if="isAuth" class="border-t border-gray-200 pb-3 pt-4">
@@ -62,5 +75,9 @@ const goTo = (link: string) => {
 }
 const onLogout = () => {
   logout({ logoutParams: { returnTo: window.location.origin } })
+}
+
+const isActive = (path: string) => {
+  return router.currentRoute.value.path === path
 }
 </script>

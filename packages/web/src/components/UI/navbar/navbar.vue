@@ -27,6 +27,12 @@
               class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
               >Dashboard</RouterLink
             >
+            <RouterLink
+              active-class="border-indigo-500 border-b-2"
+              to="/plans"
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+              >Plans</RouterLink
+            >
           </div>
         </div>
         <div class="flex items-center">
