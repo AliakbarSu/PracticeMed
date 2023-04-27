@@ -53,7 +53,7 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt) => {
       product_id: product.id
     },
     subscription_data: {
-      trial_period_days: 7
+      trial_period_days: Number(product.metadata.free_trial_limit) || 3
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
     success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
