@@ -2,6 +2,7 @@
   <div>
     <!-- <Carousel /> -->
     <Hero />
+    <Stats />
     <Section />
     <!-- <Examples /> -->
     <Testimonial />
@@ -16,5 +17,5 @@ import GetStarted from './components/UI/getStarted/getStarted.vue'
 import Hero from './components/UI/hero/hero.vue'
 import Examples from './components/examples/examples.vue'
 import Testimonial from './components/testimonial/testimonial.vue'
-
+import Stats from './components/UI/stats/Stats.vue'
 </script>
