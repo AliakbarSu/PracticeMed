@@ -39,6 +39,9 @@ export function API({ stack }: StackContext) {
     'STRIPE_SIGNING_SECRET'
   )
 
+  // SENDGRID
+  const SENDGRID_API_KEY = new Config.Secret(stack, 'SENDGRID_API_KEY')
+
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
     defaults: {
@@ -102,7 +105,10 @@ export function API({ stack }: StackContext) {
         function: `${fnPath}/result/index.handler`
       },
       // WEBHOOKS
-      'POST /api/webhooks/stripe': `${fnPath}/webhook/stripe.handler`
+      'POST /api/webhooks/stripe': `${fnPath}/webhook/stripe.handler`,
+      // New Letter
+      'POST /api/newletter/signup': `${fnPath}/newletter/index.signup`,
+      'POST /api/newletter/unsubscribe': `${fnPath}/newletter/index.unsubscribe`
     }
   })
 
@@ -114,7 +120,8 @@ export function API({ stack }: StackContext) {
     FRONT_END_URL,
     AUTH0_CLIENT_ID,
     AUTH0_CLIENT_SECRET,
-    STRIPE_SIGNING_SECRET
+    STRIPE_SIGNING_SECRET,
+    SENDGRID_API_KEY
   ])
   stack.addOutputs({
     ApiDomain: api.customDomainUrl,
