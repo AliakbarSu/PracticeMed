@@ -107,8 +107,8 @@ export function API({ stack }: StackContext) {
       // WEBHOOKS
       'POST /api/webhooks/stripe': `${fnPath}/webhook/stripe.handler`,
       // New Letter
-      'POST /api/newletter/signup': `${fnPath}/newletter/index.signup`,
-      'POST /api/newletter/unsubscribe': `${fnPath}/newletter/index.unsubscribe`
+      'POST /api/newsletter/signup': `${fnPath}/newsletter/index.signup`,
+      'POST /api/newsletter/unsubscribe': `${fnPath}/newsletter/index.unsubscribe`
     }
   })
 

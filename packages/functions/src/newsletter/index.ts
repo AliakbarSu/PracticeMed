@@ -2,7 +2,7 @@ import { ApiHandler } from 'sst/node/api'
 import {
   signupToNewletter,
   unsubscribeFromNewsletter
-} from '@mpt-sst/core/newletter/index'
+} from '@mpt-sst/core/newsletter/index'
 
 export const signup = ApiHandler(async (_evt) => {
   const email = (JSON.parse(_evt.body || '') as unknown as { email: string })
