@@ -16,7 +16,12 @@
     />
     <div class="test">
       <SkeletonLoading v-if="loading" />
-      <Instructions @start="start" :open="!testStarted" />
+      <Instructions
+        v-if="!loading && hasTestsRemaning"
+        @start="start"
+        :open="!testStarted"
+      />
+      <UpgradePlanCTA v-if="!hasTestsRemaning" />
       <div class="content" v-if="testStarted">
         <div class="overflow-hidden rounded-lg bg-white shadow">
           <div class="px-4 py-5 sm:p-6">
@@ -62,6 +67,7 @@ import ReadyToSubmitAlert from './components/alerts/readyToSubmit.vue'
 import SelectOptionAlert from './components/alerts/selectOption.vue'
 import TimeOverAlert from './components/alerts/timeOver.vue'
 import SkeletonLoading from './components/UI/loading/skeleton.vue'
+import UpgradePlanCTA from './components/UI/CTA/UpgradeCTA.vue'
 
 interface TestInProgress extends Omit<Test, 'questions'> {
   questions: QuestionInProgress[]
@@ -92,6 +98,7 @@ export default defineComponent({
   },
   data: () => {
     return {
+      hasTestsRemaning: true,
       skipping: false,
       test: {} as TestInProgress,
       currentQuestionIndex: undefined as number | undefined,
@@ -123,7 +130,8 @@ export default defineComponent({
     ReadyToSubmitAlert,
     SelectOptionAlert,
     TimeOverAlert,
-    SkeletonLoading
+    SkeletonLoading,
+    UpgradePlanCTA
   },
   methods: {
     async loadTest() {
@@ -138,8 +146,12 @@ export default defineComponent({
           ...test,
           lastIndex: test.questions.length - 1
         }
-      } catch (err) {
-        console.error(err)
+      } catch (err: any) {
+        console.log(err)
+        const statusCode = err.response?.status
+        if (statusCode === 403) {
+          this.hasTestsRemaning = false
+        }
       } finally {
         this.loading = false
       }

@@ -21,8 +21,13 @@ export const handler = ApiHandler(async (_evt) => {
     return {
       body: JSON.stringify(test)
     }
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    if (err === 'User has no remaining tests!') {
+      return {
+        body: 'User has no remaining tests!',
+        statusCode: 403
+      }
+    }
     return {
       body: 'Something went wrong'
     }
