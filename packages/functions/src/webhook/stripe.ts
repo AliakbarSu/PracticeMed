@@ -1,6 +1,10 @@
 import { getUser, updateUserAppMetadata } from '@mpt-sst/core/auth0'
 import { getPlan } from '@mpt-sst/core/plans'
-import { constructEvent, retrieveSession } from '@mpt-sst/core/stripe'
+import {
+  constructEvent,
+  retrieveSession,
+  cancelSubscription
+} from '@mpt-sst/core/stripe'
 import { UserAppMetadata } from '@mpt-types/User'
 import { ApiHandler } from 'sst/node/api'
 import { Stripe } from 'stripe'
@@ -34,6 +38,10 @@ export const handler = ApiHandler(async (_evt) => {
 
     // Update user app metadata in Auth 0
     await updateUserAppMetadata({ id: auth0_id, data: updatedUserAppMetadata })
+    // cancel previous subscription is exists
+    if (app_metadata.plan.subscription.id) {
+      await cancelSubscription(app_metadata.plan.subscription.id)
+    }
   }
 
   return {

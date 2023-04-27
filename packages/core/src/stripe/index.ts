@@ -50,6 +50,14 @@ export const resumeSubscription = async (id: string) => {
   return stripe.subscriptions.resume(id, { billing_cycle_anchor: 'now' })
 }
 
+export const cancelSubscription = async (id: string) => {
+  return stripe.subscriptions.cancel(id, {
+    cancellation_details: {
+      feedback: 'switched_service'
+    }
+  })
+}
+
 export const createCheckoutUrl = async (
   params: Stripe.Checkout.SessionCreateParams
 ) => {
@@ -80,7 +88,7 @@ export const constructEvent = ({
 export const configureCustomerPortal = async () => {
   return stripe.billingPortal.configurations.create({
     business_profile: {
-      headline: 'Practice Med'
+      headline: 'Billing'
     },
     features: {
       subscription_cancel: {

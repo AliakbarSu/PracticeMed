@@ -18,11 +18,12 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
-  const { email } = await getUser(userId)
+  const { email, app_metadata } = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)
+  const customerId = app_metadata.plan.stripe_customer_id
   const checkoutUrl = await createCheckoutUrl({
-    customer_email: email,
+    ...(customerId ? { customer: customerId } : { customer_email: email }),
     mode: 'subscription',
     metadata: {
       customer_id: userId,
@@ -42,11 +43,12 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt) => {
     .jwt.claims.sub
   // TODO: Update it with production product ID
   const planId = 'prod_NkElI8ETMlLhVb'
-  const { email } = await getUser(userId)
+  const { email, app_metadata } = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)
+  const customerId = app_metadata.plan.stripe_customer_id
   const checkoutUrl = await createCheckoutUrl({
-    customer_email: email,
+    ...(customerId ? { customer: customerId } : { customer_email: email }),
     mode: 'subscription',
     metadata: {
       customer_id: userId,
