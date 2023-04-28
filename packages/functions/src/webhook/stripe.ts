@@ -39,7 +39,9 @@ export const handler = ApiHandler(async (_evt) => {
     // Update user app metadata in Auth 0
     await updateUserAppMetadata({ id: auth0_id, data: updatedUserAppMetadata })
     // cancel previous subscription is exists
-    if (app_metadata.plan.subscription.id) {
+    if (
+      app_metadata.plan.subscription.id !== sessionWithLineItems.subscription
+    ) {
       await cancelSubscription(app_metadata.plan.subscription.id)
     }
   }
