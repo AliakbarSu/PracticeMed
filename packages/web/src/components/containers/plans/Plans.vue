@@ -149,7 +149,7 @@ export default defineComponent({
     CheckIcon,
     SkeletonLoading
   },
-  data() {
+  data: () => {
     return {
       loading: {
         plans: false,
