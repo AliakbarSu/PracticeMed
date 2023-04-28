@@ -52,7 +52,8 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt) => {
     mode: 'subscription',
     metadata: {
       customer_id: userId,
-      product_id: product.id
+      product_id: product.id,
+      trial: 1
     },
     subscription_data: {
       trial_period_days: Number(product.metadata.free_trial_limit) || 3

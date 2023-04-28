@@ -19,6 +19,7 @@ export const handler = ApiHandler(async (_evt) => {
     const sessionWithLineItems = await retrieveSession(session.id, {})
     const planId = sessionWithLineItems.metadata?.product_id || ''
     const auth0_id = sessionWithLineItems.metadata?.customer_id || ''
+    const trial = !!sessionWithLineItems.metadata?.trial || false
     const { app_metadata } = await getUser(auth0_id)
     // Getting the plan
     const product = await getPlan(planId)
@@ -31,7 +32,8 @@ export const handler = ApiHandler(async (_evt) => {
         limit: Number(product.metadata.limit),
         used: Number(product.metadata.limit),
         subscription: {
-          id: sessionWithLineItems.subscription as string
+          id: sessionWithLineItems.subscription as string,
+          onTrial: trial
         }
       }
     }
