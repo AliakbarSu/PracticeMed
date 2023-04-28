@@ -27,7 +27,8 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
     mode: 'subscription',
     metadata: {
       customer_id: userId,
-      product_id: product.id
+      product_id: product.id,
+      trial: 0
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
     success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
