@@ -81,7 +81,7 @@
           <a
             v-if="!loading.plans"
             @click="
-              tier.freeTrial
+              tier.freeTrial && !hasActivePlan
                 ? subscribeToFreeTrial(tier.id)
                 : subscribeToPlan(tier.id)
             "
@@ -116,11 +116,17 @@
               </svg>
               <span class="sr-only">Loading...</span>
             </div>
-            <span v-else>
+            <span
+              v-if="isSubscribedToPlan(tier.id) && !isCheckoutLoading(tier.id)"
+              >Active</span
+            >
+            <span
+              v-if="!isSubscribedToPlan(tier.id) && !isCheckoutLoading(tier.id)"
+            >
               {{
-                tier.freeTrial
+                tier.freeTrial && !hasActivePlan
                   ? `Start ${tier.freeTrial} days free trial`
-                  : 'Get plan'
+                  : subscribeText(tier.id)
               }}</span
             >
           </a>
@@ -136,6 +142,7 @@ import { CheckIcon } from '@heroicons/vue/20/solid'
 import { defineComponent } from 'vue'
 import axios from 'axios'
 import SkeletonLoading from './components/loading/CardLoading.vue'
+import type { Profile } from '@/types/user'
 
 export default defineComponent({
   components: {
@@ -148,26 +155,43 @@ export default defineComponent({
         plans: false,
         checkout: ''
       },
-      tiers: [{}, {}, {}] as Plan[]
+      tiers: [{}, {}, {}] as Plan[],
+      profile: {} as Profile
     }
   },
   async created() {
-    const getPlans = async () => {
+    this.getPlans()
+    this.getUserProfile()
+  },
+  methods: {
+    async getPlans() {
       this.loading.plans = true
       try {
         const result = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/plans`
         )
         this.tiers = JSON.parse(result.data.body)
-      } catch (err) {
+      } catch (err) {}
+    },
+    async getUserProfile() {
+      try {
+        const token = await this.$auth0.getAccessTokenSilently()
+        const result = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/user/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        this.profile = JSON.parse(result.data.body)
       } finally {
         this.loading.plans = false
       }
-    }
-    getPlans()
-  },
-  methods: {
+    },
     async subscribeToPlan(planId: string) {
+      this.loginIfNotAuthenticated(planId)
+      if (this.isSubscribedToPlan(planId)) return
       this.loading.checkout = planId
       try {
         const checkoutUrl = await axios.get(
@@ -179,6 +203,8 @@ export default defineComponent({
       }
     },
     async subscribeToFreeTrial(planId: string) {
+      this.loginIfNotAuthenticated(planId)
+      if (this.isSubscribedToPlan(planId)) return
       this.loading.checkout = planId
       try {
         const checkoutUrl = await axios.get(
@@ -193,6 +219,34 @@ export default defineComponent({
     },
     isCheckoutLoading(planId: string) {
       return this.loading.checkout === planId
+    },
+    isSubscribedToPlan(planId: string) {
+      return this.profile?.plan?.id === planId
+    },
+    subscribeText(planId: string) {
+      const isSbuscribed = this.isSubscribedToPlan(planId)
+      const hasPlan = this.hasActivePlan
+      const currentPlanPrice =
+        this.tiers.find((tier) => tier.id === this.profile?.plan?.id)?.price ||
+        0
+      const planPrice =
+        this.tiers.find((tier) => tier.id === planId)?.price || 0
+      const changePlanText =
+        Number(currentPlanPrice) < Number(planPrice) ? 'Upgrade' : 'Downgrade'
+      return isSbuscribed ? 'Active' : hasPlan ? changePlanText : 'Get plan'
+    },
+    async loginIfNotAuthenticated(planId: string) {
+      try {
+        await this.$auth0.getAccessTokenSilently()
+      } catch (err) {
+        this.$router.push('/account')
+        return
+      }
+    }
+  },
+  computed: {
+    hasActivePlan() {
+      return !!this.profile?.plan?.id
     }
   }
 })
