@@ -7,8 +7,9 @@ export const handler = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const testId = _evt.pathParameters?.id || ''
+  const type = _evt.pathParameters?.type || ''
   try {
-    const result = await loadTest({ userId, testId })
+    const result = await loadTest({ userId, testId, type })
     const test: LoadedTest = {
       id: result.id,
       name: result.name,

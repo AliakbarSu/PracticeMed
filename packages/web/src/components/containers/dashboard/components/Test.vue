@@ -33,11 +33,11 @@
       class="mt-6 flex items-center space-x-4 divide-x divide-gray-200 border-t border-gray-200 pt-4 text-sm font-medium sm:ml-4 sm:mt-0 sm:border-none sm:pt-0"
     >
       <div class="flex flex-1 justify-center">
-        <a
-          @click="takeTest(test?.id || '')"
+        <RouterLink
+          :to="`/test/${test?.id}/${test?.type}`"
           href="#"
           class="whitespace-nowrap text-indigo-600 hover:text-indigo-500"
-          >Take Test</a
+          >Take Test</RouterLink
         >
       </div>
     </div>
@@ -64,11 +64,6 @@ export default {
     MenuItems,
     EllipsisVerticalIcon,
     CheckCircleIcon
-  },
-  methods: {
-    takeTest(testId: string) {
-      this.$router.push(`/test/${testId}`)
-    }
   }
 }
 </script>

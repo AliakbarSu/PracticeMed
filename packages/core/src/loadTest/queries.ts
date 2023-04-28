@@ -43,3 +43,35 @@ export const getTestQuery = gql`
     }
   }
 `
+
+export const getTrialTestsQuery = gql`
+  query GetTest($type: String!) {
+    tests(where: { type: $type, trial: true }) {
+      available
+      id
+      name
+      type
+      description
+      trial
+      instructions
+      breaks
+      timeLimit
+      points
+      passingPoint
+      questions {
+        id
+        point
+        text
+        options {
+          alpha
+          correct
+          id
+          text
+        }
+        field
+        correct_option_id
+        correct_option_explanation
+      }
+    }
+  }
+`

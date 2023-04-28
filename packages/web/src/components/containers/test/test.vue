@@ -74,6 +74,7 @@ interface TestInProgress extends Omit<Test, 'questions'> {
   start_at: number
   end_at: number
   lastIndex: number
+  instructions: string
 }
 
 export interface QuestionInProgress extends Question {
@@ -104,6 +105,7 @@ export default defineComponent({
       currentQuestionIndex: undefined as number | undefined,
       submittedAnswers: [] as Answer[],
       selectedOption: {} as Option,
+      instructions: '',
       testEndsIn: 0,
       interval: 0,
       timeLimit: 1.26e7,
@@ -137,15 +139,17 @@ export default defineComponent({
     async loadTest() {
       this.loading = true
       const testId = this.$route.params.id
+      const type = this.$route.params.type
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/load`
+          `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/${type}/load`
         )
         const test = JSON.parse(response.data.body) as TestInProgress
         this.test = {
           ...test,
           lastIndex: test.questions.length - 1
         }
+        this.instructions = test.instructions
       } catch (err: any) {
         console.log(err)
         const statusCode = err.response?.status

@@ -11,6 +11,7 @@ export interface Test {
   questions: Question[]
   thumbnail: { url: string }[]
   description: string
+  type: string
 }
 
 export interface TestHistory extends Test {

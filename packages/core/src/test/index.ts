@@ -1,7 +1,7 @@
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
-import { getTestQuery, listTestsQuery } from './queries'
-import { Test, UserTest } from '../../types/Test'
+import { getTestQuery, listTestsQuery, nonTrialTestsQuery } from './queries'
+import { UserTest } from '../../types/Test'
 
 const query = (query: string, variables: any) => {
   return fetch(Config.HYGRAPH_ENDPOINT, {
@@ -25,6 +25,12 @@ export const getTest = async (id: string) => {
 
 export const listTests = async (): Promise<UserTest[]> => {
   const response = await query(listTestsQuery, {})
+  const parsed = await response.json()
+  return (parsed as { data: { tests: UserTest[] } }).data.tests
+}
+
+export const listNonTrialTests = async (): Promise<UserTest[]> => {
+  const response = await query(nonTrialTestsQuery, {})
   const parsed = await response.json()
   return (parsed as { data: { tests: UserTest[] } }).data.tests
 }

@@ -96,7 +96,7 @@ export function API({ stack }: StackContext) {
         function: `${fnPath}/getTest/index.history`
       },
       'GET /api/tests/{id}': `${fnPath}/getTest/index.handler`,
-      'GET /api/tests/{id}/load': {
+      'GET /api/tests/{id}/{type}/load': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/loadTest/index.handler`
       },

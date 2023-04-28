@@ -1,8 +1,9 @@
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
-import { getTestQuery } from './queries'
-import { UserTest } from '../../types/Test'
+import { getTestQuery, getTrialTestsQuery } from './queries'
+import { UserTest, LoadedTest } from '../../types/Test'
 import { getUserAppMetadata, updateUserAppMetadata } from '../auth0/index'
+import { UserAppMetadata } from '../../types/User'
 
 const query = (query: string, variables: any) => {
   return fetch(Config.HYGRAPH_ENDPOINT, {
@@ -18,9 +19,14 @@ const query = (query: string, variables: any) => {
   })
 }
 
-const hasUserRemainingTests = async (userId: string) => {
+const hasUserRemainingTests = async (
+  userId: string
+): Promise<{ hasAccess: boolean; metadata: UserAppMetadata }> => {
   const userAppMetadata = await getUserAppMetadata(userId)
-  return userAppMetadata.plan.limit > userAppMetadata.plan.used
+  return {
+    hasAccess: userAppMetadata.plan.limit > userAppMetadata.plan.used,
+    metadata: userAppMetadata
+  }
 }
 
 const reduceUserRemainingTests = async (userId: string) => {
@@ -39,20 +45,28 @@ const reduceUserRemainingTests = async (userId: string) => {
 
 export const loadTest = async ({
   testId,
-  userId
+  userId,
+  type
 }: {
   testId: string
   userId: string
+  type: string
 }) => {
   // Check if user has access to tests
-  const hasAccess = await hasUserRemainingTests(userId)
+  const { hasAccess, metadata } = await hasUserRemainingTests(userId)
   if (!hasAccess) {
     return Promise.reject('User has no remaining tests!')
   }
   // Increase the number of used tests
   await reduceUserRemainingTests(userId)
   // Load test
-  const response = await query(getTestQuery, { id: testId })
+  const isTrial = metadata.plan.subscription.onTrial
+  const response = await query(isTrial ? getTrialTestsQuery : getTestQuery, {
+    id: testId,
+    type
+  })
   const parsed = await response.json()
-  return (parsed as { data: { test: UserTest } }).data.test
+  return isTrial
+    ? (parsed as { data: { tests: LoadedTest[] } }).data.tests[0]
+    : (parsed as { data: { test: UserTest } }).data.test
 }
