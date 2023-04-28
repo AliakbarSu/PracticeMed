@@ -6,6 +6,7 @@ export interface UserPlan {
   used: number
   subscription: {
     id: string
+    onTrial: boolean
   }
 }
 

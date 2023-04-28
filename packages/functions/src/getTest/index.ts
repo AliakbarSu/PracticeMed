@@ -6,8 +6,9 @@ import { ApiGatewayAuth } from '@mpt-types/System'
 
 export const handler = ApiHandler(async (_evt) => {
   const testId = _evt.pathParameters?.id || ''
-  const { id, name, type, description, thumbnail } = await getTest(testId)
-  const test: Test = { id, name, type, description, thumbnail }
+  const { id, name, type, description, thumbnail, instructions } =
+    await getTest(testId)
+  const test: Test = { id, name, type, description, thumbnail, instructions }
   return {
     body: JSON.stringify(test)
   }

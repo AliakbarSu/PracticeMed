@@ -1,6 +1,6 @@
 import { ApiHandler } from 'sst/node/api'
 import { loadTest } from '@mpt-sst/core/loadTest/index'
-import { UserTest } from '@mpt-types/Test'
+import { LoadedTest } from '@mpt-types/Test'
 import { ApiGatewayAuth } from '@mpt-types/System'
 
 export const handler = ApiHandler(async (_evt) => {
@@ -9,14 +9,17 @@ export const handler = ApiHandler(async (_evt) => {
   const testId = _evt.pathParameters?.id || ''
   try {
     const result = await loadTest({ userId, testId })
-    const test: UserTest = {
+    const test: LoadedTest = {
       id: result.id,
       name: result.name,
       type: result.type,
       description: result.description,
       questions: result.questions,
       text: result.text,
-      thumbnail: result.thumbnail
+      thumbnail: result.thumbnail,
+      timeLimit: result.timeLimit,
+      breaks: result.breaks,
+      instructions: result.instructions
     }
     return {
       body: JSON.stringify(test)

@@ -112,7 +112,8 @@ export const handler = ApiHandler(async (_evt) => {
       limit: Number(product.metadata.limit),
       used: Number(product.metadata.limit),
       subscription: {
-        id: subscription.id
+        id: subscription.id,
+        onTrial: false
       }
     }
   }
