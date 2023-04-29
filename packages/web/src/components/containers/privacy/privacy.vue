@@ -8,10 +8,11 @@
       </h1>
       <div class="mt-10 max-w-2xl">
         <p>
-          Practice Med (“us”, “we”, or “our”) operates the [website URL] website
-          (the “Service”). This page informs you of our policies regarding the
-          collection, use, and disclosure of personal data when you use our
-          Service and the choices you have associated with that data.
+          Practice Med (“us”, “we”, or “our”) operates the
+          https://practicemed.org website (the “Service”). This page informs you
+          of our policies regarding the collection, use, and disclosure of
+          personal data when you use our Service and the choices you have
+          associated with that data.
         </p>
         <p class="mt-3">
           We use your data to provide and improve the Service. By using the
