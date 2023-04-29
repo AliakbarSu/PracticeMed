@@ -173,7 +173,7 @@ export default {
         const response = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/tests/history`
         )
-        this.testsHistoryData = JSON.parse(response.data.body)
+        this.testsHistoryData = response.data.body
       } catch (err) {
         console.error(err)
       } finally {

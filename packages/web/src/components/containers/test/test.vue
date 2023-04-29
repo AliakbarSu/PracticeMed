@@ -252,7 +252,7 @@ export default defineComponent({
       }
       const submittedAnswers: Answer = {
         question_id: this.question.id,
-        option_id: this.selectedOption.id,
+        option_id: this.selectedOption.alpha,
         start_at: this.question.start_at,
         end_at: new Date().getTime()
       }
