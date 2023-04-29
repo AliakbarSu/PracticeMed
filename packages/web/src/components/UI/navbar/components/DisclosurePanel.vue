@@ -3,6 +3,7 @@
     <div class="space-y-1 pb-3 pt-2">
       <!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
       <DisclosureButton
+        v-if="isAuthenticated"
         as="span"
         :class="{
           'border-l-4': isActive('/dashboard'),
@@ -23,7 +24,7 @@
         >Plans</DisclosureButton
       >
     </div>
-    <div v-if="isAuth" class="border-t border-gray-200 pb-3 pt-4">
+    <div v-if="isAuthenticated" class="border-t border-gray-200 pb-3 pt-4">
       <div class="flex items-center px-4 sm:px-6">
         <div class="flex-shrink-0">
           <img class="h-10 w-10 rounded-full" :src="user.picture" alt="" />
@@ -67,9 +68,8 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
-const { user, logout } = useAuth0()
+const { user, logout, isAuthenticated } = useAuth0()
 const router = useRouter()
-const isAuth = useAuth0().isAuthenticated
 const goTo = (link: string) => {
   router.push(link)
 }

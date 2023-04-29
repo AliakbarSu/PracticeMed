@@ -3,11 +3,14 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 justify-between">
         <div class="flex">
-          <div v-if="isAuth" class="-ml-2 mr-2 flex items-center md:hidden">
+          <div class="-ml-2 mr-2 flex items-center md:hidden">
             <!-- Mobile menu button -->
             <MobileButton :open="open" />
           </div>
-          <div class="flex flex-shrink-0 items-center" @click="goTo('/')">
+          <div
+            class="cursor-pointer flex flex-shrink-0 items-center"
+            @click="goTo('/')"
+          >
             <img
               class="block h-20 w-auto lg:hidden"
               src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1682296708/practiceMed/Illustrations/Practice_Med-logo.png"
@@ -22,7 +25,7 @@
           <div class="hidden md:ml-6 md:flex md:space-x-8">
             <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
             <RouterLink
-              v-if="isAuth"
+              v-if="isAuthenticated"
               active-class="border-indigo-500 border-b-2"
               to="/dashboard"
               class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
@@ -39,8 +42,23 @@
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <button
-              v-if="!isAuth"
-              @click="login"
+              v-if="!isAuthenticated"
+              @click="
+                () =>
+                  loginWithRedirect({
+                    authorizationParams: { screen_hint: 'signup' }
+                  })
+              "
+              type="button"
+              class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sign Up
+            </button>
+          </div>
+          <div class="flex-shrink-0">
+            <button
+              v-if="!isAuthenticated"
+              @click="() => loginWithRedirect()"
               type="button"
               class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -57,7 +75,7 @@
             </button>
           </div> -->
           <div
-            v-if="isAuth"
+            v-if="isAuthenticated"
             class="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center"
           >
             <button
@@ -70,44 +88,29 @@
 
             <!-- Profile dropdown -->
 
-            <ProfileDropdown />
+            <ProfileDropdown v-if="isAuthenticated" />
           </div>
         </div>
       </div>
     </div>
 
-    <DsiclosurePanel v-if="isAuth" />
+    <DsiclosurePanel />
   </Disclosure>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Disclosure } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
-import { PlusIcon } from '@heroicons/vue/20/solid'
 import MobileButton from './components/MobileButton.vue'
 import ProfileDropdown from './components/ProfileDropdown.vue'
 import DsiclosurePanel from './components/DisclosurePanel.vue'
-export default {
-  data() {
-    return {
-      isAuth: this.$auth0.isAuthenticated
-    }
-  },
-  methods: {
-    login() {
-      this.$auth0.loginWithRedirect()
-    },
-    goTo(link: string) {
-      this.$router.push(link)
-    }
-  },
-  components: {
-    Disclosure,
-    DsiclosurePanel,
-    MobileButton,
-    PlusIcon,
-    BellIcon,
-    ProfileDropdown
-  }
+import { useAuth0 } from '@auth0/auth0-vue'
+import { useRouter } from 'vue-router'
+
+const { loginWithRedirect, isAuthenticated } = useAuth0()
+const router = useRouter()
+
+const goTo = (link: string) => {
+  router.push(link)
 }
 </script>
