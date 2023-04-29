@@ -12,6 +12,8 @@ export interface Test {
   thumbnail: { url: string }[]
   description: string
   type: string
+  instructions: string
+  timeLimit: number
 }
 
 export interface TestHistory extends Test {
@@ -84,6 +86,7 @@ export interface Stats {
 }
 
 export interface TestPerformanceResult {
+  id: string
   test_id: string
   stats: Stats
   result: ResultEnum

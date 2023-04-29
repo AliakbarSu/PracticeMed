@@ -1,4 +1,5 @@
 import { Question } from '../../types/Question'
+import { v4 as uuidv4 } from 'uuid'
 import {
   AnalyzedAnswer,
   SubmittedAnswer,
@@ -40,7 +41,6 @@ const analyzeAnswer = (
     const { question_id } = answer
     const timeTaken = calculateTimeTaken(answer).timeTaken
     const updatedQuestions = distributePoints(test.points, questions)
-    console.log(updatedQuestions)
     const question = updatedQuestions.find(
       ({ id }) => id === question_id
     ) as Question
@@ -93,6 +93,7 @@ export const analyze = async (
   const speedByMinuteInterval = calculateSpeedByMinuteIntervals(analyzedAnswers)
   const result = calculateTestResult(totalPoints, test.passingPoint)
   return {
+    id: uuidv4(),
     test_id,
     stats: {
       totalPoints,

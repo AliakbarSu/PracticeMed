@@ -1,98 +1,78 @@
 <template>
-  <TransitionRoot as="template" :show="open">
-    <Dialog as="div" class="relative z-10" @close="open = false">
-      <TransitionChild
-        as="template"
-        enter="ease-out duration-300"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="ease-in duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div
-          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-        />
-      </TransitionChild>
-
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div
-          class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
-        >
-          <TransitionChild
-            as="template"
-            enter="ease-out duration-300"
-            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enter-to="opacity-100 translate-y-0 sm:scale-100"
-            leave="ease-in duration-200"
-            leave-from="opacity-100 translate-y-0 sm:scale-100"
-            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          >
-            <DialogPanel
-              class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-            >
-              <div>
-                <div class="mt-3 text-center sm:mt-5">
-                  <DialogTitle
-                    as="h3"
-                    class="text-base font-semibold leading-6 text-gray-900"
-                    >Ready to Test Your Medical Knowledge?</DialogTitle
+  <div class="bg-white py-32 sm:py-46">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-center sm:px-0 md:px-22 lg:px-29">
+        <div class="mx-auto w-full lg:mx-0">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900">
+            Instructions before you begin
+          </h2>
+          <p class="mt-6 text-lg leading-8 text-gray-600">
+            {{ test?.instructions }}
+          </p>
+          <div class="pt-15">
+            <div class="">
+              <h3 class="text-base font-semibold leading-7 text-gray-900">
+                Test Information
+              </h3>
+              <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                Important information.
+              </p>
+            </div>
+            <div class="mt-6 border-t border-gray-100">
+              <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">
+                    Name
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
                   >
-                  <div class="mt-2">
-                    <p class="text-sm text-gray-500">
-                      Are you preparing for your medical examination and want to
-                      test your knowledge? Take our mock test now! It consists
-                      of 120 questions and takes only 30 minutes to complete.
-                      This is a great way to prepare for your actual exam and
-                      boost your confidence. Are you ready to start? Click
-                      "Start" below and get started now!
-                    </p>
-                  </div>
+                    {{ test?.name }}
+                  </dd>
                 </div>
-              </div>
-              <div
-                class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3"
-              >
-                <button
-                  type="button"
-                  class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
-                  @click="$emit('start')"
-                >
-                  Start
-                </button>
-                <button
-                  type="button"
-                  class="w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-                  @click="doItLater"
-                  ref="cancelButtonRef"
-                >
-                  Do it later
-                </button>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">
+                    Duration
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                  >
+                    {{ test?.timeLimit }} hours
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+          <div class="mt-8 flex items-center gap-x-6">
+            <a
+              @click="$emit('start')"
+              class="cursor-pointer rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >Start the test</a
+            >
+            <!-- <a @click="" class="cursor-pointer text-sm font-semibold text-gray-900"
+              >Dot it later <span aria-hidden="true">&rarr;</span></a
+            > -->
+          </div>
         </div>
       </div>
-    </Dialog>
-  </TransitionRoot>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot
-} from '@headlessui/vue'
+import { defineProps } from 'vue'
+import type { PropType } from 'vue'
+import type { Test } from '@/types/test'
 
 const router = useRouter()
 
-const open = ref(true)
+const { test } = defineProps({
+  test: {
+    type: Object as PropType<Test>
+  }
+})
 const doItLater = () => {
-  open.value = false
   router.push('/dashboard')
 }
 </script>

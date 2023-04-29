@@ -43,6 +43,7 @@ export interface Stats {
 }
 
 export interface TestPerformanceResult {
+  id: string
   test_id: string
   stats: Stats
   result: ResultEnum

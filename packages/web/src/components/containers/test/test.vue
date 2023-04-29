@@ -17,9 +17,9 @@
     <div class="test">
       <SkeletonLoading v-if="loading" />
       <Instructions
-        v-if="!loading && hasTestsRemaning"
+        v-if="!loading && hasTestsRemaning && !testStarted"
         @start="start"
-        :open="!testStarted"
+        :test="test"
       />
       <UpgradePlanCTA v-if="!hasTestsRemaning" />
       <div class="content" v-if="testStarted">
@@ -144,7 +144,7 @@ export default defineComponent({
         const response = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/${type}/load`
         )
-        const test = JSON.parse(response.data.body) as TestInProgress
+        const test = response.data.body as TestInProgress
         this.test = {
           ...test,
           lastIndex: test.questions.length - 1
@@ -167,13 +167,12 @@ export default defineComponent({
         start_at: this.test.start_at,
         end_at: new Date().getTime()
       }
-      console.log(payload)
-      return
       const response = await axios.post(
-        `${import.meta.env.VITE_API_ENDPOINT}/tests/${this.test.id}/submit`,
+        `${import.meta.env.VITE_API_ENDPOINT}/test/${this.test.id}/result`,
         payload
       )
-      this.viewResults()
+      const resultId = response.data.body.id as string
+      this.viewResults(resultId)
     },
     start() {
       this.setTimer()
@@ -227,8 +226,8 @@ export default defineComponent({
         this.submit()
       }
     },
-    viewResults() {
-      this.$router.push(`/results/${this.test.id}`)
+    viewResults(resultId: string) {
+      this.$router.push(`/results/${resultId}`)
     },
     endTestAlert() {
       this.setAlert('readyToSubmit')

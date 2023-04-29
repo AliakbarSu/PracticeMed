@@ -23,7 +23,7 @@ export const handler = ApiHandler(async (_evt) => {
       instructions: result.instructions
     }
     return {
-      body: JSON.stringify(test)
+      body: test as unknown as string
     }
   } catch (err: any) {
     if (err === 'User has no remaining tests!') {

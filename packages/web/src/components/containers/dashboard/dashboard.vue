@@ -186,7 +186,8 @@ export default {
       return this.testsHistoryData.map((testHistory) => {
         const test = this.tests.find(({ id }) => testHistory.test_id === id)
         return {
-          ...test
+          ...test,
+          id: testHistory.id
         }
       }) as unknown
     }

@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-gray-900">
+  <div class="bg-gray-900 rounded-md">
     <div class="mx-auto max-w-7xl">
       <div
         class="grid grid-cols-1 gap-px bg-white/5 sm:grid-cols-3 lg:grid-cols-3"
       >
-        <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
+        <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8 rounded-l-md">
           <p class="mt-2 flex items-baseline gap-x-2">
             <span class="text-4xl font-semibold tracking-tight text-white">{{
               time.h
@@ -24,7 +24,7 @@
             }}</span>
           </p>
         </div>
-        <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
+        <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8 rounded-r-md">
           <p class="mt-2 flex items-baseline gap-x-2">
             <span class="text-4xl font-semibold tracking-tight text-white">{{
               time.s

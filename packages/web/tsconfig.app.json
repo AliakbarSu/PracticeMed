@@ -13,7 +13,8 @@
       "@plugins/*": ["./src/plugins/*"],
       "@authentication/*": ["./src/auth/*"],
       "@store/*": ["./src/store/*"],
-      "@types/*": ["./src/types/*"]
+      "@types/*": ["./src/types/*"],
+      "@gtag/*": ["./src/gtag/*"]
     }
   }
 }

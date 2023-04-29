@@ -245,7 +245,7 @@ export default defineComponent({
     },
     async fetchTestHistory() {
       this.loading = true
-      const testId = this.$route.params.id || ''
+      const resultId = this.$route.params.id || ''
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/tests/history`
@@ -254,7 +254,7 @@ export default defineComponent({
           .body as unknown as UserAppMetadata['test_history']
         this.previous_tests = testHistoryArray
         const matchingTestHistory = testHistoryArray.find(
-          ({ test_id }: any) => test_id === testId
+          ({ id }: any) => id === resultId
         ) as UserAppMetadata['test_history'][0]
         if (!matchingTestHistory) {
           this.error = true
