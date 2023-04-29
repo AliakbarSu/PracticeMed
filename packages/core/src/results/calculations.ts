@@ -5,8 +5,8 @@ export const isCorrectOption = (
   { option_id }: SubmittedAnswer,
   question: Question
 ): boolean => {
-  const { id } = question.options.filter(({ correct }) => correct)[0]
-  return option_id === id
+  const { alpha } = question.options.filter(({ correct }) => correct)[0]
+  return option_id.toUpperCase() === alpha.toUpperCase()
 }
 
 export const calculateTimeTaken = (answer: SubmittedAnswer) => {
@@ -82,8 +82,11 @@ export const calculateTotalPointPerCategory = (data: AnalyzedAnswer[]) => {
   return categoryPoints
 }
 
-export const calculateTestResult = (totalPoints: number): ResultEnum => {
-  return totalPoints > 75 ? ResultEnum.pass : ResultEnum.fail
+export const calculateTestResult = (
+  totalPoints: number,
+  passingScore: number
+): ResultEnum => {
+  return totalPoints >= passingScore ? ResultEnum.pass : ResultEnum.fail
 }
 
 export const calculatePercentageOfCorrectAnswers = (
@@ -118,7 +121,7 @@ export const calculateCorrectAnswersCount = (arr: AnalyzedAnswer[]) => {
 
 export const calculateIncorrectAnswersCount = (arr: AnalyzedAnswer[]) => {
   return arr.reduce((acc, cur) => {
-    if (cur.correct === true) {
+    if (cur.correct !== true) {
       return acc + 1
     } else {
       return acc
@@ -162,7 +165,7 @@ export const calculatePercentageIncorrectByField = (
   const fields = {} as any
 
   answers.forEach((answer) => {
-    if (answer.correct) {
+    if (!answer.correct) {
       if (!fields[answer.field]) {
         fields[answer.field] = { correct: 1, total: 1 }
       } else {
@@ -197,6 +200,13 @@ export const calculateCorrectAnswersCountPerField = (
         counts[field]++
       } else {
         counts[field] = 1
+      }
+    } else {
+      const field = item.field
+      if (counts[field]) {
+        counts[field] = counts[field]
+      } else {
+        counts[field] = 0
       }
     }
   })
@@ -257,4 +267,96 @@ export const calculateSpeedByMinuteIntervals = (data: AnalyzedAnswer[]) => {
     }
   })
   return timeIntervals
+}
+
+export const distributePoints = (points: number, objects: Question[]) => {
+  // Calculate the total number of points in the objects array
+  const totalPoints = objects.reduce((acc, obj) => acc + obj.point, 0)
+
+  // If the total points are less than or equal to the number, return the objects array
+  if (totalPoints <= points) {
+    return objects
+  }
+
+  // Calculate the scaling factor to distribute the points evenly between 0 and 100
+  const scalingFactor = 100 / totalPoints
+
+  // Distribute the points evenly between 0 and 100 for each object
+  objects.forEach((obj) => {
+    obj.point *= scalingFactor
+  })
+
+  // Sort the objects array in descending order of points
+  objects.sort((a, b) => b.point - a.point)
+
+  // Loop through the objects array to adjust the points to meet the requirements
+  let totalAdjustedPoints = 0
+  let lowestObjectIndex = objects.length - 1
+  let highestObjectIndex = 0
+  for (let i = 0; i < objects.length; i++) {
+    const obj = objects[i]
+
+    // Calculate the maximum point that this object can have to meet the requirements
+    const maxPoint = Math.min(
+      obj.point,
+      Math.floor(points - totalPoints + obj.point) / (objects.length - i)
+    )
+
+    // If the maximum point is less than the current point, adjust the point
+    if (maxPoint < obj.point) {
+      obj.point = maxPoint
+    }
+
+    // Add the adjusted point to the total adjusted points
+    totalAdjustedPoints += obj.point
+
+    // Keep track of the lowest and highest object index that has the same point value
+    if (i > 0 && obj.point === objects[i - 1].point) {
+      lowestObjectIndex = i
+    }
+    if (i < objects.length - 1 && obj.point === objects[i + 1].point) {
+      highestObjectIndex = i
+    }
+  }
+
+  // If the total adjusted points are less than or equal to the number, return the objects array
+  if (totalAdjustedPoints <= points) {
+    return objects
+  }
+
+  // Adjust the points of the objects with the lowest point value
+  for (let i = lowestObjectIndex; i >= 0; i--) {
+    const obj = objects[i]
+    const maxPoint = Math.min(
+      obj.point,
+      Math.floor(points - totalAdjustedPoints + obj.point) /
+        (lowestObjectIndex + 1 - i)
+    )
+    obj.point = maxPoint
+    totalAdjustedPoints += obj.point - maxPoint
+  }
+
+  // Adjust the points of the objects with the highest point value
+  for (let i = highestObjectIndex; i < objects.length; i++) {
+    const obj = objects[i]
+    const maxPoint = Math.min(
+      obj.point,
+      Math.floor(points - totalAdjustedPoints + obj.point) /
+        (i - highestObjectIndex + 1)
+    )
+    obj.point = maxPoint
+    totalAdjustedPoints += obj.point - maxPoint
+  }
+
+  // Return the objects array with the adjusted points
+  return objects
+}
+
+export const calculateFieldsAverageTime = (data: AnalyzedAnswer[]) => {
+  const averageTimePerField: { [key in string]: number } =
+    calculateTimeTakenPerCategory(data)
+  const scores = Object.values(averageTimePerField)
+  const sum = scores.reduce((total, score) => total + score, 0)
+  const average = sum / scores.length
+  return average
 }

@@ -28,6 +28,7 @@ export interface Stats {
   totalPoints: number
   totalPointsPerField: { [key: string]: number }
   averageTimeTaken: number
+  fieldsAverageTime: number
   averageTimeTakenPerField: { [key: string]: number }
   correctResponseRatePerField: { [key: string]: number }
   incorrectResponseRatePerField: { [key: string]: number }

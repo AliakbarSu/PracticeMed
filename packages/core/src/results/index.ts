@@ -9,6 +9,7 @@ import { UserTest } from '../../types/Test'
 import { UserAppMetadata } from '../../types/User'
 import { getUserAppMetadata, updateUserAppMetadata } from '../auth0'
 import { getTest } from '../test'
+import { calculateFieldsAverageTime, distributePoints } from './calculations'
 import {
   calculateAverageTimeTaken,
   calculateCorrectAnswersByMinuteInterval,
@@ -38,7 +39,11 @@ const analyzeAnswer = (
   const result = data.map((answer) => {
     const { question_id } = answer
     const timeTaken = calculateTimeTaken(answer).timeTaken
-    const question = questions.find(({ id }) => id === question_id) as Question
+    const updatedQuestions = distributePoints(test.points, questions)
+    console.log(updatedQuestions)
+    const question = updatedQuestions.find(
+      ({ id }) => id === question_id
+    ) as Question
     const correct = isCorrectOption(answer, question)
     return {
       ...answer,
@@ -61,6 +66,7 @@ export const analyze = async (
   const averageTimeTaken = calculateAverageTimeTaken(analyzedAnswers)
   const averageTimeTakenPerField =
     calculateTimeTakenPerCategory(analyzedAnswers)
+  const fieldsAverageTime = calculateFieldsAverageTime(analyzedAnswers)
   const totalPointsPerField = calculateTotalPointPerCategory(analyzedAnswers)
   // Percentages
   const correctResponseRate =
@@ -85,13 +91,14 @@ export const analyze = async (
   const correctAnswersByMinuteInterval =
     calculateCorrectAnswersByMinuteInterval(analyzedAnswers)
   const speedByMinuteInterval = calculateSpeedByMinuteIntervals(analyzedAnswers)
-  const result = calculateTestResult(totalPoints)
+  const result = calculateTestResult(totalPoints, test.passingPoint)
   return {
     test_id,
     stats: {
       totalPoints,
       averageTimeTaken,
       averageTimeTakenPerField,
+      fieldsAverageTime,
       totalPointsPerField,
       correctResponseRate,
       incorrectResponseRate,

@@ -17,6 +17,6 @@ export const handler = ApiHandler(async (_evt) => {
     user_id: userId
   })
   return {
-    body: JSON.stringify(analyzedResult)
+    body: analyzedResult as unknown as string
   }
 })

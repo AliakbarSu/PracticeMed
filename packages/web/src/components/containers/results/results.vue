@@ -250,11 +250,10 @@ export default defineComponent({
         const response = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/tests/history`
         )
-        const testHistoryArray = JSON.parse(response.data.body)
+        const testHistoryArray = response.data
+          .body as unknown as UserAppMetadata['test_history']
         this.previous_tests = testHistoryArray
-        const matchingTestHistory = (
-          testHistoryArray as unknown as UserAppMetadata['test_history']
-        ).find(
+        const matchingTestHistory = testHistoryArray.find(
           ({ test_id }: any) => test_id === testId
         ) as UserAppMetadata['test_history'][0]
         if (!matchingTestHistory) {
@@ -316,10 +315,10 @@ export default defineComponent({
         },
         {
           name: 'Subjects Average Time',
-          stat: this.testHistory.stats.averageTimeTaken + 44,
-          previousStat: this.testHistory.stats.averageTimeTaken,
-          change: '4.05%',
-          changeType: 'increase'
+          stat: this.testHistory.stats.fieldsAverageTime,
+          previousStat: this.testHistory.stats.fieldsAverageTime,
+          change: this.calculateChangeRate('fieldsAverageTime'),
+          changeType: this.calculateChangeType('fieldsAverageTime')
         }
       ]
     },

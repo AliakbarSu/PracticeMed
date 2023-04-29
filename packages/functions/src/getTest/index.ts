@@ -19,6 +19,7 @@ export const history = ApiHandler(async (_evt) => {
     .jwt.claims.sub
   const { app_metadata } = await getUser(userId)
   return {
-    body: JSON.stringify(app_metadata?.test_history)
+    body: ((app_metadata?.test_history as unknown as string) ||
+      '') as unknown as string
   }
 })
