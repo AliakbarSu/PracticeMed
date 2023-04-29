@@ -187,6 +187,7 @@ export default {
         const test = this.tests.find(({ id }) => testHistory.test_id === id)
         return {
           ...test,
+          ...testHistory,
           id: testHistory.id
         }
       }) as unknown
@@ -205,3 +206,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#headlessui-menu-items-16,
+#headlessui-menu-items-6 {
+  left: 0 !important;
+}
+</style>

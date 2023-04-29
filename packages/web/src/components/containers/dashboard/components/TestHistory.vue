@@ -20,7 +20,16 @@
 
   <div class="mt-6 sm:flex sm:justify-between">
     <div class="flex items-center">
-      <CheckCircleIcon class="h-5 w-5 text-green-500" aria-hidden="true" />
+      <XCircleIcon
+        v-if="test?.result === 'fail'"
+        class="h-5 w-5 text-red-500"
+        aria-hidden="true"
+      />
+      <CheckCircleIcon
+        v-else
+        class="h-5 w-5 text-green-500"
+        aria-hidden="true"
+      />
       <p class="ml-2 text-sm font-medium text-gray-500">
         Set on
         <time :datetime="testTimestamp">{{ testTimestamp }}</time>
@@ -31,10 +40,12 @@
       class="mt-6 flex items-center space-x-4 divide-x divide-gray-200 border-t border-gray-200 pt-4 text-sm font-medium sm:ml-4 sm:mt-0 sm:border-none sm:pt-0"
     >
       <div class="flex flex-1 justify-center">
-        <a
-          :href="`results/${test?.id}`"
-          class="whitespace-nowrap text-indigo-600 hover:text-indigo-500"
-          >View Results</a
+        <RouterLink
+          as="button"
+          :to="`/results/${test?.id}`"
+          href="#"
+          class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          >View Results</RouterLink
         >
       </div>
     </div>
@@ -44,7 +55,7 @@
 <script lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
-import { CheckCircleIcon } from '@heroicons/vue/20/solid'
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 import type { Test, TestPerformanceResult } from '@/types/test'
 import type { PropType } from 'vue'
 
@@ -65,7 +76,8 @@ export default {
     MenuItem,
     MenuItems,
     EllipsisVerticalIcon,
-    CheckCircleIcon
+    CheckCircleIcon,
+    XCircleIcon
   }
 }
 </script>
