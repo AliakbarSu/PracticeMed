@@ -4,7 +4,7 @@ sgMailClient.setApiKey(Config.SENDGRID_API_KEY)
 
 export const signupToNewletter = (email: string) => {
   const data = {
-    list_ids: ['bfc92657-2adb-4907-9456-369f32876665'], // Newsletter id
+    list_ids: ['900d8fc1-76b0-49b8-bb9c-08e829802958'], // Newsletter id
     contacts: [
       {
         email

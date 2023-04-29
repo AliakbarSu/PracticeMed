@@ -10,11 +10,11 @@ export const sendMessage = (data: {
 }) => {
   const message = {
     from: {
-      email: 'aliakbar.su@gmail.com',
+      email: 'info@mle-prep-tests.org',
       name: `${data.firstName} ${data.lastName}`
     },
-    to: 'hello@alisultani.com',
-    subject: `Message From Contact Form: ${data.email}}`,
+    to: 'aliakbar.su@gmail.com',
+    subject: `Message From Contact Form: ${data.email}`,
     text: data.message
   }
 
