@@ -208,8 +208,7 @@ export default {
 </script>
 
 <style scoped>
-#headlessui-menu-items-16,
-#headlessui-menu-items-6 {
+div[id^='headlessui-menu-items'] {
   left: 0 !important;
 }
 </style>
