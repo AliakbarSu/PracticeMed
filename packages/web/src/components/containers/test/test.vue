@@ -11,6 +11,7 @@
     />
     <TimeOverAlert
       v-if="alerts.timeOver"
+      :submitting="submitting"
       @cancel="cancelAlert('timeOver')"
       @view="viewResults"
     />
@@ -99,6 +100,7 @@ export default defineComponent({
   },
   data: () => {
     return {
+      submitting: false,
       hasTestsRemaning: true,
       skipping: false,
       test: {} as TestInProgress,
@@ -168,12 +170,17 @@ export default defineComponent({
         start_at: this.test.start_at,
         end_at: new Date().getTime()
       }
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_ENDPOINT}/test/${this.test.id}/result`,
-        payload
-      )
-      const resultId = response.data.body.id as string
-      this.viewResults(resultId)
+      this.submitting = true
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_ENDPOINT}/test/${this.test.id}/result`,
+          payload
+        )
+        const resultId = response.data.body.id as string
+        this.viewResults(resultId)
+      } finally {
+        this.submitting = false
+      }
     },
     start() {
       this.setTimer()
@@ -198,7 +205,7 @@ export default defineComponent({
       this.testEndsIn = this.timeLimit + new Date().getTime()
       this.interval = setInterval(() => {
         const now = new Date().getTime()
-        const t = this.testEndsIn - now
+        const t = this.testEndsIn - now < 0 ? 0 : this.testEndsIn - now
         this.timeRemained.h = Math.floor(
           (t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         )
@@ -206,14 +213,9 @@ export default defineComponent({
         this.timeRemained.s = Math.floor((t % (1000 * 60)) / 1000)
         this.timeRemained.mil = t
         1.2528e7
-        if (t < 0) {
+        if (t <= 0) {
           clearInterval(this.interval)
           this.isTimeOver = true
-          // this.$swal
-          //   .fire('Time Over', 'Your time is over!', 'error')
-          //   .then(() => {
-          //     this.calculateResults()
-          //   })
         }
       }, 100) as any as number
     },
@@ -222,11 +224,6 @@ export default defineComponent({
     },
     cancelAlert(key: keyof Alerts) {
       this.alerts[key] = false
-    },
-    alertSubmit(action: string) {
-      if (action === 'end') {
-        this.submit()
-      }
     },
     viewResults(resultId: string) {
       this.$router.push(`/results/${resultId}`)
@@ -306,9 +303,10 @@ export default defineComponent({
     }
   },
   watch: {
-    timeElapsed() {
+    async timeElapsed() {
       if (this.timeElapsed === 0) {
         this.submit()
+        this.setAlert('timeOver')
       }
     }
   },
@@ -323,9 +321,9 @@ export default defineComponent({
       return this.currentQuestionIndex !== undefined
     },
     timeElapsed() {
-      return (
+      const timeElapsed =
         100 - ((this.timeLimit - this.timeRemained.mil) / this.timeLimit) * 100
-      )
+      return timeElapsed < 0 ? 0 : timeElapsed
     }
   }
 })

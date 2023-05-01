@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot as="template" :show="true">
-    <Dialog as="div" class="relative z-10" @close="emit('cancel')">
+    <Dialog as="div" class="relative z-10">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -49,8 +49,8 @@
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
                       Your time for the test has ended, and your result has been
-                      submitted. Please click 'Results' to view feedback on your
-                      performance
+                      submitted. Please click 'View results' to view feedback on
+                      your performance
                     </p>
                   </div>
                 </div>
@@ -61,7 +61,7 @@
                   class="mt-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
                   @click="viewResults"
                 >
-                  Results
+                  {{ submitting ? 'Submitting...' : 'View results' }}
                 </button>
               </div>
             </DialogPanel>
@@ -82,8 +82,11 @@ import {
 } from '@headlessui/vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
-const emit = defineEmits(['view', 'cancel'])
+const emit = defineEmits(['view'])
+const { submitting } = defineProps(['submitting'])
 const viewResults = () => {
-  emit('view')
+  if (!submitting) {
+    emit('view')
+  }
 }
 </script>
