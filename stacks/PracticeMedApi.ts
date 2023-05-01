@@ -90,13 +90,16 @@ export function API({ stack }: StackContext) {
         function: `${fnPath}/plans/subscribe.handler`
       },
       // TESTS
-      'GET /api/tests': `${fnPath}/listTests/index.handler`,
+      'GET /api/tests': {
+        authorizer: 'auth0Authorizer',
+        function: `${fnPath}/listTests/index.handler`
+      },
       'GET /api/tests/history': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/getTest/index.history`
       },
       'GET /api/tests/{id}': `${fnPath}/getTest/index.handler`,
-      'GET /api/tests/{id}/{type}/load': {
+      'GET /api/tests/{id}/load': {
         authorizer: 'auth0Authorizer',
         function: `${fnPath}/loadTest/index.handler`
       },

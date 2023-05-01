@@ -142,7 +142,7 @@ export default defineComponent({
       const type = this.$route.params.type
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/${type}/load`
+          `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/load`
         )
         const test = response.data.body as TestInProgress
         this.test = {

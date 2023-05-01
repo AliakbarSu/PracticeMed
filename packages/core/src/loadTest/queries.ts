@@ -26,7 +26,7 @@ export const getTestQuery = gql`
       timeLimit
       points
       passingPoint
-      questions {
+      questions(first: 100) {
         id
         point
         text
@@ -43,10 +43,9 @@ export const getTestQuery = gql`
     }
   }
 `
-
-export const getTrialTestsQuery = gql`
-  query GetTest($type: String!) {
-    tests(where: { type: $type, trial: true }) {
+export const getTestQuery1 = gql`
+  query GetTest($id: ID!) {
+    test(where: { id: $id }) {
       available
       id
       name
@@ -58,7 +57,7 @@ export const getTrialTestsQuery = gql`
       timeLimit
       points
       passingPoint
-      questions {
+      questions(first: 50, skip: 100) {
         id
         point
         text

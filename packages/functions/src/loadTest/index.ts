@@ -7,9 +7,8 @@ export const handler = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const testId = _evt.pathParameters?.id || ''
-  const type = _evt.pathParameters?.type || ''
   try {
-    const result = await loadTest({ userId, testId, type })
+    const result = await loadTest({ userId, testId })
     const test: LoadedTest = {
       id: result.id,
       name: result.name,
@@ -26,6 +25,7 @@ export const handler = ApiHandler(async (_evt) => {
       body: test as unknown as string
     }
   } catch (err: any) {
+    console.log(err)
     if (err === 'User has no remaining tests!') {
       return {
         body: 'User has no remaining tests!',

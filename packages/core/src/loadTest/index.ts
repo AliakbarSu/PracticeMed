@@ -1,7 +1,7 @@
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
-import { getTestQuery, getTrialTestsQuery } from './queries'
-import { UserTest, LoadedTest } from '../../types/Test'
+import { getTestQuery, getTestQuery1 } from './queries'
+import { LoadedTest } from '../../types/Test'
 import { getUserAppMetadata, updateUserAppMetadata } from '../auth0/index'
 import { UserAppMetadata } from '../../types/User'
 
@@ -45,28 +45,34 @@ const reduceUserRemainingTests = async (userId: string) => {
 
 export const loadTest = async ({
   testId,
-  userId,
-  type
+  userId
 }: {
   testId: string
   userId: string
-  type: string
 }) => {
   // Check if user has access to tests
-  const { hasAccess, metadata } = await hasUserRemainingTests(userId)
+  const { hasAccess } = await hasUserRemainingTests(userId)
   if (!hasAccess) {
     return Promise.reject('User has no remaining tests!')
   }
   // Increase the number of used tests
   await reduceUserRemainingTests(userId)
   // Load test
-  const isTrial = metadata.plan.subscription.onTrial
-  const response = await query(isTrial ? getTrialTestsQuery : getTestQuery, {
-    id: testId,
-    type
+  const response = await query(getTestQuery, {
+    id: testId
   })
+  const response1 = await query(getTestQuery1, {
+    id: testId
+  })
+
   const parsed = await response.json()
-  return isTrial
-    ? (parsed as { data: { tests: LoadedTest[] } }).data.tests[0]
-    : (parsed as { data: { test: UserTest } }).data.test
+  const parsed1 = await response1.json()
+
+  const test = (parsed as { data: { test: LoadedTest } }).data.test
+  const test1 = (parsed1 as { data: { test: LoadedTest } }).data.test
+  const loadedTest: LoadedTest = {
+    ...test,
+    questions: [...test.questions, ...test1.questions]
+  }
+  return loadedTest
 }
