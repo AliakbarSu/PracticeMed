@@ -1,7 +1,6 @@
 <template>
   <a
     v-if="!loading"
-    @click="subscribe"
     :aria-describedby="plan?.id"
     :class="[
       plan?.mostPopular
@@ -31,11 +30,11 @@
     </div>
 
     <span v-else-if="hasActivePlan && hasThisPlan">Active</span>
-    <span v-else-if="hasActivePlan">Switch plan</span>
-    <span v-else-if="plan.freeTrial">
+    <span v-else-if="hasActivePlan" @click="subscribe">Switch plan</span>
+    <span v-else-if="plan.freeTrial" @click="subscribe">
       {{ `Start ${plan.freeTrial} days free trial` }}
     </span>
-    <span v-else> Get plan </span>
+    <span v-else @click="subscribe"> Get plan </span>
   </a>
 </template>
 
@@ -47,18 +46,18 @@ import { computed } from 'vue'
 import type { Profile } from '@/types/user'
 import type { PropType } from 'vue'
 import type { Plan } from '@/types/plans'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { addCheckoutEvent } from '@/gtag/index'
 import { reactive } from 'vue'
 
-const { isAuthenticated } = useAuth0()
-const { push } = useRouter()
+const { isAuthenticated, loginWithRedirect } = useAuth0()
+const { fullPath } = useRoute()
 
 const state = reactive({
   subscribing: false
 })
 
-const { loading, plan, profile } = defineProps({
+const props = defineProps({
   plan: {
     type: Object as PropType<Plan>,
     default: {}
@@ -72,24 +71,24 @@ const { loading, plan, profile } = defineProps({
   }
 })
 
-const hasActivePlan = computed(() => !!profile?.plan?.id)
-const hasThisPlan = computed(() => profile?.plan?.id === plan?.id)
-const isAuth = computed(() => isAuthenticated.value).value
+const hasActivePlan = computed(() => !!props.profile?.plan?.id)
+const hasThisPlan = computed(() => props.profile?.plan?.id === props.plan?.id)
+const isAuth = computed(() => isAuthenticated.value)
 
 const loginIfNotAuthenticated = () => {
-  if (!isAuth) {
-    push('/account')
+  if (!isAuth.value) {
+    loginWithRedirect()
     return
   }
 }
 
 const subscribe = async () => {
   loginIfNotAuthenticated()
-  if (hasThisPlan) return
+  if (hasThisPlan.value) return
   state.subscribing = true
   try {
-    const url = `${import.meta.env.VITE_API_ENDPOINT}/plans/${plan.id}`
-    const endpoint = plan.freeTrial
+    const url = `${import.meta.env.VITE_API_ENDPOINT}/plans/${props.plan.id}`
+    const endpoint = props.plan.freeTrial
       ? `${url}/subscribe/free-trial`
       : `${url}/subscribe`
     const checkoutUrl = await axios.get(endpoint)

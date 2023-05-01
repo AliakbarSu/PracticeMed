@@ -38,26 +38,26 @@
     <div>
       <General
         :loading="loading"
-        :profile="profile"
+        :profile="state.profile"
         v-if="currentItem == 'General'"
       />
       <Security
         :loading="loading"
-        :profile="profile"
+        :profile="state.profile"
         v-if="currentItem == 'Security'"
       />
       <Plans
         :loading="loading"
-        :profile="profile"
+        :profile="state.profile"
         v-if="currentItem == 'Plan'"
       />
-      <Billing :profile="profile" v-if="currentItem == 'Billing'" />
+      <Billing :profile="state.profile" v-if="currentItem == 'Billing'" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import General from './components/General.vue'
 import Security from './components/Security.vue'
 import Plans from './components/Plans.vue'
@@ -70,6 +70,7 @@ import {
   FingerPrintIcon,
   UserCircleIcon
 } from '@heroicons/vue/24/outline'
+import { reactive } from 'vue'
 
 const secondaryNavigation = [
   { name: 'General', href: '#', icon: UserCircleIcon, current: true },
@@ -83,7 +84,7 @@ const setItem = (item: string) => {
   currentItem.value = item
 }
 
-const profile = ref({} as Profile)
+const state = reactive({ profile: {} as Profile })
 const loading = ref(false)
 const error = ref(false)
 
@@ -93,7 +94,7 @@ const fetchTestHistory = async () => {
     const response = await axios.get(
       `${import.meta.env.VITE_API_ENDPOINT}/user/profile`
     )
-    profile.value = JSON.parse(response.data.body)
+    state.profile = JSON.parse(response.data.body)
   } catch (err) {
     console.error(err)
     error.value = true
@@ -105,6 +106,7 @@ const fetchTestHistory = async () => {
 const isActive = (item: string) => {
   return currentItem.value == item
 }
-
-fetchTestHistory()
+onBeforeMount(async () => {
+  await fetchTestHistory()
+})
 </script>
