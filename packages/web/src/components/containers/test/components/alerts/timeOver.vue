@@ -1,6 +1,6 @@
 <template>
-  <TransitionRoot as="template" :show="open">
-    <Dialog as="div" class="relative z-10" @close="open = false">
+  <TransitionRoot as="template" :show="true">
+    <Dialog as="div" class="relative z-10" @close="emit('cancel')">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -73,7 +73,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import {
   Dialog,
   DialogPanel,
@@ -83,10 +82,8 @@ import {
 } from '@headlessui/vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
-const open = ref(true)
-const emit = defineEmits(['view'])
+const emit = defineEmits(['view', 'cancel'])
 const viewResults = () => {
-  open.value = false
   emit('view')
 }
 </script>
