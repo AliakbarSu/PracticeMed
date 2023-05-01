@@ -193,6 +193,7 @@ export default defineComponent({
       if (this.interval) {
         clearInterval(this.interval)
       }
+      this.timeLimit = this.test.timeLimit * 3.6e6
       this.testEndsIn = this.timeLimit + new Date().getTime()
       this.interval = setInterval(() => {
         const now = new Date().getTime()
