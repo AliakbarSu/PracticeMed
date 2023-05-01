@@ -25,7 +25,7 @@
           <div class="hidden md:ml-6 md:flex md:space-x-8">
             <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
             <RouterLink
-              v-if="isAuthenticated"
+              v-if="isAuth"
               active-class="border-indigo-500 border-b-2"
               to="/dashboard"
               class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
@@ -42,7 +42,7 @@
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <button
-              v-if="!isAuthenticated"
+              v-if="!isAuth"
               @click="
                 () =>
                   loginWithRedirect({
@@ -57,7 +57,7 @@
           </div>
           <div class="flex-shrink-0">
             <button
-              v-if="!isAuthenticated"
+              v-if="!isAuth"
               @click="() => loginWithRedirect()"
               type="button"
               class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -75,7 +75,7 @@
             </button>
           </div> -->
           <div
-            v-if="isAuthenticated"
+            v-if="isAuth"
             class="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center"
           >
             <button
@@ -88,7 +88,7 @@
 
             <!-- Profile dropdown -->
 
-            <ProfileDropdown v-if="isAuthenticated" />
+            <ProfileDropdown v-if="isAuth" />
           </div>
         </div>
       </div>
@@ -106,9 +106,12 @@ import ProfileDropdown from './components/ProfileDropdown.vue'
 import DsiclosurePanel from './components/DisclosurePanel.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 const { loginWithRedirect, isAuthenticated } = useAuth0()
 const router = useRouter()
+
+const isAuth = computed(() => isAuthenticated.value)
 
 const goTo = (link: string) => {
   router.push(link)

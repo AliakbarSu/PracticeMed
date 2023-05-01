@@ -51,7 +51,7 @@ import { useRouter } from 'vue-router'
 import { addCheckoutEvent } from '@/gtag/index'
 
 const { getAccessTokenSilently, isAuthenticated } = useAuth0()
-const router = useRouter()
+const { push } = useRouter()
 
 const { loading, plan } = defineProps({
   plan: {
@@ -92,10 +92,11 @@ const subscribing = ref(false)
 
 const hasActivePlan = computed(() => !!profile.value.plan?.id)
 const hasThisPlan = computed(() => profile.value.plan?.id === plan?.id)
+const isAuth = computed(() => isAuthenticated.value)
 
 const loginIfNotAuthenticated = () => {
-  if (!isAuthenticated) {
-    router.push('/account')
+  if (!isAuth) {
+    push('/account')
     return
   }
 }

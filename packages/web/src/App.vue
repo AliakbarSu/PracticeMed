@@ -18,7 +18,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      isAuth: this.$auth0.isAuthenticated
+      isAuth: this.$auth0.isAuthenticated.value
     }
   },
   components: {
