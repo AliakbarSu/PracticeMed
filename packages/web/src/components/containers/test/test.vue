@@ -142,10 +142,15 @@ export default defineComponent({
     async loadTest() {
       this.loading = true
       const testId = this.$route.params.id
-      const type = this.$route.params.type
       try {
+        const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/load`
+          `${import.meta.env.VITE_API_ENDPOINT}/tests/${testId}/load`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         )
         const test = response.data.body as TestInProgress
         this.test = {
@@ -172,9 +177,15 @@ export default defineComponent({
       }
       this.submitting = true
       try {
+        const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.post(
           `${import.meta.env.VITE_API_ENDPOINT}/test/${this.test.id}/result`,
-          payload
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         )
         const resultId = response.data.body.id as string
         this.viewResults(resultId)

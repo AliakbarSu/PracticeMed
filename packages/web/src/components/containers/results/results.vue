@@ -247,8 +247,14 @@ export default defineComponent({
       this.loading = true
       const resultId = this.$route.params.id || ''
       try {
+        const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/history`
+          `${import.meta.env.VITE_API_ENDPOINT}/tests/history`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         )
         const testHistoryArray = response.data
           .body as unknown as UserAppMetadata['test_history']
