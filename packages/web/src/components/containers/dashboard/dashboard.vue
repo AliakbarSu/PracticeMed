@@ -158,8 +158,10 @@ export default {
     },
     async fetchTests() {
       try {
+        const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests`
+          `${import.meta.env.VITE_API_ENDPOINT}/tests`,
+          { headers: { Authorization: `Bearer ${token}` } }
         )
         this.tests = JSON.parse(response.data.body)
       } catch (err) {
@@ -170,8 +172,10 @@ export default {
     },
     async fetchTestHistory() {
       try {
+        const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/history`
+          `${import.meta.env.VITE_API_ENDPOINT}/tests/history`,
+          { headers: { Authorization: `Bearer ${token}` } }
         )
         this.testsHistoryData = response.data.body
       } catch (err) {

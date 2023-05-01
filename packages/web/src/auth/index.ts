@@ -5,6 +5,8 @@ export default () =>
   createAuth0({
     domain,
     clientId,
+    cacheLocation: 'localstorage',
+    useRefreshTokens: true,
     authorizationParams: {
       redirect_uri: window.location.origin,
       audience: 'https://jwt-token-authorizer.com'

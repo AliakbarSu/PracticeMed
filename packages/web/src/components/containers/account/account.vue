@@ -71,7 +71,7 @@ import {
   UserCircleIcon
 } from '@heroicons/vue/24/outline'
 import { reactive } from 'vue'
-
+import { useAuth0 } from '@auth0/auth0-vue'
 const secondaryNavigation = [
   { name: 'General', href: '#', icon: UserCircleIcon, current: true },
   { name: 'Security', href: '#', icon: FingerPrintIcon, current: false },
@@ -79,6 +79,7 @@ const secondaryNavigation = [
   { name: 'Billing', href: '#', icon: CreditCardIcon, current: false }
 ]
 
+const { getAccessTokenSilently } = useAuth0()
 const currentItem = ref('General')
 const setItem = (item: string) => {
   currentItem.value = item
@@ -91,8 +92,10 @@ const error = ref(false)
 const fetchTestHistory = async () => {
   loading.value = true
   try {
+    const token = await getAccessTokenSilently()
     const response = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/user/profile`
+      `${import.meta.env.VITE_API_ENDPOINT}/user/profile`,
+      { headers: { Authorization: `Bearer ${token}` } }
     )
     state.profile = JSON.parse(response.data.body)
   } catch (err) {
