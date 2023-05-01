@@ -10,7 +10,7 @@
       'mt-8 block rounded-md py-2 px-3 text-center cursor-pointer text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
     ]"
   >
-    <div role="status" class="flex justify-center" v-if="subscribing">
+    <div role="status" class="flex justify-center" v-if="state.subscribing">
       <svg
         aria-hidden="true"
         class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -41,19 +41,24 @@
 
 <script lang="ts" setup>
 import axios from 'axios'
-import { defineProps, onMounted } from 'vue'
+import { defineProps } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import { ref, computed } from 'vue'
-import type { UserAppMetadata } from '@/types/user'
+import { computed } from 'vue'
+import type { Profile } from '@/types/user'
 import type { PropType } from 'vue'
 import type { Plan } from '@/types/plans'
 import { useRouter } from 'vue-router'
 import { addCheckoutEvent } from '@/gtag/index'
+import { reactive } from 'vue'
 
-const { getAccessTokenSilently, isAuthenticated } = useAuth0()
+const { isAuthenticated } = useAuth0()
 const { push } = useRouter()
 
-const { loading, plan } = defineProps({
+const state = reactive({
+  subscribing: false
+})
+
+const { loading, plan, profile } = defineProps({
   plan: {
     type: Object as PropType<Plan>,
     default: {}
@@ -61,38 +66,15 @@ const { loading, plan } = defineProps({
   loading: {
     type: Boolean,
     default: false
+  },
+  profile: {
+    type: Object as PropType<Profile>
   }
 })
 
-const getUserProfile = async () => {
-  try {
-    profileLoading.value = true
-    const token = await getAccessTokenSilently()
-    const result = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/user/profile`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-    profile.value = JSON.parse(result.data.body)
-  } finally {
-    profileLoading.value = false
-  }
-}
-
-onMounted(async () => {
-  await getUserProfile()
-})
-
-const profile = ref({} as UserAppMetadata)
-const profileLoading = ref(false)
-const subscribing = ref(false)
-
-const hasActivePlan = computed(() => !!profile.value.plan?.id)
-const hasThisPlan = computed(() => profile.value.plan?.id === plan?.id)
-const isAuth = computed(() => isAuthenticated.value)
+const hasActivePlan = computed(() => !!profile?.plan?.id)
+const hasThisPlan = computed(() => profile?.plan?.id === plan?.id)
+const isAuth = computed(() => isAuthenticated.value).value
 
 const loginIfNotAuthenticated = () => {
   if (!isAuth) {
@@ -104,7 +86,7 @@ const loginIfNotAuthenticated = () => {
 const subscribe = async () => {
   loginIfNotAuthenticated()
   if (hasThisPlan) return
-  subscribing.value = true
+  state.subscribing = true
   try {
     const url = `${import.meta.env.VITE_API_ENDPOINT}/plans/${plan.id}`
     const endpoint = plan.freeTrial
@@ -142,7 +124,7 @@ const subscribe = async () => {
     })
     window.location.replace(checkoutUrl.data.body)
   } finally {
-    subscribing.value = false
+    state.subscribing = false
   }
 }
 </script>

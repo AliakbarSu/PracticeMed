@@ -77,7 +77,7 @@
               </li>
             </ul>
           </div>
-          <GetPlanButton :plan="tier" :loading="loading" />
+          <GetPlanButton :profile="profile" :plan="tier" :loading="loading" />
         </div>
       </div>
     </div>
@@ -109,6 +109,7 @@ export default defineComponent({
   },
   async created() {
     this.getPlans()
+    this.getProfile()
   },
   methods: {
     async getPlans() {
@@ -119,6 +120,23 @@ export default defineComponent({
         )
         this.tiers = JSON.parse(result.data.body)
       } catch (err) {
+      } finally {
+        this.loading = false
+      }
+    },
+    async getProfile() {
+      try {
+        this.loading = true
+        const token = await this.$auth0.getAccessTokenSilently()
+        const result = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/user/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        this.profile = JSON.parse(result.data.body)
       } finally {
         this.loading = false
       }
