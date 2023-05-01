@@ -105,6 +105,7 @@ export default defineComponent({
       currentQuestionIndex: undefined as number | undefined,
       submittedAnswers: [] as Answer[],
       selectedOption: {} as Option,
+      open_at: undefined as undefined | number,
       instructions: '',
       testEndsIn: 0,
       interval: 0,
@@ -253,9 +254,10 @@ export default defineComponent({
       const submittedAnswers: Answer = {
         question_id: this.question.id,
         option_id: this.selectedOption.alpha,
-        start_at: this.question.start_at,
+        start_at: this.open_at || this.test.start_at,
         end_at: new Date().getTime()
       }
+      this.open_at = new Date().getTime()
       this.submittedAnswers.push(submittedAnswers)
       this.selectedOption = {} as Option
       this.nextQuestion()

@@ -14,7 +14,8 @@
       "@authentication/*": ["./src/auth/*"],
       "@store/*": ["./src/store/*"],
       "@types/*": ["./src/types/*"],
-      "@gtag/*": ["./src/gtag/*"]
+      "@gtag/*": ["./src/gtag/*"],
+      "mpt-types/*": ["../core/types/*"]
     }
   }
 }

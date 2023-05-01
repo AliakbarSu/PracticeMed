@@ -64,6 +64,7 @@ export enum ResultEnum {
 }
 
 export interface Stats {
+  testScore: number
   totalPoints: number
   totalPointsPerField: { [key: string]: number }
   averageTimeTaken: number

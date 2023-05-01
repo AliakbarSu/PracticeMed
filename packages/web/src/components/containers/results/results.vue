@@ -302,22 +302,22 @@ export default defineComponent({
         {
           name: 'Total Points',
           stat: this.testHistory.stats.totalPoints,
-          previousStat: this.testHistory.stats.totalPoints,
+          previousStat: this.testHistory.stats.testScore,
           change: this.calculateChangeRate('totalPoints'),
           changeType: this.calculateChangeType('totalPoints')
         },
         {
           name: 'Average Time',
-          stat: this.testHistory.stats.averageTimeTaken,
-          previousStat: this.testHistory.stats.averageTimeTaken,
-          change: this.calculateChangeRate('averageTimeTaken'),
+          stat: this.testHistory.stats.averageTimeTaken.toFixed(2),
+          previousStat: this.testHistory.stats.averageTimeTaken.toFixed(2),
+          change: this.calculateChangeRate('averageTimeTaken').toFixed(2),
           changeType: this.calculateChangeType('averageTimeTaken')
         },
         {
           name: 'Subjects Average Time',
-          stat: this.testHistory.stats.fieldsAverageTime,
-          previousStat: this.testHistory.stats.fieldsAverageTime,
-          change: this.calculateChangeRate('fieldsAverageTime'),
+          stat: this.testHistory.stats.fieldsAverageTime.toFixed(2),
+          previousStat: this.testHistory.stats.fieldsAverageTime.toFixed(2),
+          change: this.calculateChangeRate('fieldsAverageTime').toFixed(2),
           changeType: this.calculateChangeType('fieldsAverageTime')
         }
       ]

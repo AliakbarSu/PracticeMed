@@ -20,10 +20,7 @@ export const calculateTimeTakenPerCategory = (data: AnalyzedAnswer[]) => {
   const categoryTimes: any = {}
 
   data.forEach((answer) => {
-    const startTime = new Date(Number(answer.start_at))
-    const endTime = new Date(Number(answer.end_at))
-    const timeTaken = (endTime.getTime() - startTime.getTime()) / 1000
-
+    const { timeTaken } = calculateTimeTaken(answer)
     if (answer.field in categoryTimes) {
       categoryTimes[answer.field] += timeTaken
     } else {
@@ -36,12 +33,8 @@ export const calculateTimeTakenPerCategory = (data: AnalyzedAnswer[]) => {
 export const calculateAverageTimeTaken = (data: AnalyzedAnswer[]) => {
   let totalTime = 0
   let answerCount = 0
-
   data.forEach((answer) => {
-    const startTime = new Date(Number(answer.start_at))
-    const endTime = new Date(Number(answer.end_at))
-    const timeTaken = (endTime.getTime() - startTime.getTime()) / 1000
-
+    const { timeTaken } = calculateTimeTaken(answer)
     totalTime += timeTaken
     answerCount += 1
   })
@@ -355,8 +348,8 @@ export const distributePoints = (points: number, objects: Question[]) => {
 export const calculateFieldsAverageTime = (data: AnalyzedAnswer[]) => {
   const averageTimePerField: { [key in string]: number } =
     calculateTimeTakenPerCategory(data)
-  const scores = Object.values(averageTimePerField)
-  const sum = scores.reduce((total, score) => total + score, 0)
-  const average = sum / scores.length
+  const values = Object.values(averageTimePerField)
+  const sum = values.reduce((total, value) => total + value, 0)
+  const average = sum / values.length
   return average
 }

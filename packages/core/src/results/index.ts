@@ -61,11 +61,17 @@ export const analyze = async (
 ): Promise<TestPerformanceResult> => {
   const { test_id, answers } = submittedTest
   const test = await getTest(test_id)
-  const analyzedAnswers = analyzeAnswer(answers, test)
+  const test1 = await getTest(test_id)
+  const loadedTest = {
+    ...test,
+    questions: [...test.questions, ...test1.questions]
+  }
+  const analyzedAnswers = analyzeAnswer(answers, loadedTest)
   const totalPoints = calculateTotalPoint(analyzedAnswers)
   const averageTimeTaken = calculateAverageTimeTaken(analyzedAnswers)
   const averageTimeTakenPerField =
     calculateTimeTakenPerCategory(analyzedAnswers)
+  console.log(averageTimeTakenPerField)
   const fieldsAverageTime = calculateFieldsAverageTime(analyzedAnswers)
   const totalPointsPerField = calculateTotalPointPerCategory(analyzedAnswers)
   // Percentages
@@ -96,6 +102,7 @@ export const analyze = async (
     id: uuidv4(),
     test_id,
     stats: {
+      testScore: test.points,
       totalPoints,
       averageTimeTaken,
       averageTimeTakenPerField,
