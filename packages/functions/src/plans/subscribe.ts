@@ -43,7 +43,7 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   // TODO: Update it with production product ID
-  const planId = 'prod_NkElI8ETMlLhVb'
+  const planId = 'prod_NoMXS8DcAkl0xi'
   const { email, app_metadata } = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)

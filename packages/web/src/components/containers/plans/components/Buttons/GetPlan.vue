@@ -46,12 +46,11 @@ import { computed } from 'vue'
 import type { Profile } from '@/types/user'
 import type { PropType } from 'vue'
 import type { Plan } from '@/types/plans'
-import { useRoute } from 'vue-router'
 import { addCheckoutEvent } from '@/gtag/index'
 import { reactive } from 'vue'
 
-const { isAuthenticated, loginWithRedirect } = useAuth0()
-const { fullPath } = useRoute()
+const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
+  useAuth0()
 
 const state = reactive({
   subscribing: false
@@ -87,11 +86,16 @@ const subscribe = async () => {
   if (hasThisPlan.value) return
   state.subscribing = true
   try {
+    const token = await getAccessTokenSilently()
     const url = `${import.meta.env.VITE_API_ENDPOINT}/plans/${props.plan.id}`
     const endpoint = props.plan.freeTrial
       ? `${url}/subscribe/free-trial`
       : `${url}/subscribe`
-    const checkoutUrl = await axios.get(endpoint)
+    const checkoutUrl = await axios.get(endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     addCheckoutEvent('begin_checkout', {
       ecommerce: {
         currency: 'USD',
