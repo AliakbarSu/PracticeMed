@@ -8,7 +8,7 @@
       </h1>
       <div class="mt-10 max-w-2xl">
         <p>
-          At Med Practice, we take the security of your payment information very
+          At Practice Med, we take the security of your payment information very
           seriously. That's why we have partnered with Stripe, a leading payment
           processing company, to handle all of our payment transactions.
         </p>

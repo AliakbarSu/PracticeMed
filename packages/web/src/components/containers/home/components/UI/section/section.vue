@@ -63,19 +63,19 @@ const features = [
   {
     name: 'Realistic Exam Experience',
     description:
-      'Our mock tests simulate the actual medical exam experience, including timing, format, and difficulty level. This allows students to become comfortable with the testing environment and be better prepared on exam day.',
+      'All the tests are designed to simulate the actual medical exam experience, including timing, format, and difficulty level. This allows students to become comfortable with the testing environment and be better prepared on exam day.',
     icon: ClipboardDocumentIcon
   },
   {
     name: 'Expert Feedback and Analysis',
     description:
-      'Our service provides students with detailed feedback and analysis of their mock test performance. This helps students identify their strengths and weaknesses, and develop a study plan that targets their areas of improvement.',
+      'Practice Med offers in-depth evaluations and insights on student performance in practice tests. By pinpointing their strong and weak points, learners can devise a tailored study strategy that focuses on enhancing their areas in need of growth.',
     icon: ClipboardDocumentListIcon
   },
   {
     name: 'Affordable and Convenient',
     description:
-      'Our mock medical exams are affordable and can be accessed online from anywhere, anytime. This makes it easy for students to fit test preparation into their busy schedules, and ensure they are fully prepared for their medical exams.',
+      'Practice Med is affordable and can be accessed online from anywhere, anytime. This makes it easy for students to fit test preparation into their busy schedules, and ensure they are fully prepared for their medical exams.',
     icon: CurrencyDollarIcon
   }
 ]

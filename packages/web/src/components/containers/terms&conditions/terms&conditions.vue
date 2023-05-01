@@ -24,7 +24,7 @@
         </ul>
       </div>
       <p class="mt-6 text-xl leading-8">
-        We hope that you find our platform to be a valuable resource as you
+        We hope that you find Practice Med to be a valuable resource as you
         prepare for your medical examinations. If you have any questions or
         concerns about our service or these Terms and Conditions, please do not
         hesitate to contact us.
