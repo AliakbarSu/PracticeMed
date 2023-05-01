@@ -2,12 +2,14 @@ import { ApiHandler } from 'sst/node/api'
 import { loadTest } from '@mpt-sst/core/loadTest/index'
 import { LoadedTest } from '@mpt-types/Test'
 import { ApiGatewayAuth } from '@mpt-types/System'
+import { Converter } from 'showdown'
 
 export const handler = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const testId = _evt.pathParameters?.id || ''
   try {
+    const converter = new Converter()
     const result = await loadTest({ userId, testId })
     const test: LoadedTest = {
       id: result.id,
@@ -19,7 +21,7 @@ export const handler = ApiHandler(async (_evt) => {
       thumbnail: result.thumbnail,
       timeLimit: result.timeLimit,
       breaks: result.breaks,
-      instructions: result.instructions
+      instructions: converter.makeHtml(result.instructions)
     }
     return {
       body: test as unknown as string

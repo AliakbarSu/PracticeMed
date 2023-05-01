@@ -6,15 +6,18 @@
           <h2 class="text-3xl font-bold tracking-tight text-gray-900">
             Instructions before you begin
           </h2>
-          <p class="mt-6 text-lg leading-8 text-gray-600">
-            {{ test?.instructions }}
-          </p>
+          <p
+            class="mt-6 text-md leading-8 text-gray-600"
+            v-html="test?.instructions"
+          ></p>
+
           <div class="pt-15">
             <div class="">
               <h3 class="text-base font-semibold leading-7 text-gray-900">
                 Test Information
               </h3>
               <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                <!-- <VueShowdown>fsfaf</VueShowdown> -->
                 Important information.
               </p>
             </div>
@@ -61,10 +64,9 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 import type { PropType } from 'vue'
 import type { Test } from '@/types/test'
-
 const router = useRouter()
 
 const { test } = defineProps({
