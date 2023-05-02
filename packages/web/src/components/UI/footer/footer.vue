@@ -178,10 +178,10 @@ const items = {
   products: [
     { name: 'MCAT', href: '/dashboard?test=mcat' },
     { name: 'USMLE', href: '/dashboard?test=usmle' },
-    { name: 'AMC', href: '#/dashboard?test=amc' }
+    { name: 'AMC', href: '/dashboard?test=amc' }
   ],
   company: [
-    { name: 'Who we are', href: '/about' },
+    { name: 'Who We Are', href: '/about' },
     { name: 'Terms & Conditions', href: '/terms-and-conditions' },
     { name: 'Privacy', href: '/privacy' }
   ],
