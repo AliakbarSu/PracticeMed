@@ -30,6 +30,11 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
       product_id: product.id,
       trial: 0
     },
+    subscription_data: {
+      metadata: {
+        user_id: userId
+      }
+    },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
     success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
     cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true`
@@ -58,7 +63,10 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
       trial: 1
     },
     subscription_data: {
-      trial_period_days: Number(product.metadata.free_trial_limit) || 3
+      trial_period_days: Number(product.metadata.free_trial_limit) || 3,
+      metadata: {
+        user_id: userId
+      }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
     success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,

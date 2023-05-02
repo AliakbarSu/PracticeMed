@@ -12,10 +12,9 @@ import { Stripe } from 'stripe'
 export const handler = ApiHandler(async (_evt) => {
   const payload = _evt.body || ''
   const sig = _evt.headers['stripe-signature'] || ''
-
   const event = constructEvent({ payload, sig })
-  const session = event.data.object as Stripe.Checkout.Session
   if (event.type === 'checkout.session.completed') {
+    const session = event.data.object as Stripe.Checkout.Session
     const sessionWithLineItems = await retrieveSession(session.id, {})
     const planId = sessionWithLineItems.metadata?.product_id || ''
     const auth0_id = sessionWithLineItems.metadata?.customer_id || ''
@@ -30,7 +29,7 @@ export const handler = ApiHandler(async (_evt) => {
         stripe_customer_id: (sessionWithLineItems.customer as string) || '',
         name: product.name,
         limit: Number(product.metadata.limit),
-        used: Number(product.metadata.limit),
+        used: 0,
         subscription: {
           id: sessionWithLineItems.subscription as string,
           onTrial: trial
@@ -46,9 +45,35 @@ export const handler = ApiHandler(async (_evt) => {
     ) {
       await cancelSubscription(app_metadata.plan.subscription.id)
     }
-  }
-
-  return {
-    body: `Subscription added to the user`
+    return {
+      body: `Subscription added to the user`
+    }
+  } else if (event.type === 'customer.subscription.deleted') {
+    const session = event.data.object as Stripe.Subscription
+    const userId = session.metadata.user_id as string
+    const { app_metadata } = await getUser(userId)
+    const updatedUserAppMetadata: UserAppMetadata = {
+      ...app_metadata,
+      plan: {
+        id: null as unknown as string,
+        stripe_customer_id: null as unknown as string,
+        name: null as unknown as string,
+        limit: 0,
+        used: 0,
+        subscription: {
+          id: null as unknown as string,
+          onTrial: false
+        }
+      }
+    }
+    // Update user app metadata in Auth 0
+    await updateUserAppMetadata({ id: userId, data: updatedUserAppMetadata })
+    return {
+      body: `User subscription canceled`
+    }
+  } else {
+    return {
+      body: `Unhandled event type: ${event.type}`
+    }
   }
 })
