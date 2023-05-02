@@ -110,6 +110,9 @@
                   <Test :test="test" />
                 </li>
                 <LoadingSkeleton v-if="loading" />
+                <NoTestHistory
+                  v-if="(previousTests as TestType[]).length <= 0 && state.currentView === 'history'"
+                />
                 <li
                   v-if="state.currentView === 'history'"
                   v-for="test in previousTests"
@@ -138,6 +141,7 @@ import { useAppStore } from '@/store/main'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { reactive } from 'vue'
+import NoTestHistory from './components/UI/CTA/NoTestHistory.vue'
 
 const store = useAppStore()
 
