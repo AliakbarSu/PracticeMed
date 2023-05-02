@@ -25,44 +25,32 @@
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import axios, { AxiosError } from 'axios'
+<script lang="ts" setup>
 import SkeletonLoading from './UI/Loading/skeletonLoading.vue'
 import SubscribeCTA from './UI/CTA/Subscribe.vue'
+import { useAppStore } from '@/store/main'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { watch, onMounted } from 'vue'
 
-export default defineComponent({
-  components: {
-    SkeletonLoading,
-    SubscribeCTA
-  },
-  data() {
-    return {
-      loading: false,
-      subscribed: true
-    }
-  },
-  created() {
-    this.getPortalLink()
-  },
-  methods: {
-    async getPortalLink() {
-      try {
-        this.loading = true
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/billing/manage`
-        )
-        const link = response.data.body
-        window.location.replace(link)
-      } catch (err: any) {
-        const statusCode = err.response.status
-        if (statusCode == 400) {
-          this.subscribed = false
-          return
-        }
-        this.loading = false
-      }
-    }
+const store = useAppStore()
+
+const { portalLink } = storeToRefs(store)
+
+const subscribed = computed(() => portalLink.value !== null)
+
+watch(portalLink, () => {
+  navigate()
+})
+
+const navigate = () => {
+  console.log('portal link', portalLink.value)
+  if (subscribed.value && portalLink.value) {
+    window.location.replace(portalLink.value)
   }
+}
+
+onMounted(() => {
+  navigate()
 })
 </script>

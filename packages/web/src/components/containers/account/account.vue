@@ -38,40 +38,38 @@
     <div>
       <General
         :loading="loading"
-        :profile="state.profile"
+        :profile="profile"
         v-if="currentItem == 'General'"
       />
       <Security
         :loading="loading"
-        :profile="state.profile"
+        :profile="profile"
         v-if="currentItem == 'Security'"
       />
       <Plans
         :loading="loading"
-        :profile="state.profile"
+        :profile="profile"
         v-if="currentItem == 'Plan'"
       />
-      <Billing :profile="state.profile" v-if="currentItem == 'Billing'" />
+      <Billing :profile="profile" v-if="currentItem == 'Billing'" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount } from 'vue'
+import { ref } from 'vue'
 import General from './components/General.vue'
 import Security from './components/Security.vue'
 import Plans from './components/Plans.vue'
 import Billing from './components/Billing.vue'
-import axios from 'axios'
-import type { Profile } from '@/types/user'
 import {
   CreditCardIcon,
   CubeIcon,
   FingerPrintIcon,
   UserCircleIcon
 } from '@heroicons/vue/24/outline'
-import { reactive } from 'vue'
-import { useAuth0 } from '@auth0/auth0-vue'
+import { useAppStore } from '@/store/main'
+import { storeToRefs } from 'pinia'
 const secondaryNavigation = [
   { name: 'General', href: '#', icon: UserCircleIcon, current: true },
   { name: 'Security', href: '#', icon: FingerPrintIcon, current: false },
@@ -79,37 +77,16 @@ const secondaryNavigation = [
   { name: 'Billing', href: '#', icon: CreditCardIcon, current: false }
 ]
 
-const { getAccessTokenSilently } = useAuth0()
+const store = useAppStore()
+
 const currentItem = ref('General')
+const { loading, profile } = storeToRefs(store)
+
 const setItem = (item: string) => {
   currentItem.value = item
-}
-
-const state = reactive({ profile: {} as Profile })
-const loading = ref(false)
-const error = ref(false)
-
-const fetchTestHistory = async () => {
-  loading.value = true
-  try {
-    const token = await getAccessTokenSilently()
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/user/profile`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
-    state.profile = JSON.parse(response.data.body)
-  } catch (err) {
-    console.error(err)
-    error.value = true
-  } finally {
-    loading.value = false
-  }
 }
 
 const isActive = (item: string) => {
   return currentItem.value == item
 }
-onBeforeMount(async () => {
-  await fetchTestHistory()
-})
 </script>

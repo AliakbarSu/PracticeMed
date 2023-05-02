@@ -64,21 +64,27 @@
 </template>
 
 <script lang="ts" setup>
+import { useAppStore } from '@/store/main'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 const { user, logout, isAuthenticated } = useAuth0()
 const router = useRouter()
+
+const store = useAppStore()
+
+const { isAuth } = storeToRefs(store)
+
 const goTo = (link: string) => {
   router.push(link)
 }
 const onLogout = () => {
-  logout({ logoutParams: { returnTo: window.location.origin } })
+  logout({ logoutParams: { returnTo: window.location.origin } }).then(() => {
+    store.$reset()
+  })
 }
-
-const isAuth = computed(() => isAuthenticated.value)
 
 const isActive = (path: string) => {
   return router.currentRoute.value.path === path

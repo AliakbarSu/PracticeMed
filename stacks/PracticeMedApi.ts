@@ -87,7 +87,12 @@ export function API({ stack }: StackContext) {
       },
       'POST /api/plans/{id}/subscribe': {
         authorizer: 'auth0Authorizer',
-        function: `${fnPath}/plans/subscribe.handler`
+        function: {
+          handler: `${fnPath}/plans/subscribe.handler`,
+          environment: {
+            stage: stack.stage
+          }
+        }
       },
       // TESTS
       'GET /api/tests': {

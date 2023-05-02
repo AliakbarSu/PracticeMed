@@ -25,8 +25,8 @@
       <div class="flex flex-1 justify-center">
         <RouterLink
           as="button"
-          :to="`/test/${test?.id}/${test?.type}`"
-          href="#"
+          @click="takeTest(test)"
+          to="#"
           class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >Take Test</RouterLink
         >
@@ -35,26 +35,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
-import { CheckCircleIcon } from '@heroicons/vue/20/solid'
+<script lang="ts" setup>
 import type { Test } from '@/types/test'
+import { useRouter } from 'vue-router'
+import { useAppStore } from '@/store/main'
+import { storeToRefs } from 'pinia'
 import type { PropType } from 'vue'
 
-export default {
-  props: {
-    test: {
-      type: Object as PropType<Test>
-    }
-  },
-  components: {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    EllipsisVerticalIcon,
-    CheckCircleIcon
+const router = useRouter()
+
+const store = useAppStore()
+
+const { hasActivePlan } = storeToRefs(store)
+
+const { test } = defineProps({
+  test: {
+    type: Object as PropType<Test>
+  }
+})
+
+const takeTest = (test?: Test) => {
+  if (hasActivePlan.value === false) {
+    router.push('/plans')
+  } else {
+    router.push(`/test/${test?.id}`)
   }
 }
 </script>

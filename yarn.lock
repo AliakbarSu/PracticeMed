@@ -2569,11 +2569,6 @@
     "@types/mime" "*"
     "@types/node" "*"
 
-"@types/showdown@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/showdown/-/showdown-2.0.1.tgz#24134738ba3107237d6a783e054a54773e739f81"
-  integrity sha512-xdnAw2nFqomkaL0QdtEk0t7yz26UkaVPl4v1pYJvtE1T0fmfQEH3JaxErEhGByEAl3zUZrkNBlneuJp0WJGqEA==
-
 "@types/tough-cookie@*":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-4.0.2.tgz#6286b4c7228d58ab7866d19716f3696e03a09397"
@@ -8451,15 +8446,6 @@ vue-router@^4.1.6:
   dependencies:
     "@vue/devtools-api" "^6.4.5"
 
-vue-showdown@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/vue-showdown/-/vue-showdown-4.0.0.tgz#4d658153118f1d51a5a8c9b11d98f053c5eb461e"
-  integrity sha512-ZDO2IVJ4UUtVbl1IQAQzG0xq8lgnwolSqYOLyBkTqT2L/oAr00yb1lpsRIPruaIqsxHqGjAuijY+K3pGJ2z0QQ==
-  dependencies:
-    "@types/showdown" "^2.0.0"
-    showdown "^2.1.0"
-    vue "^3.2.45"
-
 vue-sweetalert2@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/vue-sweetalert2/-/vue-sweetalert2-5.0.5.tgz#298663884149c7675d514490d1389f0614d875c0"
@@ -8489,7 +8475,7 @@ vue3-apexcharts@^1.4.1:
   resolved "https://registry.yarnpkg.com/vue3-apexcharts/-/vue3-apexcharts-1.4.1.tgz#ea561308430a1c5213b7f17c44ba3c845f6c490d"
   integrity sha512-96qP8JDqB9vwU7bkG5nVU+E0UGQn7yYQVqUUCLQMYWDuQyu2vE77H/UFZ1yI+hwzlSTBKT9BqnNG8JsFegB3eg==
 
-vue@^3.2.41, vue@^3.2.45, vue@^3.2.47:
+vue@^3.2.41, vue@^3.2.47:
   version "3.2.47"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.47.tgz#3eb736cbc606fc87038dbba6a154707c8a34cff0"
   integrity sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==

@@ -58,7 +58,7 @@ export default defineComponent({
   props: {
     loading: Boolean,
     profile: {
-      type: Object as PropType<Profile>
+      type: Object as PropType<Profile | null>
     }
   },
   components: {

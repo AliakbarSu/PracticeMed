@@ -29,7 +29,7 @@
       <span class="sr-only">Loading...</span>
     </div>
 
-    <span v-else-if="hasActivePlan && hasThisPlan">Active</span>
+    <span v-else-if="hasActivePlan && isPlanActive">Active</span>
     <span v-else-if="hasActivePlan" @click="subscribe">Switch plan</span>
     <span v-else-if="plan.freeTrial" @click="subscribe">
       {{ `Start ${plan.freeTrial} days free trial` }}
@@ -42,15 +42,19 @@
 import axios from 'axios'
 import { defineProps } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import { computed } from 'vue'
-import type { Profile } from '@/types/user'
 import type { PropType } from 'vue'
 import type { Plan } from '@/types/plans'
 import { addCheckoutEvent } from '@/gtag/index'
 import { reactive } from 'vue'
+import { useAppStore } from '@/store/main'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 
-const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } =
-  useAuth0()
+const store = useAppStore()
+
+const { hasActivePlan, isAuth, loading } = storeToRefs(store)
+
+const { loginWithRedirect, getAccessTokenSilently } = useAuth0()
 
 const state = reactive({
   subscribing: false
@@ -60,19 +64,8 @@ const props = defineProps({
   plan: {
     type: Object as PropType<Plan>,
     default: {}
-  },
-  loading: {
-    type: Boolean,
-    default: false
-  },
-  profile: {
-    type: Object as PropType<Profile>
   }
 })
-
-const hasActivePlan = computed(() => !!props.profile?.plan?.id)
-const hasThisPlan = computed(() => props.profile?.plan?.id === props.plan?.id)
-const isAuth = computed(() => isAuthenticated.value)
 
 const loginIfNotAuthenticated = () => {
   if (!isAuth.value) {
@@ -81,9 +74,11 @@ const loginIfNotAuthenticated = () => {
   }
 }
 
+const isPlanActive = computed(() => store.hasThisPlan(props.plan.id))
+
 const subscribe = async () => {
   loginIfNotAuthenticated()
-  if (hasThisPlan.value) return
+  if (isPlanActive.value) return
   state.subscribing = true
   try {
     const token = await getAccessTokenSilently()

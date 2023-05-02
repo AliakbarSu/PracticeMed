@@ -51,11 +51,16 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useRouter } from 'vue-router'
 import { useAuth0 } from '@auth0/auth0-vue'
+import { useAppStore } from '@/store/main'
 const router = useRouter()
 const { user, logout } = useAuth0()
 
+const store = useAppStore()
+
 const logoutFromApp = () => {
-  logout({ logoutParams: { returnTo: window.location.origin } })
+  logout({ logoutParams: { returnTo: window.location.origin } }).then(() => {
+    store.$reset()
+  })
 }
 const goTo = (link: string) => {
   router.push(link)

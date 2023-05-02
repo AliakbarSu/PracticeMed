@@ -107,11 +107,15 @@ import DsiclosurePanel from './components/DisclosurePanel.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/store/main'
 
-const { loginWithRedirect, isAuthenticated } = useAuth0()
+const store = useAppStore()
+
+const { isAuth } = storeToRefs(store)
+
+const { loginWithRedirect } = useAuth0()
 const router = useRouter()
-
-const isAuth = computed(() => isAuthenticated.value)
 
 const goTo = (link: string) => {
   router.push(link)

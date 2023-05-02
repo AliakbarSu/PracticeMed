@@ -102,7 +102,7 @@
               <ul role="list" class="divide-y divide-gray-200">
                 <LoadingSkeleton v-if="loading" />
                 <li
-                  v-if="currentView === 'tests'"
+                  v-if="state.currentView === 'tests'"
                   v-for="test in tests"
                   :key="test.id"
                   class="p-4 sm:p-6"
@@ -111,7 +111,7 @@
                 </li>
                 <LoadingSkeleton v-if="loading" />
                 <li
-                  v-if="currentView === 'history'"
+                  v-if="state.currentView === 'history'"
                   v-for="test in previousTests"
                   :key="(test as TestType).id"
                   class="p-4 sm:p-6"
@@ -127,88 +127,40 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
-import { CheckCircleIcon } from '@heroicons/vue/20/solid'
 import Test from './components/Test.vue'
 import TestHistory from './components/TestHistory.vue'
-import axios from 'axios'
 import type { Test as TestType } from '@/types/test'
-import type { UserAppMetadata } from '@/types/user'
 import LoadingSkeleton from './components/UI/loading/skeleton.vue'
+import { useAppStore } from '@/store/main'
+import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
+import { reactive } from 'vue'
 
-export default {
-  created() {
-    this.loading = true
-    this.fetchTests()
-    this.fetchTestHistory()
-  },
-  data: () => {
-    return {
-      loading: false,
-      currentView: 'tests',
-      tests: [] as TestType[],
-      testsHistoryData: [] as UserAppMetadata['test_history']
-    }
-  },
-  methods: {
-    setCurrentView(view: 'tests' | 'history') {
-      this.currentView = view
-    },
-    async fetchTests() {
-      try {
-        const token = await this.$auth0.getAccessTokenSilently()
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-        this.tests = JSON.parse(response.data.body)
-      } catch (err) {
-        console.error(err)
-      } finally {
-        this.loading = false
-      }
-    },
-    async fetchTestHistory() {
-      try {
-        const token = await this.$auth0.getAccessTokenSilently()
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/history`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-        this.testsHistoryData = response.data.body
-      } catch (err) {
-        console.error(err)
-      } finally {
-        this.loading = false
-      }
-    }
-  },
-  computed: {
-    previousTests() {
-      return this.testsHistoryData.map((testHistory) => {
-        const test = this.tests.find(({ id }) => testHistory.test_id === id)
-        return {
-          ...test,
-          ...testHistory,
-          id: testHistory.id
-        }
-      }) as unknown
-    }
-  },
-  components: {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    EllipsisVerticalIcon,
-    CheckCircleIcon,
-    Test,
-    TestHistory,
-    LoadingSkeleton
-  }
+const store = useAppStore()
+
+const { tests, testsHistory, loading } = storeToRefs(store)
+
+const state = reactive<{ currentView: 'tests' | 'history' }>({
+  currentView: 'tests'
+})
+
+const setCurrentView = (view: 'tests' | 'history') => {
+  state.currentView = view
 }
+
+const previousTests = computed(() => {
+  return testsHistory.value.map((testHistory) => {
+    const test = tests.value.find(({ id }) => testHistory.test_id === id)
+    return {
+      ...test,
+      ...testHistory,
+      id: testHistory
+    }
+  }) as unknown
+})
 </script>
 
 <style scoped>
