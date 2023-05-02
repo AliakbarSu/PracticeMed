@@ -32,7 +32,9 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
     },
     subscription_data: {
       metadata: {
-        user_id: userId
+        user_id: userId,
+        trial: 0,
+        plan_id: planId
       }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
@@ -47,9 +49,7 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
 export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
-  // TODO: Update it with production product ID
-  const stage = process.env?.SST_STAGE
-  const planId = stage === 'dev' ? 'prod_NkElI8ETMlLhVb' : 'prod_NoMXS8DcAkl0xi'
+  const planId = _evt.pathParameters?.id || ''
   const { email, app_metadata } = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)
@@ -63,9 +63,11 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
       trial: 1
     },
     subscription_data: {
-      trial_period_days: Number(product.metadata.free_trial_limit) || 3,
+      trial_period_days: Number(product.metadata.free_trial_limit) || 7,
       metadata: {
-        user_id: userId
+        user_id: userId,
+        trial: 1,
+        plan_id: planId
       }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],

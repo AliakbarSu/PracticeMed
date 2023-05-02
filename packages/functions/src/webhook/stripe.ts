@@ -16,47 +16,33 @@ export const handler = ApiHandler(async (_evt) => {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
     const sessionWithLineItems = await retrieveSession(session.id, {})
-    const planId = sessionWithLineItems.metadata?.product_id || ''
     const auth0_id = sessionWithLineItems.metadata?.customer_id || ''
-    const trial = !!sessionWithLineItems.metadata?.trial || false
     const { app_metadata } = await getUser(auth0_id)
-    // Getting the plan
-    const product = await getPlan(planId)
-    const updatedUserAppMetadata: UserAppMetadata = {
-      ...app_metadata,
-      plan: {
-        id: product.id,
-        stripe_customer_id: (sessionWithLineItems.customer as string) || '',
-        name: product.name,
-        limit: Number(product.metadata.limit),
-        used: 0,
-        subscription: {
-          id: sessionWithLineItems.subscription as string,
-          onTrial: trial
-        }
-      }
-    }
-
-    // Update user app metadata in Auth 0
-    await updateUserAppMetadata({ id: auth0_id, data: updatedUserAppMetadata })
-    // cancel previous subscription is exists
     if (
+      app_metadata.plan.subscription.id &&
       app_metadata.plan.subscription.id !== sessionWithLineItems.subscription
     ) {
       await cancelSubscription(app_metadata.plan.subscription.id)
     }
+
+    // cancel previous subscription is exists
     return {
       body: `Subscription added to the user`
     }
   } else if (event.type === 'customer.subscription.deleted') {
     const session = event.data.object as Stripe.Subscription
+    if (session.cancellation_details?.feedback === 'switched_service') {
+      return {
+        body: `Cancellation handled by another service`
+      }
+    }
     const userId = session.metadata.user_id as string
     const { app_metadata } = await getUser(userId)
     const updatedUserAppMetadata: UserAppMetadata = {
       ...app_metadata,
       plan: {
         id: null as unknown as string,
-        stripe_customer_id: null as unknown as string,
+        stripe_customer_id: app_metadata.plan.stripe_customer_id,
         name: null as unknown as string,
         limit: 0,
         used: 0,
@@ -70,6 +56,34 @@ export const handler = ApiHandler(async (_evt) => {
     await updateUserAppMetadata({ id: userId, data: updatedUserAppMetadata })
     return {
       body: `User subscription canceled`
+    }
+  } else if (event.type === 'customer.subscription.created') {
+    const subscription = event.data.object as Stripe.Subscription
+    const trial = !!Number(subscription.metadata?.trial) || false
+    const planId = subscription.metadata?.plan_id || ''
+    const userId = subscription.metadata?.user_id || ''
+    const { app_metadata } = await getUser(userId)
+    // Getting the plan
+    const product = await getPlan(planId)
+    const updatedUserAppMetadata: UserAppMetadata = {
+      ...app_metadata,
+      plan: {
+        id: product.id,
+        stripe_customer_id: (subscription.customer as string) || '',
+        name: product.name,
+        limit: Number(product.metadata.limit),
+        used: 0,
+        subscription: {
+          id: subscription.id as string,
+          onTrial: trial
+        }
+      }
+    }
+
+    // Update user app metadata in Auth 0
+    await updateUserAppMetadata({ id: userId, data: updatedUserAppMetadata })
+    return {
+      body: `Subscription created`
     }
   } else {
     return {
