@@ -44,7 +44,6 @@ watch(portalLink, () => {
 })
 
 const navigate = () => {
-  console.log('portal link', portalLink.value)
   if (subscribed.value && portalLink.value) {
     window.location.replace(portalLink.value)
   }

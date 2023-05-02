@@ -40,8 +40,6 @@ watch(authToken, async () => {
 })
 
 onBeforeMount(async () => {
-  store.fetchPlans()
-
   // try {
   //   const token = await getAccessTokenSilently()
   //   axios.interceptors.request.use(function (config) {
@@ -49,7 +47,6 @@ onBeforeMount(async () => {
   //     return config
   //   })
   // } catch (err) {}
-
   // axios.interceptors.response.use(undefined, function (err) {
   //   return new Promise(function () {
   //     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
