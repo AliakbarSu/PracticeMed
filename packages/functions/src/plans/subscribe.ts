@@ -39,13 +39,12 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
   }
 })
 
-export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt) => {
+export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   // TODO: Update it with production product ID
-  const stage = process.env.stage || 'dev'
-  const planId =
-    stage === 'prod' ? 'prod_NoMXS8DcAkl0xi' : 'prod_NkElI8ETMlLhVb'
+  const stage = process.env?.SST_STAGE
+  const planId = stage === 'dev' ? 'prod_NkElI8ETMlLhVb' : 'prod_NoMXS8DcAkl0xi'
   const { email, app_metadata } = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)

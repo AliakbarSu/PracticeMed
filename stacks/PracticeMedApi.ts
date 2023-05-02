@@ -46,7 +46,10 @@ export function API({ stack }: StackContext) {
   const api = new Api(stack, 'api', {
     defaults: {
       function: {
-        runtime: 'nodejs18.x'
+        runtime: 'nodejs18.x',
+        environment: {
+          stage: stack.stage
+        }
       }
     },
     customDomain:
@@ -87,12 +90,7 @@ export function API({ stack }: StackContext) {
       },
       'POST /api/plans/{id}/subscribe': {
         authorizer: 'auth0Authorizer',
-        function: {
-          handler: `${fnPath}/plans/subscribe.handler`,
-          environment: {
-            stage: stack.stage
-          }
-        }
+        function: `${fnPath}/plans/subscribe.handler`
       },
       // TESTS
       'GET /api/tests': {
