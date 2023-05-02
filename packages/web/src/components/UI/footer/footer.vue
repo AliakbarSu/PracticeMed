@@ -168,6 +168,7 @@ export default {
           }
         )
         this.signedUp = true
+        this.email = ''
       } finally {
         this.loading = false
       }
