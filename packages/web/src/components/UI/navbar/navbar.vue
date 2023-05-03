@@ -41,6 +41,14 @@
         </div>
         <div class="flex items-center">
           <div class="flex-shrink-0">
+            <RouterLink
+              v-if="trialButtonActive"
+              as="button"
+              to="/plans"
+              class="hidden relative sm:inline-flex items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 mr-6 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+            >
+              Start Free Trial
+            </RouterLink>
             <button
               v-if="!isAuth"
               @click="
@@ -105,17 +113,22 @@ import MobileButton from './components/MobileButton.vue'
 import ProfileDropdown from './components/ProfileDropdown.vue'
 import DsiclosurePanel from './components/DisclosurePanel.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/store/main'
 
 const store = useAppStore()
 
-const { isAuth } = storeToRefs(store)
+const { isAuth, hasActivePlan } = storeToRefs(store)
 
 const { loginWithRedirect } = useAuth0()
 const router = useRouter()
+const route = useRoute()
+
+const trialButtonActive = computed(
+  () => !hasActivePlan.value && router.currentRoute.value.path !== '/plans'
+)
 
 const goTo = (link: string) => {
   router.push(link)
