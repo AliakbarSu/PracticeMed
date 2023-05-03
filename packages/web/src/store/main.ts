@@ -16,7 +16,7 @@ export const useAppStore = defineStore('app', () => {
   const testsHistory = ref<UserAppMetadata['test_history']>([])
   const tests = ref<Test[]>([])
 
-  const hasActivePlan = computed(() => !!profile.value?.plan.id)
+  const hasActivePlan = computed(() => !!profile.value?.plan.id || false)
   const hasThisPlan = (planId: string) => profile.value?.plan?.id === planId
 
   const isAuth = computed(() => authToken.value !== null)

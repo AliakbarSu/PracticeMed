@@ -42,7 +42,7 @@
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <RouterLink
-              v-if="trialButtonActive"
+              v-if="!hideTrialButton"
               as="button"
               to="/plans"
               class="hidden relative sm:inline-flex items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 mr-6 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
@@ -126,8 +126,8 @@ const { loginWithRedirect } = useAuth0()
 const router = useRouter()
 const route = useRoute()
 
-const trialButtonActive = computed(
-  () => !hasActivePlan.value && router.currentRoute.value.path !== '/plans'
+const hideTrialButton = computed(
+  () => hasActivePlan.value == true || route.fullPath == '/plans'
 )
 
 const goTo = (link: string) => {
