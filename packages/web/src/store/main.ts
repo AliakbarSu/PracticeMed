@@ -35,6 +35,7 @@ export const useAppStore = defineStore('app', () => {
 
   const fetchProfileData = async () => {
     try {
+      loading.value = true
       const response = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/user/profile`,
         { headers: { Authorization: `Bearer ${authToken.value}` } }
@@ -49,6 +50,7 @@ export const useAppStore = defineStore('app', () => {
 
   const fetchPlans = async () => {
     try {
+      loading.value = true
       const result = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/plans`
       )
@@ -62,6 +64,7 @@ export const useAppStore = defineStore('app', () => {
 
   const fetchTestsHistory = async () => {
     try {
+      loading.value = true
       const response = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/tests/history`,
         { headers: { Authorization: `Bearer ${authToken.value}` } }

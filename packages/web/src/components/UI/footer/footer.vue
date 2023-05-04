@@ -26,7 +26,7 @@
                 <h3 class="text-sm font-medium text-gray-900">Programmes</h3>
                 <ul role="list" class="mt-6 space-y-6">
                   <li
-                    v-for="item in footerNavigation.products"
+                    v-for="item in items.products"
                     :key="item.name"
                     class="text-sm"
                   >
@@ -42,7 +42,7 @@
                 <h3 class="text-sm font-medium text-gray-900">Company</h3>
                 <ul role="list" class="mt-6 space-y-6">
                   <li
-                    v-for="item in footerNavigation.company"
+                    v-for="item in items.company"
                     :key="item.name"
                     class="text-sm"
                   >
@@ -62,7 +62,7 @@
               </h3>
               <ul role="list" class="mt-6 space-y-6">
                 <li
-                  v-for="item in footerNavigation.customerService"
+                  v-for="item in items.customerService"
                   :key="item.name"
                   class="text-sm"
                 >
@@ -122,7 +122,7 @@
                     </svg>
                     <span class="sr-only">Loading...</span>
                   </div>
-                  <span v-else>{{ signedUp ? 'Done' : 'Sign up' }}</span>
+                  <span v-else>{{ signedup ? 'Done' : 'Sign up' }}</span>
                 </button>
               </div>
             </form>
@@ -140,41 +140,23 @@
   </footer>
 </template>
 
-<script lang="ts">
-import axios from 'axios'
+<script lang="ts" setup>
+import { useContactStore } from '@/store/contact'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
-export default {
-  data() {
-    return {
-      footerNavigation: items,
-      email: '',
-      loading: false,
-      signedUp: false
-    }
-  },
-  methods: {
-    goTo(link: string) {
-      this.$router.push(link)
-    },
-    async signup(event: Event) {
-      event.preventDefault()
-      if (this.signedUp) return
-      try {
-        this.loading = true
-        await axios.post(
-          `${import.meta.env.VITE_API_ENDPOINT}/newsletter/signup`,
-          {
-            email: this.email
-          }
-        )
-        this.signedUp = true
-        this.email = ''
-      } finally {
-        this.loading = false
-      }
-    }
-  }
+const contactStore = useContactStore()
+
+const { loading, signedup } = storeToRefs(contactStore)
+
+const email = ref('')
+
+const signup = (event: Event) => {
+  event.preventDefault()
+  if (!email.value) return
+  contactStore.signup(email.value)
 }
+
 const items = {
   products: [
     { name: 'MCAT', href: '/dashboard?test=mcat' },
