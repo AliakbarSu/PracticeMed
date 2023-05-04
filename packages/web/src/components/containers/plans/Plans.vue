@@ -90,8 +90,11 @@ import SkeletonLoading from './components/loading/CardLoading.vue'
 import GetPlanButton from './components/Buttons/GetPlan.vue'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/store/main'
+import { usePlansStore } from '@/store/plans'
 
 const store = useAppStore()
+const plansStore = usePlansStore()
 
-const { profile, plans, loading } = storeToRefs(store)
+const { profile } = storeToRefs(store)
+const { loading, plans } = storeToRefs(plansStore)
 </script>

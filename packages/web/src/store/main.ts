@@ -1,7 +1,5 @@
-import type { Plan } from '@/types/plans'
 import type { Test } from '@/types/test'
 import type { Profile, UserAppMetadata } from '@/types/user'
-import { useAuth0 } from '@auth0/auth0-vue'
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
@@ -12,12 +10,8 @@ export const useAppStore = defineStore('app', () => {
   const profile = ref<Profile | null>(null)
   const portalLink = ref<string | null>(null)
   const authToken = ref<string | null>(null)
-  const plans = ref<Plan[]>([])
   const testsHistory = ref<UserAppMetadata['test_history']>([])
   const tests = ref<Test[]>([])
-
-  const hasActivePlan = computed(() => !!profile.value?.plan.id || false)
-  const hasThisPlan = (planId: string) => profile.value?.plan?.id === planId
 
   const isAuth = computed(() => authToken.value !== null)
 
@@ -41,20 +35,6 @@ export const useAppStore = defineStore('app', () => {
         { headers: { Authorization: `Bearer ${authToken.value}` } }
       )
       profile.value = JSON.parse(response.data.body)
-    } catch (err) {
-      error.value = err as Error
-    } finally {
-      loading.value = false
-    }
-  }
-
-  const fetchPlans = async () => {
-    try {
-      loading.value = true
-      const result = await axios.get(
-        `${import.meta.env.VITE_API_ENDPOINT}/plans`
-      )
-      plans.value = JSON.parse(result.data.body)
     } catch (err) {
       error.value = err as Error
     } finally {
@@ -106,19 +86,15 @@ export const useAppStore = defineStore('app', () => {
 
   return {
     fetchProfileData,
-    fetchPlans,
     fetchTestsHistory,
     fetchTests,
     fetchPortalLink,
     tests,
     testsHistory,
     profile,
-    plans,
     loading,
     error,
     isAuth,
-    hasActivePlan,
-    hasThisPlan,
     $reset,
     setAuthToken,
     authToken,

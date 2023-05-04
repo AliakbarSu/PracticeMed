@@ -19,7 +19,7 @@ import TermsAndConditions from '@/components/containers/terms&conditions/terms&c
 import SecurePayments from '@/components/containers/securePayments/securePayments.vue'
 import Privacy from '@/components/containers/privacy/privacy.vue'
 import Contact from '@/components/containers/contact/contact.vue'
-import { useAppStore } from '@/store/main'
+import { usePlansStore } from '@/store/plans'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -31,8 +31,8 @@ const routes: RouteRecordRaw[] = [
     path: '/plans',
     name: 'Plans',
     beforeEnter: () => {
-      const store = useAppStore()
-      store.fetchPlans()
+      const plansStore = usePlansStore()
+      plansStore.fetchPlans()
     },
     component: Plans
   },

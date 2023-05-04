@@ -9,7 +9,11 @@
       'mt-8 block rounded-md py-2 px-3 text-center cursor-pointer text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
     ]"
   >
-    <div role="status" class="flex justify-center" v-if="state.subscribing">
+    <div
+      role="status"
+      class="flex justify-center"
+      v-if="plansStore.subscribing(plan.id)"
+    >
       <svg
         aria-hidden="true"
         class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -30,11 +34,11 @@
     </div>
 
     <span v-else-if="hasActivePlan && isPlanActive">Active</span>
-    <span v-else-if="hasActivePlan" @click="subscribe">Switch plan</span>
-    <span v-else-if="plan.freeTrial" @click="subscribe">
+    <span v-else-if="hasActivePlan" @click="subscribeToPlan">Switch plan</span>
+    <span v-else-if="plan.freeTrial" @click="subscribeToPlan">
       {{ `Start ${plan.freeTrial} days free trial` }}
     </span>
-    <span v-else @click="subscribe"> Get plan </span>
+    <span v-else @click="subscribeToPlan"> Get plan </span>
   </a>
 </template>
 
@@ -45,20 +49,19 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import type { PropType } from 'vue'
 import type { Plan } from '@/types/plans'
 import { addCheckoutEvent } from '@/gtag/index'
-import { reactive } from 'vue'
 import { useAppStore } from '@/store/main'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
+import { usePlansStore } from '@/store/plans'
+import { watch } from 'vue'
 
 const store = useAppStore()
+const plansStore = usePlansStore()
 
-const { hasActivePlan, isAuth, loading } = storeToRefs(store)
+const { isAuth, loading } = storeToRefs(store)
+const { checkoutUrl, hasActivePlan } = storeToRefs(plansStore)
 
-const { loginWithRedirect, getAccessTokenSilently } = useAuth0()
-
-const state = reactive({
-  subscribing: false
-})
+const { loginWithRedirect } = useAuth0()
 
 const props = defineProps({
   plan: {
@@ -74,55 +77,17 @@ const loginIfNotAuthenticated = () => {
   }
 }
 
-const isPlanActive = computed(() => store.hasThisPlan(props.plan.id))
+const isPlanActive = computed(() => plansStore.hasThisPlan(props.plan.id))
 
-const subscribe = async () => {
+const subscribeToPlan = async () => {
   loginIfNotAuthenticated()
-  if (isPlanActive.value) return
-  state.subscribing = true
-  try {
-    const token = await getAccessTokenSilently()
-    const url = `${import.meta.env.VITE_API_ENDPOINT}/plans/${props.plan.id}`
-    const endpoint = props.plan.freeTrial
-      ? `${url}/subscribe/free-trial`
-      : `${url}/subscribe`
-    const checkoutUrl = await axios.get(endpoint, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    addCheckoutEvent('begin_checkout', {
-      ecommerce: {
-        currency: 'USD',
-        value: 9.99,
-        coupon: 'SUMMER_FUN',
-        items: [
-          {
-            item_id: 'SKU_12345',
-            item_name: 'Stan and Friends Tee',
-            affiliation: 'Google Merchandise Store',
-            coupon: 'SUMMER_FUN',
-            discount: 2.22,
-            index: 0,
-            item_brand: 'Google',
-            item_category: 'Apparel',
-            item_category2: 'Adult',
-            item_category3: 'Shirts',
-            item_category4: 'Crew',
-            item_category5: 'Short sleeve',
-            item_list_id: 'related_products',
-            item_list_name: 'Related Products',
-            item_variant: 'green',
-            location_id: 'ChIJIQBpAG2ahYAR_6128GcTUEo',
-            price: 9.99,
-            quantity: 1
-          }
-        ]
-      }
-    })
-    window.location.replace(checkoutUrl.data.body)
-  } finally {
-    state.subscribing = false
-  }
+  plansStore.subscribe(props.plan)
 }
+
+watch(checkoutUrl, () => {
+  if (checkoutUrl.value) {
+    window.location.replace(checkoutUrl.value)
+    plansStore.$reset()
+  }
+})
 </script>

@@ -117,17 +117,19 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAppStore } from '@/store/main'
+import { usePlansStore } from '@/store/plans'
 
 const store = useAppStore()
+const plansStore = usePlansStore()
 
-const { isAuth, hasActivePlan } = storeToRefs(store)
+const { isAuth } = storeToRefs(store)
 
 const { loginWithRedirect } = useAuth0()
 const router = useRouter()
 const route = useRoute()
 
 const hideTrialButton = computed(
-  () => hasActivePlan.value == true || route.fullPath == '/plans'
+  () => plansStore.hasActivePlan == true || route.fullPath == '/plans'
 )
 
 const goTo = (link: string) => {
