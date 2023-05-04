@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useAppStore } from './main'
 import { mockTest } from '../data/mockQuestions'
+import { useUIStore } from './UI'
 
 export interface TestInProgress extends Omit<Test, 'questions'> {
   questions: QuestionInProgress[]
@@ -25,11 +26,11 @@ export interface QuestionInProgress extends Question {
 
 export const useTestStore = defineStore('test', () => {
   const appStore = useAppStore()
+  const UIStore = useUIStore()
 
   const previewMode = ref(false)
   const loading = ref(false)
   const submitting = ref(false)
-  const error = ref<Error | null>(null)
   const hasTestsRemaning = ref(true)
   const test = ref<TestInProgress | null>(null)
   const resultId = ref<string | null>(null)
@@ -120,7 +121,7 @@ export const useTestStore = defineStore('test', () => {
       }
       instructions.value = result.instructions
     } catch (err: any) {
-      error.value = err as Error
+      UIStore.error = new Error(err as string)
       const statusCode = err.response?.status
       if (statusCode === 403) {
         hasTestsRemaning.value = false
@@ -141,34 +142,14 @@ export const useTestStore = defineStore('test', () => {
     instructions.value = loadedTest.instructions
   }
 
-  const submit = async () => {
+  const start = () => {
     if (!test.value) return
-    if (previewMode.value) {
-      testEnded.value = true
-      return
-    }
-    const payload: SubmittedAnswer = {
-      test_id: test.value.id,
-      answers: submittedAnswers.value,
-      start_at: test.value.start_at,
-      end_at: new Date().getTime()
-    }
-    submitting.value = true
-    try {
-      const token = appStore.authToken || ''
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_ENDPOINT}/test/${test.value.id}/result`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      resultId.value = response.data.body.id as string
-    } finally {
-      submitting.value = false
-    }
+    setTimer()
+    const now = new Date().getTime()
+    test.value.start_at = now
+    currentQuestionIndex.value = 0
+    openedAt.value = now
+    testStarted.value = true
   }
 
   const select = (option: Option) => {
@@ -212,16 +193,6 @@ export const useTestStore = defineStore('test', () => {
     nextQuestion()
   }
 
-  const start = () => {
-    if (!test.value) return
-    setTimer()
-    const now = new Date().getTime()
-    test.value.start_at = now
-    currentQuestionIndex.value = 0
-    openedAt.value = now
-    testStarted.value = true
-  }
-
   const setTimer = () => {
     if (interval.value !== null) {
       clearInterval(interval.value)
@@ -244,6 +215,38 @@ export const useTestStore = defineStore('test', () => {
         isTimeOver.value = true
       }
     }, 100) as any as number
+  }
+
+  const submit = async () => {
+    if (!test.value) return
+    if (previewMode.value) {
+      testEnded.value = true
+      return
+    }
+    const payload: SubmittedAnswer = {
+      test_id: test.value.id,
+      answers: submittedAnswers.value,
+      start_at: test.value.start_at,
+      end_at: new Date().getTime()
+    }
+    submitting.value = true
+    try {
+      const token = appStore.authToken || ''
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/test/${test.value.id}/result`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      resultId.value = response.data.body.id as string
+    } catch (err) {
+      UIStore.error = new Error(err as string)
+    } finally {
+      submitting.value = false
+    }
   }
 
   watch(timeElapsed, () => {

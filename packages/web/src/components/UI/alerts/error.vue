@@ -81,11 +81,15 @@ import {
 } from '@headlessui/vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
+import { useUIStore } from '@/store/UI'
+
+const UIStore = useUIStore()
 
 const router = useRouter()
 const open = ref(true)
 const goBack = () => {
   open.value = false
+  UIStore.$reset()
   router.go(-1)
 }
 </script>

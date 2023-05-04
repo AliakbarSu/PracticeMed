@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-full bg-gray-100">
-    <LoadingIssueAlert v-if="error" />
+    <LoadingIssueAlert v-if="UIStore.error" />
     <!-- <div class="p-4">
       <Banner :pass="pass" />
     </div> -->
@@ -201,15 +201,19 @@ import axios from 'axios'
 import type { UserAppMetadata } from '@/types/user'
 import type { Stats } from '@/types/test'
 import LoadingIssueAlert from '@/components/UI/alerts/error.vue'
+import { useUIStore } from '@/store/UI'
 
 export default defineComponent({
+  setup() {
+    const UIStore = useUIStore()
+    return { UIStore }
+  },
   created() {
     this.fetchTestHistory()
   },
   data: () => {
     return {
       loading: false,
-      error: false,
       testHistory: {} as UserAppMetadata['test_history'][0],
       previous_tests: [] as UserAppMetadata['test_history'],
       options: {
@@ -263,14 +267,15 @@ export default defineComponent({
           ({ id }: any) => id === resultId
         ) as UserAppMetadata['test_history'][0]
         if (!matchingTestHistory) {
-          this.error = true
+          this.UIStore.error = new Error(
+            'Failed to find a matching test result'
+          )
           return
         }
         this.testHistory = matchingTestHistory
         this.loading = false
       } catch (err) {
-        console.error(err)
-        this.error = true
+        this.UIStore.error = new Error(err as string)
       }
     },
     calculateChangeRate(key: keyof Stats) {

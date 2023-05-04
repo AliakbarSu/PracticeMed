@@ -1,6 +1,6 @@
 <template>
   <v-app app>
-    <!-- <Alert /> -->
+    <ErrorAlert v-if="error" />
     <Navbar />
     <v-main>
       <router-view />
@@ -17,9 +17,13 @@ import Navbar from '@/components/UI/navbar/navbar.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useAppStore } from './store/main'
 import { storeToRefs } from 'pinia'
+import ErrorAlert from './components/UI/alerts/error.vue'
+import { useUIStore } from './store/UI'
 const store = useAppStore()
+const UIStore = useUIStore()
 
 const { authToken } = storeToRefs(store)
+const { error } = storeToRefs(UIStore)
 
 const { isAuthenticated, getAccessTokenSilently } = useAuth0()
 
