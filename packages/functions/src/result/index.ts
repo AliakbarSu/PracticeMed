@@ -6,15 +6,24 @@ import { ApiGatewayAuth } from '@mpt-types/System'
 export const handler = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
-  const result: UserSubmittedResult = JSON.parse(
-    _evt.body || ''
-  ) as unknown as UserSubmittedResult
-  const analyzedResult = await analyze(result)
-  await saveTestResult({
-    result: analyzedResult,
-    user_id: userId
-  })
-  return {
-    body: analyzedResult as unknown as string
+  try {
+    const result: UserSubmittedResult = JSON.parse(
+      _evt.body || ''
+    ) as unknown as UserSubmittedResult
+    const analyzedResult = await analyze(result)
+
+    await saveTestResult({
+      result: analyzedResult,
+      user_id: userId
+    })
+    return {
+      body: analyzedResult as unknown as string
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      statusCode: 500,
+      body: 'Something went wrong on the server'
+    }
   }
 })

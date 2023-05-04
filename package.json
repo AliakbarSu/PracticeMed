@@ -10,7 +10,8 @@
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "deploy-prod": "npx sst deploy --stage prod"
   },
   "devDependencies": {
     "sst": "^2.4.0",

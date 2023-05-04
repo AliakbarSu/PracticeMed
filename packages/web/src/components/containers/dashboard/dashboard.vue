@@ -161,7 +161,7 @@ const previousTests = computed(() => {
     return {
       ...test,
       ...testHistory,
-      id: testHistory
+      id: testHistory.id
     }
   }) as unknown
 })

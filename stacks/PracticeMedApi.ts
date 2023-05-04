@@ -47,6 +47,7 @@ export function API({ stack }: StackContext) {
     defaults: {
       function: {
         runtime: 'nodejs18.x',
+        timeout: 60,
         environment: {
           stage: stack.stage
         }

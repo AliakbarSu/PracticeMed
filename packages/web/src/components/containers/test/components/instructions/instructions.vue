@@ -17,7 +17,6 @@
                 Test Information
               </h3>
               <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-                <!-- <VueShowdown>fsfaf</VueShowdown> -->
                 Important information.
               </p>
             </div>
@@ -63,18 +62,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
-import { defineProps, computed } from 'vue'
+import { defineProps } from 'vue'
 import type { PropType } from 'vue'
 import type { Test } from '@/types/test'
-const router = useRouter()
 
 const { test } = defineProps({
   test: {
-    type: Object as PropType<Test>
+    type: Object as PropType<Test | null>
   }
 })
-const doItLater = () => {
-  router.push('/dashboard')
-}
 </script>

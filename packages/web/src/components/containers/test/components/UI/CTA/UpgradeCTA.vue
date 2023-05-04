@@ -16,6 +16,7 @@
             >Upgrade plan</a
           >
           <a
+            v-if="goBack"
             href="#"
             @click="navigateBack"
             class="text-sm font-semibold leading-6 text-gray-900"
@@ -32,6 +33,10 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
+    goBack: {
+      type: Boolean,
+      default: true
+    },
     heading: {
       type: String,
       default: 'Upgrade Your Plan to Continue Taking Tests'

@@ -1,5 +1,5 @@
 <template>
-  <RadioGroup v-model="selected" class="px-6 lg:px-8">
+  <RadioGroup v-model="selected" class="px-2 sm:px-6 lg:px-8">
     <RadioGroupLabel class="sr-only"> Server size </RadioGroupLabel>
     <div class="space-y-4">
       <RadioGroupOption

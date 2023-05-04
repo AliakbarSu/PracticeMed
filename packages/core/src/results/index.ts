@@ -71,7 +71,6 @@ export const analyze = async (
   const averageTimeTaken = calculateAverageTimeTaken(analyzedAnswers)
   const averageTimeTakenPerField =
     calculateTimeTakenPerCategory(analyzedAnswers)
-  console.log(averageTimeTakenPerField)
   const fieldsAverageTime = calculateFieldsAverageTime(analyzedAnswers)
   const totalPointsPerField = calculateTotalPointPerCategory(analyzedAnswers)
   // Percentages
