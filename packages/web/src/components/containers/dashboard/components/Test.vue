@@ -38,15 +38,15 @@
 <script lang="ts" setup>
 import type { Test } from '@/types/test'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/store/main'
 import { storeToRefs } from 'pinia'
 import type { PropType } from 'vue'
+import { usePlansStore } from '@/store/plans'
 
 const router = useRouter()
 
-const store = useAppStore()
+const plansStore = usePlansStore()
 
-const { hasActivePlan } = storeToRefs(store)
+const { hasActivePlan } = storeToRefs(plansStore)
 
 const { test } = defineProps({
   test: {
