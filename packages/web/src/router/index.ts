@@ -19,9 +19,24 @@ import TermsAndConditions from '@/components/containers/terms&conditions/terms&c
 import SecurePayments from '@/components/containers/securePayments/securePayments.vue'
 import Privacy from '@/components/containers/privacy/privacy.vue'
 import Contact from '@/components/containers/contact/contact.vue'
+import AMC_MCQ from '@/components/pages/landing/AMC_MCQ.vue'
 import { usePlansStore } from '@/store/plans'
 
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/landing',
+    name: 'Product Display',
+    children: [
+      {
+        beforeEnter: () => {
+          const plansStore = usePlansStore()
+          plansStore.fetchPlans()
+        },
+        path: 'amc-mcq',
+        component: AMC_MCQ
+      }
+    ]
+  },
   {
     path: '/about',
     name: 'About',

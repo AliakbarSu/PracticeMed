@@ -161,7 +161,7 @@ const items = {
   products: [
     { name: 'MCAT', href: '/dashboard?test=mcat' },
     { name: 'USMLE', href: '/dashboard?test=usmle' },
-    { name: 'AMC', href: '/dashboard?test=amc' }
+    { name: 'AMC', href: '/landing/amc-mcq' }
   ],
   company: [
     { name: 'Who We Are', href: '/about' },
