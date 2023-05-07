@@ -57,8 +57,9 @@ export const handler = ApiHandler(async (_evt) => {
     return {
       body: `User subscription canceled`
     }
-  } else if (event.type === 'customer.subscription.created') {
+  } else if (event.type === 'customer.subscription.updated') {
     const subscription = event.data.object as Stripe.Subscription
+    if (subscription.status !== 'active') return
     const trial = !!Number(subscription.metadata?.trial) || false
     const planId = subscription.metadata?.plan_id || ''
     const userId = subscription.metadata?.user_id || ''
