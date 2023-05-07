@@ -43,12 +43,11 @@
 </template>
 
 <script lang="ts" setup>
-import axios from 'axios'
 import { defineProps } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import type { PropType } from 'vue'
 import type { Plan } from '@/types/plans'
-import { addCheckoutEvent } from '@/gtag/index'
+import * as Gtag from '@/gtag/index'
 import { useAppStore } from '@/store/main'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
@@ -86,6 +85,7 @@ const subscribeToPlan = async () => {
 
 watch(checkoutUrl, () => {
   if (checkoutUrl.value) {
+    Gtag.begin_checkout(props.plan)
     window.location.replace(checkoutUrl.value)
     plansStore.$reset()
   }

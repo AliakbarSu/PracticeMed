@@ -140,10 +140,18 @@ import LoadingSkeleton from './components/UI/loading/skeleton.vue'
 import { useAppStore } from '@/store/main'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 import NoTestHistory from './components/UI/CTA/NoTestHistory.vue'
+import { useRoute } from 'vue-router'
+import * as Gtag from '@/gtag/index'
+import { usePlansStore } from '@/store/plans'
+import { watch } from 'vue'
 
+const route = useRoute()
 const store = useAppStore()
+const plansStore = usePlansStore()
+
+const { plans } = storeToRefs(plansStore)
 
 const { tests, testsHistory, loading } = storeToRefs(store)
 
@@ -164,6 +172,21 @@ const previousTests = computed(() => {
       id: testHistory.id
     }
   }) as unknown
+})
+
+watch(plans, () => {
+  const success = !!route.query.success || false
+  const planId = route.query.id || null
+  const freeTrial = route.query.free_trial || false
+  if (success && planId) {
+    const plan = plans.value.find(({ id }) => id === planId)
+    if (!plan) return
+    if (freeTrial) {
+      Gtag.purchase(plan, true)
+    } else {
+      Gtag.purchase(plan)
+    }
+  }
 })
 </script>
 

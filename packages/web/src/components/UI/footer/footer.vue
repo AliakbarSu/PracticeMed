@@ -144,6 +144,7 @@
 import { useContactStore } from '@/store/contact'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import * as Gtag from '@/gtag/index'
 
 const contactStore = useContactStore()
 
@@ -154,6 +155,7 @@ const email = ref('')
 const signup = (event: Event) => {
   event.preventDefault()
   if (!email.value) return
+  Gtag.news_letter_signup()
   contactStore.signup(email.value)
 }
 

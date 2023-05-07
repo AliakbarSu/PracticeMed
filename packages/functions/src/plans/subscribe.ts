@@ -38,8 +38,8 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
       }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
-    success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
-    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true`
+    success_url: `${Config.FRONT_END_URL}/dashboard?success=true&id=${planId}`,
+    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true&id=${planId}`
   })
   return {
     body: checkoutUrl.url || ''
@@ -71,8 +71,8 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
       }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
-    success_url: `${Config.FRONT_END_URL}/dashboard?success=true`,
-    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true`
+    success_url: `${Config.FRONT_END_URL}/dashboard?success=true&id=${planId}&free_trial=true`,
+    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true&id=${planId}&free_trial=true`
   })
   return {
     body: checkoutUrl.url || ''

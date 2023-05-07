@@ -21,6 +21,7 @@ import Privacy from '@/components/containers/privacy/privacy.vue'
 import Contact from '@/components/containers/contact/contact.vue'
 import AMC_MCQ from '@/components/pages/landing/AMC_MCQ.vue'
 import { usePlansStore } from '@/store/plans'
+import * as Gtag from '@/gtag/index'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -47,14 +48,20 @@ const routes: RouteRecordRaw[] = [
     name: 'Plans',
     beforeEnter: () => {
       const plansStore = usePlansStore()
-      plansStore.fetchPlans()
+      plansStore.fetchPlans().then(() => {
+        Gtag.view_item_list(plansStore.plans)
+      })
     },
     component: Plans
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    beforeEnter: authGuard,
+    beforeEnter: (route) => {
+      const plansStore = usePlansStore()
+      plansStore.fetchPlans()
+      return authGuard(route)
+    },
     component: Dashboard
   },
   {
