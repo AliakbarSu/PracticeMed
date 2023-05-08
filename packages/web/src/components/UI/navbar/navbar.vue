@@ -2,13 +2,13 @@
   <Disclosure as="nav" class="bg-white shadow mb-1" v-slot="{ open }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 justify-between">
-        <div class="flex">
+        <div class="flex w-full md:w-auto">
           <div class="-ml-2 mr-2 flex items-center md:hidden">
             <!-- Mobile menu button -->
             <MobileButton :open="open" />
           </div>
           <div
-            class="cursor-pointer flex flex-shrink-0 items-center"
+            class="cursor-pointer flex flex-shrink-0 items-center order-1"
             @click="goTo('/')"
           >
             <img
@@ -22,13 +22,15 @@
               alt="Practice Med"
             />
           </div>
-          <div class="hidden md:ml-6 md:flex md:space-x-8">
+          <div
+            class="md:ml-6 flex grow md:grow-0 space-x-2 md:space-x-8 gap-2 md:gap-0 md:order-1"
+          >
             <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
             <RouterLink
               v-if="isAuth"
               active-class="border-indigo-500 border-b-2"
               to="/dashboard"
-              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+              class="hidden md:inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
               >Dashboard</RouterLink
             >
             <RouterLink
@@ -37,9 +39,21 @@
               class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
               >Plans</RouterLink
             >
+            <RouterLink
+              active-class="border-indigo-500 border-b-2"
+              to="/dashboard"
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+              >Tests</RouterLink
+            >
+            <!-- <RouterLink
+              active-class="border-indigo-500 border-b-2"
+              to="/dashboard"
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+              >Resources</RouterLink
+            > -->
           </div>
         </div>
-        <div class="flex items-center">
+        <div class="hidden md:flex items-center">
           <div class="flex-shrink-0">
             <RouterLink
               v-if="!hideTrialButton"

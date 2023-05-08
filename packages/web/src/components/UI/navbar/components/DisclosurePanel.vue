@@ -13,16 +13,43 @@
         @click="goTo('/dashboard')"
         >Dashboard</DisclosureButton
       >
-      <DisclosureButton
-        as="span"
-        @click="goTo('/plans')"
-        :class="{
-          'border-l-4': isActive('/plans'),
-          'border-indigo-500': isActive('/plans')
-        }"
-        class="block bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
-        >Plans</DisclosureButton
-      >
+      <div class="space-y-1 p-2">
+        <DisclosureButton as="div">
+          <RouterLink
+            v-if="!hideTrialButton"
+            as="button"
+            to="/plans"
+            class="w-full relative inline-flex justify-center items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 mr-6 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+          >
+            Start Free Trial
+          </RouterLink>
+        </DisclosureButton>
+      </div>
+      <div class="space-y-1 pb-3 p-2 pt-0" v-if="!isAuth">
+        <DisclosureButton as="div">
+          <button
+            @click="() => loginWithRedirect()"
+            type="button"
+            class="w-full relative inline-flex justify-center items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Log In
+          </button>
+        </DisclosureButton>
+        <DisclosureButton as="div">
+          <button
+            @click="
+              () =>
+                loginWithRedirect({
+                  authorizationParams: { screen_hint: 'signup' }
+                })
+            "
+            type="button"
+            class="w-full relative inline-flex justify-center items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Sign Up
+          </button>
+        </DisclosureButton>
+      </div>
     </div>
     <div v-if="isAuth" class="border-t border-gray-200 pb-3 pt-4">
       <div class="flex items-center px-4 sm:px-6">
@@ -65,17 +92,21 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store/main'
+import { usePlansStore } from '@/store/plans'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
-const { user, logout, isAuthenticated } = useAuth0()
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+const { user, logout, loginWithRedirect } = useAuth0()
 const router = useRouter()
 
 const store = useAppStore()
+const plansStore = usePlansStore()
 
 const { isAuth } = storeToRefs(store)
+const route = useRoute()
 
 const goTo = (link: string) => {
   router.push(link)
@@ -85,6 +116,9 @@ const onLogout = () => {
     store.$reset()
   })
 }
+const hideTrialButton = computed(
+  () => plansStore.hasActivePlan == true || route.fullPath == '/plans'
+)
 
 const isActive = (path: string) => {
   return router.currentRoute.value.path === path
