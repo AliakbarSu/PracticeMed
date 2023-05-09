@@ -20,27 +20,32 @@ const { error } = storeToRefs(UIStore)
 
 // Composition API
 const auth0 = process.client ? useAuth0() : undefined
+if (process.client) await auth0?.checkSession()
 const isAuthenticated = computed(() => {
   return auth0?.isAuthenticated.value
 })
 
-watch(isAuthenticated, async () => {
-  if (isAuthenticated.value) {
-    const token = await auth0?.getAccessTokenSilently()
-    store.setAuthToken(token || '')
-  }
-})
-if (isAuthenticated.value) {
-  const token = await auth0?.getAccessTokenSilently()
-  store.setAuthToken(token || '')
-}
+watch(
+  isAuthenticated,
+  async () => {
+    if (isAuthenticated.value) {
+      const token = await auth0?.getAccessTokenSilently()
+      store.setAuthToken(token || '')
+    }
+  },
+  { immediate: true }
+)
 
-watch(authToken, () => {
-  if (authToken.value) {
-    store.fetchProfileData()
-    store.fetchTests()
-    store.fetchTestsHistory()
-    store.fetchPortalLink()
-  }
-})
+watch(
+  authToken,
+  () => {
+    if (authToken.value && process.client) {
+      store.fetchProfileData()
+      store.fetchTests()
+      store.fetchTestsHistory()
+      store.fetchPortalLink()
+    }
+  },
+  { immediate: true }
+)
 </script>
