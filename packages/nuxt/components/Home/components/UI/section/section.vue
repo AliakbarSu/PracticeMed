@@ -1,6 +1,6 @@
 <template>
   <!-- Feature section -->
-  <div class="mx-auto mt-6 max-w-7xl px-6 sm:mt-16 lg:px-8">
+  <div class="bg-white mx-auto w-full px-6 pt-24 sm:pt-32 lg:px-8">
     <div class="mx-auto max-w-2xl lg:text-center">
       <h2 class="text-base font-semibold leading-7 text-indigo-600">
         Mock Your Success
@@ -25,7 +25,10 @@
           :key="feature.name"
           class="relative pl-16"
         >
-          <dt class="text-base font-semibold leading-7 text-gray-900">
+          <dt
+            class="text-base font-semibold leading-7 text-gray-900"
+            style="position: unset"
+          >
             <div
               class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600"
             >

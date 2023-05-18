@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { request } from 'graphql-request'
 import { ref } from 'vue'
-import { getTerms } from './queries'
+import gql from 'graphql-tag'
 
 export type TermsAndConditions = {
   item: string
@@ -45,10 +45,18 @@ export type TermsAndConditions = {
 
 const terms = ref([] as TermsAndConditions[])
 const fetchTermsAndConditions = async () => {
-  const response = request(
-    import.meta.env.VITE_HYGRAPH_ENDPOINT,
-    getTerms
-  ) as Promise<{ termsConditions: TermsAndConditions[] }>
+  const getTerms = gql`
+    query Terms {
+      termsConditions {
+        item
+        description
+      }
+    }
+  `
+  const config = useRuntimeConfig()
+  const response = request(config.hygraph_endpoint, getTerms) as Promise<{
+    termsConditions: TermsAndConditions[]
+  }>
   const data = (await response).termsConditions
   terms.value = data
 }

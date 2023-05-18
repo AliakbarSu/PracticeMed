@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <NuxtLayout>
-      <UIAlertsError v-if="error" />
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+  <NuxtLayout>
+    <UIAlertsError v-if="error" />
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 <script lang="ts" setup>
 import { useUIStore } from './src/store/UI'
@@ -48,4 +46,13 @@ watch(
   },
   { immediate: true }
 )
+
+useSeoMeta({
+  title: 'Practice Med',
+  ogTitle: 'Practice Med - Home',
+  ogDescription: 'Ace Your Medical Tests with Confidence',
+  ogImage:
+    'https://res.cloudinary.com/dxuf2ssx6/image/upload/c_scale,w_1200/v1682630656/practiceMed/Illustrations/hero_image.png',
+  ogUrl: 'https://www.practicemed.org'
+})
 </script>

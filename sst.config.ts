@@ -1,6 +1,7 @@
 import { SSTConfig } from 'sst'
 import { API } from './stacks/PracticeMedApi'
 import { WEB } from './stacks/Web'
+import { NuxtStack } from './stacks/Nuxt'
 
 export default {
   config(_input) {
@@ -10,6 +11,6 @@ export default {
     }
   },
   stacks(app) {
-    app.stack(API).stack(WEB)
+    app.stack(API).stack(WEB).stack(NuxtStack)
   }
 } satisfies SSTConfig

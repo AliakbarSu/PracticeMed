@@ -29,15 +29,10 @@ export const usePlansStore = defineStore('plans', () => {
     const config = useRuntimeConfig()
     try {
       loading.value = true
-      const result = await useFetch<{ body: string }>(
-        `${config.public.api_endpoint}/plans`,
-        {
-          method: 'GET'
-        }
-      )
-      plans.value = JSON.parse(
-        (result.data?.value?.body as unknown as string) || ''
-      )
+      const result = await useFetch<Plan[]>(`/api/plans`, {
+        method: 'GET'
+      })
+      plans.value = result.data.value || []
     } catch (err) {
       UIStore.error = err as Error
     } finally {

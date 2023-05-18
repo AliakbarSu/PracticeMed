@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     domain,
     clientId,
     cacheLocation: 'localstorage',
-    useRefreshTokens: true,
+    useRefreshTokens: false,
     authorizationParams: {
       redirect_uri: 'http://localhost:3000',
       audience: 'https://jwt-token-authorizer.com'
@@ -19,13 +19,15 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   addRouteMiddleware('auth', async () => {
     if (process.client) {
-      auth0.checkSession
+      await auth0.checkSession()
+      // console.log(await auth0.)
       if (!auth0.isAuthenticated.value) {
         auth0.loginWithRedirect({
           appState: {
             target: useRoute().path
           }
         })
+        return abortNavigation()
       }
     }
   })

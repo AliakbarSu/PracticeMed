@@ -341,10 +341,10 @@
             v-for="(tier, tierIdx) in shortPlans"
             :key="tier.id"
             :class="[
-              tier.mostPopular
+              tier?.mostPopular
                 ? 'relative bg-gray-900 shadow-2xl'
                 : 'bg-white/60 sm:mx-8 lg:mx-0',
-              tier.mostPopular
+              tier?.mostPopular
                 ? ''
                 : tierIdx === 0
                 ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
@@ -355,7 +355,7 @@
             <h3
               :id="tier.id"
               :class="[
-                tier.mostPopular ? 'text-indigo-400' : 'text-indigo-600',
+                tier?.mostPopular ? 'text-indigo-400' : 'text-indigo-600',
                 'text-base font-semibold leading-7'
               ]"
             >
@@ -364,14 +364,14 @@
             <p class="mt-4 flex items-baseline gap-x-2">
               <span
                 :class="[
-                  tier.mostPopular ? 'text-white' : 'text-gray-900',
+                  tier?.mostPopular ? 'text-white' : 'text-gray-900',
                   'text-5xl font-bold tracking-tight'
                 ]"
                 >{{ tier.price }}</span
               >
               <span
                 :class="[
-                  tier.mostPopular ? 'text-gray-400' : 'text-gray-500',
+                  tier?.mostPopular ? 'text-gray-400' : 'text-gray-500',
                   'text-base'
                 ]"
                 >/month</span
@@ -379,7 +379,7 @@
             </p>
             <p
               :class="[
-                tier.mostPopular ? 'text-gray-300' : 'text-gray-600',
+                tier?.mostPopular ? 'text-gray-300' : 'text-gray-600',
                 'mt-6 text-base leading-7'
               ]"
             >
@@ -388,8 +388,8 @@
             <ul
               role="list"
               :class="[
-                tier.mostPopular ? 'text-gray-300' : 'text-gray-600',
-                tier.mostPopular ? 'space-y-12' : 'space-y-2',
+                tier?.mostPopular ? 'text-gray-300' : 'text-gray-600',
+                tier?.mostPopular ? 'space-y-12' : 'space-y-2',
                 'mt-8 space-y-3 text-sm leading-6 sm:mt-10'
               ]"
             >
@@ -400,7 +400,7 @@
               >
                 <CheckIcon
                   :class="[
-                    tier.mostPopular ? 'text-indigo-400' : 'text-indigo-600',
+                    tier?.mostPopular ? 'text-indigo-400' : 'text-indigo-600',
                     'h-6 w-5 flex-none'
                   ]"
                   aria-hidden="true"
@@ -510,7 +510,7 @@ const features = [
   //   icon: CurrencyDollarIcon
   // }
 ]
-const shortPlans = computed(() => [plans.value[2], plans.value[1]])
+const shortPlans = computed(() => [plans.value[0], plans.value[1]])
 const faqs = [
   {
     question: 'What is the AMC MCQ Exam?',

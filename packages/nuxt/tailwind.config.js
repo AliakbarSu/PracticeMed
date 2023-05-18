@@ -2,10 +2,12 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   purge: [
-    './index.html',
-    './components/**/*.{vue,js,ts,jsx,tsx}',
-    './pages/**/*.{vue,js,ts,jsx,tsx}',
-    './layouts/**/*.{vue,js,ts,jsx,tsx}'
+    './components/**/*.{js,vue,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './nuxt.config.{js,ts}',
+    './app.vue'
   ],
   content: [],
   theme: {

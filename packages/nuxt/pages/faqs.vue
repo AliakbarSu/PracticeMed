@@ -44,7 +44,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
 import { defineComponent } from 'vue'
-const HYGRAPH_ENDPOINT = import.meta.env.VITE_HYGRAPH_ENDPOINT as string
+const config = useRuntimeConfig()
+const HYGRAPH_ENDPOINT = config.public.hygraph_endpoint as string
 import { request } from 'graphql-request'
 import { getFaqs } from '../components/FAQS/queries'
 
