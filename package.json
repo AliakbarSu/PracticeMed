@@ -7,11 +7,11 @@
     "dev": "sst dev",
     "web": "cd packages/web && npm run dev",
     "build": "sst build",
-    "deploy": "sst deploy",
+    "deploy-dev": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "deploy-prod": "npx sst deploy --stage prod"
+    "deploy": "npm run build --prefix ./packages/nuxt && npx sst deploy --stage prod"
   },
   "devDependencies": {
     "sst": "^2.4.0",

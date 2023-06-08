@@ -11,6 +11,6 @@ export default {
     }
   },
   stacks(app) {
-    app.stack(API).stack(WEB).stack(NuxtStack)
+    app.stack(API).stack(NuxtStack)
   }
 } satisfies SSTConfig

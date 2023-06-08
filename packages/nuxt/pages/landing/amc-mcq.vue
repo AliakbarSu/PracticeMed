@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 useSeoMeta({
-  title: 'AMC MCQ - MOCK TEST',
+  title: 'AMC MCQ mock tests | Practice Med',
   description: 'Prepare for your AMC MCQ'
 })
 definePageMeta({

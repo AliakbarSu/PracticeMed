@@ -60,12 +60,7 @@ export const analyze = async (
   submittedTest: UserSubmittedResult
 ): Promise<TestPerformanceResult> => {
   const { test_id, answers } = submittedTest
-  const test = await getTest(test_id)
-  const test1 = await getTest(test_id)
-  const loadedTest = {
-    ...test,
-    questions: [...test.questions, ...test1.questions]
-  }
+  const loadedTest = await getTest(test_id)
   const analyzedAnswers = analyzeAnswer(answers, loadedTest)
   const totalPoints = calculateTotalPoint(analyzedAnswers)
   const averageTimeTaken = calculateAverageTimeTaken(analyzedAnswers)
@@ -96,12 +91,12 @@ export const analyze = async (
   const correctAnswersByMinuteInterval =
     calculateCorrectAnswersByMinuteInterval(analyzedAnswers)
   const speedByMinuteInterval = calculateSpeedByMinuteIntervals(analyzedAnswers)
-  const result = calculateTestResult(totalPoints, test.passingPoint)
+  const result = calculateTestResult(totalPoints, loadedTest.passingPoint)
   return {
     id: uuidv4(),
     test_id,
     stats: {
-      testScore: test.points,
+      testScore: loadedTest.points,
       totalPoints,
       averageTimeTaken,
       averageTimeTakenPerField,

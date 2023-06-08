@@ -234,18 +234,16 @@ export default defineComponent({
       window.print()
     },
     async fetchTestHistory() {
+      const { api_endpoint } = useRuntimeConfig()
       this.loading = true
       const resultId = this.$route.params.id || ''
       try {
         const token = await this.$auth0.getAccessTokenSilently()
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/tests/history`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+        const response = await axios.get(`${api_endpoint}/tests/history`, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        )
+        })
         const testHistoryArray = response.data
           .body as unknown as UserAppMetadata['test_history']
         this.previous_tests = testHistoryArray

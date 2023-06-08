@@ -43,9 +43,9 @@
             >
             <NuxtLink
               active-class="border-indigo-500 border-b-2"
-              to="/dashboard"
+              to="/resources"
               class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
-              >Tests</NuxtLink
+              >Resources</NuxtLink
             >
           </div>
         </div>

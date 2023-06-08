@@ -13,7 +13,7 @@ export const listTestsQuery = gql`
 `
 
 export const getTestQuery = gql`
-  query GetTest($id: ID!, $first: Int, $skip: Int) {
+  query GetTest($id: ID!) {
     test(where: { id: $id }) {
       available
       id
@@ -26,20 +26,25 @@ export const getTestQuery = gql`
       timeLimit
       points
       passingPoint
-      questions(first: $first, skip: $skip) {
-        id
-        point
+      questionsNumber
+    }
+  }
+`
+
+export const getQuestionQuery = gql`
+  query GetQuestions($type: String!, $limit: Int!) {
+    allQuestion(limit: $limit, where: { type: { eq: $type } }) {
+      id
+      point
+      textRaw
+      options {
+        alpha
+        correct
         text
-        options {
-          alpha
-          correct
-          id
-          text
-        }
-        field
-        correct_option_id
-        correct_option_explanation
       }
+      field
+      correct_option_id
+      correct_option_explanation
     }
   }
 `

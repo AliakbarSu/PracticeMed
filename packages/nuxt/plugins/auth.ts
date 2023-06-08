@@ -8,7 +8,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     cacheLocation: 'localstorage',
     useRefreshTokens: false,
     authorizationParams: {
-      redirect_uri: 'http://localhost:3000',
+      redirect_uri: process.client
+        ? 'http://localhost:3000'
+        : 'https://practicemed.org',
       audience: 'https://jwt-token-authorizer.com'
     }
   })

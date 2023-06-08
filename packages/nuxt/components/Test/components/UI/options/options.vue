@@ -5,8 +5,8 @@
       <RadioGroupOption
         as="template"
         v-for="option in options"
-        :key="option.id"
-        :value="option.id"
+        :key="option.alpha"
+        :value="option.alpha"
         v-slot="{ checked, active }"
       >
         <div

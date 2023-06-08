@@ -6,8 +6,8 @@ export function WEB({ stack }: StackContext) {
     api: { url }
   } = use(API)
   const site = new StaticSite(stack, 'Site', {
-    customDomain:
-      stack.stage === 'dev' ? 'web.practicemed.org' : 'practicemed.org',
+    // customDomain:
+    //   stack.stage === 'dev' ? 'web.practicemed.org' : 'practicemed.org',
     path: 'packages/web',
     buildOutput: 'dist',
     buildCommand: 'npm run build',

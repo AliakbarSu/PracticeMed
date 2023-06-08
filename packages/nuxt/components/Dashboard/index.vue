@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="bg-white">
     <div class="py-16 sm:py-24">
       <div class="mx-auto max-w-7xl sm:px-2 lg:px-8">
@@ -97,7 +97,7 @@
                 </div>
               </div>
 
-              <!-- Products -->
+              
               <h4 class="sr-only">Items</h4>
               <ul role="list" class="divide-y divide-gray-200">
                 <DashboardComponentsUILoadingSkeleton v-if="loading" />
@@ -128,6 +128,59 @@
       </div>
     </div>
   </div>
+</template> -->
+
+<template>
+  <div class="bg-white py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-8 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          Dashboard
+        </h2>
+        <p class="mt-2 text-lg leading-8 text-gray-600">
+          Track your progress by reviewing previous tests or take a new one.
+        </p>
+        <p class="p-2 flex items-center justify-center">
+          <span class="mr-2">View previous tests</span>
+          <Switch
+            v-model="enabled"
+            :class="[
+              enabled ? 'bg-indigo-600' : 'bg-gray-200',
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
+            ]"
+          >
+            <span class="sr-only">Use setting</span>
+            <span
+              aria-hidden="true"
+              :class="[
+                enabled ? 'translate-x-5' : 'translate-x-0',
+                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+              ]"
+            />
+          </Switch>
+        </p>
+      </div>
+      <div
+        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+      >
+        <DashboardComponentsTest
+          v-if="state.currentView === 'tests'"
+          v-for="test in tests"
+          :key="test.id"
+          :test="test"
+        />
+        <DashboardComponentsUICTANoTestHistory
+          v-if="(previousTests as TestType[]).length <= 0 && state.currentView === 'history'"
+        />
+        <DashboardComponentsTestHistory
+          v-if="state.currentView === 'history'"
+          v-for="test in previousTests"
+          :key="(test as TestType).id"
+          :test="test"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -142,6 +195,7 @@ import { useRoute } from 'vue-router'
 import * as Gtag from '../../src/gtag/index'
 import { usePlansStore } from '../../src/store/plans'
 import { watch } from 'vue'
+import { Switch } from '@headlessui/vue'
 
 const route = useRoute()
 const store = useAppStore()
@@ -155,9 +209,19 @@ const state = reactive<{ currentView: 'tests' | 'history' }>({
   currentView: 'tests'
 })
 
+const enabled = ref(false)
+
 const setCurrentView = (view: 'tests' | 'history') => {
   state.currentView = view
 }
+
+watch(enabled, () => {
+  if (enabled.value) {
+    setCurrentView('history')
+  } else {
+    setCurrentView('tests')
+  }
+})
 
 const previousTests = computed(() => {
   return testsHistory.value.map((testHistory) => {
@@ -183,6 +247,12 @@ watch(plans, () => {
       Gtag.purchase(plan)
     }
   }
+})
+
+useSeoMeta({
+  title: 'Dashboard',
+  description:
+    'Track your progress by reviewing previous tests or take a new one.'
 })
 </script>
 

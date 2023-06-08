@@ -7,6 +7,8 @@ export function NuxtStack({ stack }: StackContext) {
     api: { url }
   } = use(API)
   const nuxt = new Api(stack, 'Nuxt', {
+    customDomain:
+      stack.stage === 'dev' ? 'web.practicemed.org' : 'practicemed.org',
     cors: {
       allowHeaders: ['*'],
       allowMethods: ['ANY'],
@@ -15,7 +17,7 @@ export function NuxtStack({ stack }: StackContext) {
   })
   const publicAsset = new StaticSite(stack, 'PublicAssetCdn', {
     // customDomain:
-    //   stack.stage === 'dev' ? 'web.practicemed.org' : 'web.practicemed.org',
+    //   stack.stage === 'dev' ? 'web.practicemed.org' : 'nuxt.practicemed.org',
     path: 'packages/nuxt/.output/public',
     // we wait for CloudFront cache invalidation to avoid any issue. It is increase the build time
     waitForInvalidation: true,

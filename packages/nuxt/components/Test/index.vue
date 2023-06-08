@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <TestComponentsAlertsReadyToSubmit
       @submit="testStore.submit"
       v-if="alerts.readyToSubmit"
@@ -15,7 +15,7 @@
       @cancel="cancelAlert('timeOver')"
       @view="viewResults"
     />
-    <div class="test">
+    <div class="test mb-12 p-2">
       <TestComponentsUILoadingSkeleton v-if="loading" />
       <TestComponentsInstructions
         v-if="!loading && hasTestsRemaning && !testStarted"
@@ -52,6 +52,7 @@
           @next="next"
           @skip="testStore.skip"
           @end="endTestAlert"
+          class="mr-12"
         />
       </div>
     </div>

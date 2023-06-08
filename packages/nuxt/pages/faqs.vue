@@ -73,4 +73,10 @@ export default defineComponent<{
     this.faqs = await getFAQs()
   }
 })
+
+useSeoMeta({
+  title: 'FAQS | Practice Med',
+  description:
+    'Do you have any question regarding AMC MCQ mock test or our platform in general?'
+})
 </script>

@@ -12,6 +12,13 @@ export function API({ stack }: StackContext) {
         : 'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
   })
 
+  const SANITY_ENDPOINT = new Config.Parameter(stack, 'SANITY_ENDPOINT', {
+    value:
+      stack.stage === 'dev'
+        ? 'https://5f74k37r.api.sanity.io/v1/graphql/production/default'
+        : 'https://5f74k37r.api.sanity.io/v1/graphql/production/default'
+  })
+
   // AUTH0
   const DOMAIN = new Config.Parameter(stack, 'DOMAIN', {
     value: AUTH0_DOMAIN
@@ -28,7 +35,7 @@ export function API({ stack }: StackContext) {
   const FRONT_END_URL = new Config.Parameter(stack, 'FRONT_END_URL', {
     value:
       stack.stage === 'dev'
-        ? 'http://localhost:5173'
+        ? 'http://localhost:3000'
         : 'https://practicemed.org'
   })
 
@@ -44,6 +51,8 @@ export function API({ stack }: StackContext) {
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
+    customDomain:
+      stack.stage === 'dev' ? 'dev.practicemed.org' : 'api.practicemed.org',
     defaults: {
       function: {
         runtime: 'nodejs18.x',
@@ -53,8 +62,6 @@ export function API({ stack }: StackContext) {
         }
       }
     },
-    customDomain:
-      stack.stage === 'dev' ? 'dev.practicemed.org' : 'api.practicemed.org',
     authorizers: {
       auth0Authorizer: {
         type: 'jwt',
@@ -130,7 +137,8 @@ export function API({ stack }: StackContext) {
     AUTH0_CLIENT_ID,
     AUTH0_CLIENT_SECRET,
     STRIPE_SIGNING_SECRET,
-    SENDGRID_API_KEY
+    SENDGRID_API_KEY,
+    SANITY_ENDPOINT
   ])
   stack.addOutputs({
     ApiDomain: api.customDomainUrl,
