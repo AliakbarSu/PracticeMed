@@ -73,7 +73,11 @@ const props = defineProps({
 
 const loginIfNotAuthenticated = () => {
   if (!isAuth.value) {
-    loginWithRedirect()
+    loginWithRedirect({
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    })
     return
   }
 }
