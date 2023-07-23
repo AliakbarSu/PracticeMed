@@ -62,7 +62,16 @@ The motivation behind building this app was to help Med student to pass Medical 
 
    ```
 
-   You can find the specific parameter names inside the .env.development file
+   ```shell
+      npx sst secrets set HYGRAPH_TOKEN
+      npx sst secrets set AUTH0_CLIENT_SECRET
+      npx sst secrets set STRIPE_SECRET
+      npx sst secrets set STRIPE_SIGNING_SECRET
+      npx sst secrets set SENDGRID_API_KEY
+   ```
+
+   You need to set these values for both development and production environments with e.g `npx sst secrets set HYGRAPH_TOKEN some-value --stage prod`.
+   You can find the specific parameter names inside the .env.development file.
 
 ### Development
 
@@ -75,7 +84,7 @@ The motivation behind building this app was to help Med student to pass Medical 
 2. Start the development server (frontend):
 
    ```shell
-    cd nuxt
+    cd packages/nuxt
     npm run dev
    ```
 
