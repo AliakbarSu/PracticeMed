@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
-    cdnURL: 'https://d5rgciykbursv.cloudfront.net',
+    cdnURL: 'https://dsl7ar6bugrck.cloudfront.net',
     head: {
       script: [
         {
