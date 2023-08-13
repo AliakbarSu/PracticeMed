@@ -1,6 +1,7 @@
 <template>
   <NuxtLayout>
     <UIAlertsError v-if="error" />
+    <UILoading />
     <NuxtPage />
   </NuxtLayout>
 </template>
