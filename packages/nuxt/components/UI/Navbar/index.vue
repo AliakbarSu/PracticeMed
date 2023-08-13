@@ -61,7 +61,7 @@
             </NuxtLink>
             <button
               v-if="!isAuth"
-              @click="() => null"
+              @click="() => signup()"
               type="button"
               class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -71,7 +71,7 @@
           <div class="flex-shrink-0">
             <button
               v-if="!isAuth"
-              @click="login"
+              @click="loginWithRedirect"
               type="button"
               class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
@@ -121,6 +121,7 @@ import { storeToRefs } from 'pinia'
 import { useAppStore } from '../../../src/store/main'
 import { usePlansStore } from '../../../src/store/plans'
 import { useAuth0 } from '@auth0/auth0-vue'
+import { signup, loginWithRedirect } from '../../../src/auth/index'
 
 const store = useAppStore()
 const plansStore = usePlansStore()
@@ -134,15 +135,6 @@ const auth0 = process.client ? useAuth0() : undefined
 const hideTrialButton = computed(
   () => plansStore.hasActivePlan == true || route.fullPath == '/plans'
 )
-const login = () => {
-  if (!auth0?.isAuthenticated.value) {
-    auth0?.loginWithRedirect({
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    })
-  }
-}
 
 const goTo = (link: string) => {
   router.push(link)
