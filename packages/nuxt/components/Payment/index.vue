@@ -1,8 +1,8 @@
 <template>
-  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 pb-48 pt-22">
+  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 py-24">
     <div class="px-10 sm:px-6 lg:px-38 xl:px-40 py-32">
       <div class="rounded-md bg-red-50 p-4">
-        <div class="flex">
+        <div class="flex justify-center">
           <div class="flex-shrink-0">
             <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
           </div>
