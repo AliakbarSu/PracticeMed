@@ -9,9 +9,7 @@ export const auth = () =>
     cacheLocation: 'localstorage',
     useRefreshTokens: true,
     authorizationParams: {
-      redirect_uri: process.client
-        ? 'http://localhost:3000'
-        : 'https://practicemed.org',
+      redirect_uri: 'https://practicemed.org',
       audience: 'https://jwt-token-authorizer.com'
     }
   })

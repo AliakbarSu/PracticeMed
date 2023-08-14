@@ -24,6 +24,7 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
   const customerId = app_metadata.plan.stripe_customer_id
   const checkoutUrl = await createCheckoutUrl({
     ...(customerId ? { customer: customerId } : { customer_email: email }),
+    allow_promotion_codes: true,
     mode: 'subscription',
     metadata: {
       customer_id: userId,
@@ -57,6 +58,7 @@ export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
   const checkoutUrl = await createCheckoutUrl({
     ...(customerId ? { customer: customerId } : { customer_email: email }),
     mode: 'subscription',
+    allow_promotion_codes: true,
     metadata: {
       customer_id: userId,
       product_id: product.id,
