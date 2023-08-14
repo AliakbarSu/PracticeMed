@@ -12,12 +12,12 @@
             @click="goTo('/')"
           >
             <img
-              class="block h-20 w-auto lg:hidden"
+              class="block h-28 w-auto lg:hidden"
               src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1682296708/practiceMed/Illustrations/Practice_Med-logo.png"
               alt="Practice Med"
             />
             <img
-              class="hidden h-20 w-auto lg:block"
+              class="hidden h-32 w-auto lg:block"
               src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1682296708/practiceMed/Illustrations/Practice_Med-logo.png"
               alt="Practice Med"
             />
@@ -107,8 +107,9 @@
         </div>
       </div>
     </div>
-
-    <UINavbarComponentsDisclosurePanel />
+    <ClientOnly fallback-tag="span" fallback="...">
+      <UINavbarComponentsDisclosurePanel />
+    </ClientOnly>
   </Disclosure>
 </template>
 
