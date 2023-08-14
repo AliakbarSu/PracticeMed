@@ -49,18 +49,14 @@
     <div v-if="isAuth" class="border-t border-gray-200 pb-3 pt-4">
       <div class="flex items-center px-4 sm:px-6">
         <div class="flex-shrink-0">
-          <img
-            class="h-10 w-10 rounded-full"
-            :src="user?.value.picture"
-            alt=""
-          />
+          <img class="h-10 w-10 rounded-full" :src="user?.picture" alt="" />
         </div>
         <div class="ml-3">
           <div class="text-base font-medium text-gray-800">
-            {{ user?.value.nickname }}
+            {{ user?.nickname }}
           </div>
           <div class="text-sm font-medium text-gray-500">
-            {{ user?.value.email }}
+            {{ user?.email }}
           </div>
         </div>
         <button
@@ -108,7 +104,7 @@ const plansStore = usePlansStore()
 const { isAuth } = storeToRefs(store)
 const route = useRoute()
 
-const { user } = process.client ? useAuth0() : { user: null }
+const { user } = useAuth0()
 
 const goTo = (link: string) => {
   router.push(link)

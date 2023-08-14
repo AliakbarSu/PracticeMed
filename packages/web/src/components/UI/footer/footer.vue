@@ -85,8 +85,8 @@
               Sign up for our newsletter
             </h3>
             <p class="mt-6 text-sm text-gray-500">
-              Stay Ahead with Our Newsletter - Get Expert Tips, Exclusive
-              Discounts, and More!
+              Stay ahead with our newsletter - Get expert tips, exclusive
+              discounts, and more!
             </p>
             <form @submit="signup" class="mt-2 flex sm:max-w-md">
               <label for="email-address" class="sr-only">Email address</label>
