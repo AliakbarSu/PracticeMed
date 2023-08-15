@@ -10,7 +10,7 @@
         <p
           class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
         >
-          We have worked with thousands of amazing people
+          Some of the feedbacks we received from our users
         </p>
       </div>
       <div

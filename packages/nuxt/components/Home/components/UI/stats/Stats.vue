@@ -4,7 +4,7 @@
       <div class="mx-auto max-w-2xl lg:max-w-none">
         <div class="text-center">
           <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Designed to help medical doctors achieve success
+            Designed to help IMG doctors achieve success
           </h2>
           <p class="mt-4 text-lg leading-8 text-gray-300">
             Here are some of the key stats that demonstrate the effectiveness of
@@ -51,6 +51,6 @@ const stats = [
     name: 'Success rate among our subscribers in their respective medical exams',
     value: '87%'
   },
-  { id: 4, name: 'Registered users worldwide', value: '500+' }
+  { id: 4, name: 'More affordable than similar platforms', value: '30%' }
 ]
 </script>

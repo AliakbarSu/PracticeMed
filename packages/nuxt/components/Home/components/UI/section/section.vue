@@ -11,9 +11,9 @@
         Ace Your Medical Tests with Confidence
       </p>
       <p class="mt-6 text-lg leading-8 text-gray-600">
-        Prepare for Success with Our Mock Medical Exams! Our Service Provides a
-        Realistic Exam Experience and Expert Feedback to Help You Identify Your
-        Strengths and Weaknesses.
+        Prepare for success with our mock medical exams! Our service provides a
+        realistic exam experience and meaningful feedback to help you identify
+        your strengths and weaknesses.
       </p>
     </div>
     <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
