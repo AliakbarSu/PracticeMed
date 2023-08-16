@@ -124,7 +124,8 @@ export function API({ stack }: StackContext) {
       'POST /api/newsletter/signup': `${fnPath}/newsletter/index.signup`,
       'POST /api/newsletter/unsubscribe': `${fnPath}/newsletter/index.unsubscribe`,
       // CONTACTS
-      'POST /api/contact/message': `${fnPath}/contact/index.message`
+      'POST /api/contact/message': `${fnPath}/contact/index.message`,
+      'POST /api/auth/welcome': `${fnPath}/welcomeEmail/index.message`
     }
   })
 
