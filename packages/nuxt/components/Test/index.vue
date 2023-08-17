@@ -38,7 +38,7 @@
         </div>
 
         <div class="mt-6 overflow-hidden rounded-lg bg-white shadow">
-          <div class="px-4 py-5 sm:p-6">
+          <div class="px-4 py-5 sm:p-6" ref="questionRef">
             <TestComponentsUIQuestion :question="question" />
             <!-- <CircularTimer/> -->
             <TestComponentsUIOptions
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTestStore } from '../../src/store/test'
 import { storeToRefs } from 'pinia'
@@ -72,7 +72,7 @@ export interface Alerts {
   readyToSubmit: boolean
   upgrade: boolean
 }
-
+const questionRef = ref<HTMLButtonElement | null>(null)
 const router = useRouter()
 const route = useRoute()
 
@@ -132,6 +132,7 @@ const next = () => {
     setAlert('selectOption')
   } else {
     testStore.next()
+    questionRef.value?.scrollIntoView({ behavior: 'smooth' })
   }
 }
 

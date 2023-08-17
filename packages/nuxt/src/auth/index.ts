@@ -23,9 +23,7 @@ export const getAuth0Client = async () => {
 
 export const loginWithRedirect = async () => {
   const client = await getAuth0Client()
-  client.loginWithRedirect().then((user) => {
-    console.log(user)
-  })
+  client.loginWithRedirect().then((user) => {})
 }
 
 export const signup = () =>

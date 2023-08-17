@@ -1,6 +1,7 @@
 <template>
   <div>
     <HomeComponentsUIHero />
+    <HomeComponentsTest />
     <HomeComponentsUIStats />
     <HomeComponentsUISection />
     <HomeComponentsTestimonial />

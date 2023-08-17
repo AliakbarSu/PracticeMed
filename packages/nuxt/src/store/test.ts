@@ -29,6 +29,7 @@ export const useTestStore = defineStore('test', () => {
   const UIStore = useUIStore()
 
   const previewMode = ref(false)
+  const demoMode = ref(false)
   const loading = ref(false)
   const submitting = ref(false)
   const hasTestsRemaning = ref(true)
@@ -64,6 +65,7 @@ export const useTestStore = defineStore('test', () => {
     isTimeOver.value = false
     interval.value = null
     previewMode.value = false
+    demoMode.value = false
     submitting.value = false
     loading.value = false
   }
@@ -140,9 +142,14 @@ export const useTestStore = defineStore('test', () => {
     instructions.value = loadedTest.instructions
   }
 
+  const loadDemoTest = () => {
+    loadMockTest()
+    demoMode.value = true
+  }
+
   const start = () => {
     if (!test.value) return
-    setTimer()
+    if (!demoMode.value) setTimer()
     const now = new Date().getTime()
     test.value.start_at = now
     currentQuestionIndex.value = 0
@@ -258,6 +265,7 @@ export const useTestStore = defineStore('test', () => {
   return {
     loadTest,
     loadMockTest,
+    loadDemoTest,
     start,
     skip,
     next,
@@ -276,6 +284,7 @@ export const useTestStore = defineStore('test', () => {
     timeRemained,
     isTimeOver,
     previewMode,
+    demoMode,
     resultId,
     $reset
   }

@@ -2,15 +2,29 @@
   <apexchart
     type="line"
     height="350"
+    style="margin-bottom: 20px"
     :options="chartOptions"
     :series="chartData"
   ></apexchart>
 </template>
 
 <script lang="ts">
-
 export default {
-  props: ['labels', 'data'],
+  props: {
+    labels: {
+      type: Array,
+      required: true
+    },
+    data: {
+      type: Array,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true,
+      default: 'Time Spent'
+    }
+  },
   computed: {
     chartOptions() {
       return {
@@ -25,7 +39,14 @@ export default {
           enabled: false
         },
         legend: {
-          tooltipHoverFormatter: function (val: string, opts: {seriesIndex: number; dataPointIndex: number; w: {globals: any}}) {
+          tooltipHoverFormatter: function (
+            val: string,
+            opts: {
+              seriesIndex: number
+              dataPointIndex: number
+              w: { globals: any }
+            }
+          ) {
             return (
               val +
               ' - <strong>' +
@@ -41,7 +62,15 @@ export default {
           }
         },
         xaxis: {
-          categories: this.labels
+          categories: this.labels,
+          title: {
+            text: 'Test Duration'
+          }
+        },
+        yaxis: {
+          title: {
+            text: this.title
+          }
         },
         grid: {
           borderColor: '#f1f1f1'
@@ -51,8 +80,9 @@ export default {
     chartData() {
       return [
         {
-          name: 'Time Performance',
-          data: this.data
+          name: this.title,
+          data: this.data,
+          color: 'green'
         }
       ]
     }

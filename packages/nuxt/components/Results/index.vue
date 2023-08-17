@@ -10,12 +10,13 @@
           <h1
             class="text-3xl font-bold leading-tight tracking-tight text-gray-900"
           >
-            Test Results
+            Feedback
           </h1>
         </div>
       </header>
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ResultsComponentsUISampleBadge v-if="demoMode" />
           <div>
             <!-- <h3 class="text-base font-semibold leading-6 text-gray-900">
               Last 30 days
@@ -81,8 +82,12 @@
             class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Subject-wise Percentage
+                <p class="max-w-4xl text-sm text-gray-500">
+                  percentage of correct responses per subject
+                </p>
               </dt>
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
@@ -96,8 +101,12 @@
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Overall Question Accuracy
+                <p class="max-w-4xl text-sm text-gray-500">
+                  number of correct questions over time intervals
+                </p>
               </dt>
               <dd
                 class="mt-1 h-full items-center flex justify-center md:block lg:flex"
@@ -105,6 +114,7 @@
                 <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ResultsComponentsLine
                   v-if="!loading"
+                  title="Correct Answers"
                   :data="accuracyOverTime.datasets"
                   :labels="accuracyOverTime.labels"
                 />
@@ -115,8 +125,12 @@
             class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Overall Time Performance
+                <p class="max-w-4xl text-sm text-gray-500">
+                  time taken per question during test
+                </p>
               </dt>
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
@@ -130,8 +144,12 @@
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Mean Subject Time
+                <p class="max-w-4xl text-sm text-gray-500">
+                  total time taken per subject
+                </p>
               </dt>
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
@@ -147,11 +165,15 @@
             </div>
           </dl>
           <dl
-            class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
+            class="mt-5 pb-16 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Incorrect Response Count
+                <p class="max-w-4xl text-sm text-gray-500">
+                  total number of incorrect responses per subject
+                </p>
               </dt>
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
@@ -166,8 +188,12 @@
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Correct Response Count
+                <p class="max-w-4xl text-sm text-gray-500">
+                  total number of correct responses per subject
+                </p>
               </dt>
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
@@ -182,8 +208,21 @@
               </dd>
             </div>
           </dl>
+          <div
+            v-if="demoMode"
+            class="mt-5 pb-16 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
+          >
+            <ResultsComponentsFeedback />
+          </div>
         </div>
       </main>
+      <div class="my-4" v-if="demoMode">
+        <TestComponentsUICTAUpgradeCTA
+          heading="Take a Mock Test to See Your Results"
+          description="This is just a sample data. Sign up to a paid plan to take a mock test and see your results."
+          btnText="View Plans"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -195,6 +234,7 @@ import axios from 'axios'
 import type { UserAppMetadata } from '@/types/user'
 import type { Stats } from '../../src/types/test'
 import { useUIStore } from '../../src/store/UI'
+import { demoResultsData } from '../../src/data/demoResultsData'
 
 export default defineComponent({
   setup() {
@@ -207,6 +247,7 @@ export default defineComponent({
   data: () => {
     return {
       loading: false,
+      demoMode: false,
       testHistory: {} as UserAppMetadata['test_history'][0],
       previous_tests: [] as UserAppMetadata['test_history'],
       options: {
@@ -237,6 +278,20 @@ export default defineComponent({
       const { api_endpoint } = useRuntimeConfig()
       this.loading = true
       const resultId = this.$route.params.id || ''
+
+      // display demo data
+      if (resultId === 'demo_test') {
+        this.demoMode = true
+        setTimeout(() => {
+          this.previous_tests = [
+            demoResultsData
+          ] as UserAppMetadata['test_history']
+          this.testHistory =
+            demoResultsData as UserAppMetadata['test_history'][0]
+          this.loading = false
+        }, 1000)
+        return
+      }
       try {
         const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.get(`${api_endpoint}/tests/history`, {
@@ -257,6 +312,7 @@ export default defineComponent({
           return
         }
         this.testHistory = matchingTestHistory
+
         this.loading = false
       } catch (err) {
         this.UIStore.error = new Error(err as string)
@@ -302,14 +358,14 @@ export default defineComponent({
           changeType: this.calculateChangeType('totalPoints')
         },
         {
-          name: 'Average Time',
+          name: 'Average Time (minutes)',
           stat: this.testHistory.stats.averageTimeTaken.toFixed(2),
           previousStat: this.testHistory.stats.averageTimeTaken.toFixed(2),
           change: this.calculateChangeRate('averageTimeTaken').toFixed(2),
           changeType: this.calculateChangeType('averageTimeTaken')
         },
         {
-          name: 'Subjects Average Time',
+          name: 'Subjects Average Time (minutes)',
           stat: this.testHistory.stats.fieldsAverageTime.toFixed(2),
           previousStat: this.testHistory.stats.fieldsAverageTime.toFixed(2),
           change: this.calculateChangeRate('fieldsAverageTime').toFixed(2),
@@ -370,7 +426,7 @@ export default defineComponent({
         options: {
           dataLabels: {
             formatter: function (val: any, opts: any) {
-              return opts.w.config.series[opts.seriesIndex] + ' Mins'
+              return opts.w.config.series[opts.seriesIndex] + ' m'
             }
           }
         }
@@ -380,7 +436,7 @@ export default defineComponent({
       const labels = Object.keys(
         this.testHistory.stats.correctAnswersByMinuteInterval
       ).map((key) => {
-        return (Number(key) / 600000).toFixed(2) + ' Mins'
+        return (Number(key) / 600000).toFixed(2) + ' m'
       })
       const values = Object.keys(
         this.testHistory.stats.correctAnswersByMinuteInterval
@@ -396,15 +452,15 @@ export default defineComponent({
       const labels = Object.keys(
         this.testHistory.stats.speedByMinuteInterval
       ).map((key) => {
-        return (
-          Number(this.testHistory.stats.speedByMinuteInterval[key]).toFixed(2) +
-          ' Mins'
-        )
+        return Number(key).toFixed(2) + ' m'
       })
       return {
         labels,
         datasets: Object.keys(this.testHistory.stats.speedByMinuteInterval).map(
-          (key) => Number(this.testHistory.stats.speedByMinuteInterval[key])
+          (key) =>
+            Number(this.testHistory.stats.speedByMinuteInterval[key]).toFixed(
+              2
+            ) + ' m'
         )
       }
     },
