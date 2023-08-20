@@ -99,6 +99,24 @@ const posts = [
       imageUrl:
         'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
     }
+  },
+  {
+    id: 3,
+    title:
+      'A Comprehensive Guide to Prepare for the AMC Multiple Choice Question (MCQ) Exam from Scratch',
+    href: '/resources/amc/prepare-from-scratch',
+    description:
+      'Are you ready to take on the challenge of the (AMC) Multiple Choice Question (MCQ) exam?',
+    date: '16 Aug, 2023',
+    datetime: '2023-08-16',
+    category: { title: 'AMC', href: '/landing/amc-mcq' },
+    author: {
+      name: 'Michael Foster',
+      role: 'Co-Founder / CTO',
+      href: '#',
+      imageUrl:
+        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+    }
   }
 ]
 
