@@ -40,6 +40,9 @@
         <div class="mt-6 overflow-hidden rounded-lg bg-white shadow">
           <div class="px-4 py-5 sm:p-6" ref="questionRef">
             <TestComponentsUIQuestion :question="question" />
+            <TestComponentsUIExplanation
+              :text="question.correct_option_explanation"
+            />
             <!-- <CircularTimer/> -->
             <TestComponentsUIOptions
               @select="testStore.select"
