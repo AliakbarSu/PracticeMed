@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <TestComponentsAlertsReadyToSubmit
       @submit="testStore.submit"
       v-if="alerts.readyToSubmit"
@@ -56,7 +56,7 @@
         />
       </div>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts" setup>
