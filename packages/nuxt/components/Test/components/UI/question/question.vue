@@ -2,7 +2,7 @@
   <div class="bg-white px-6 py-16 lg:px-8">
     <div class="mx-auto text-base leading-7 text-gray-700">
       <p class="text-base font-semibold leading-7 text-indigo-600">
-        Question Number: {{ question?.number }}
+        Question {{ question?.number }}
         <span
           class="ml-1 inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
           v-if="question?.skipped"
