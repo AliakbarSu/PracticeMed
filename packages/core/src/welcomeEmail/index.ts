@@ -5,7 +5,7 @@ sgMailClient.setApiKey(Config.SENDGRID_API_KEY)
 export const sendWelcomeEmail = async (email: string) => {
   const data = {
     from: {
-      email: 'info@mle-prep-tests.org'
+      email: 'info@practicemed.org'
     },
     personalizations: [
       {

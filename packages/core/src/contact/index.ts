@@ -10,7 +10,7 @@ export const sendMessage = (data: {
 }) => {
   const message = {
     from: {
-      email: 'info@mle-prep-tests.org',
+      email: 'info@practicemed.org',
       name: `${data.firstName} ${data.lastName}`
     },
     to: 'aliakbar.su@gmail.com',
