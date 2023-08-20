@@ -1,6 +1,5 @@
 import { SSTConfig } from 'sst'
 import { API } from './stacks/PracticeMedApi'
-import { WEB } from './stacks/Web'
 import { NuxtStack } from './stacks/Nuxt'
 
 export default {

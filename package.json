@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "sst dev",
-    "web": "cd packages/web && npm run dev",
     "build": "sst build",
     "deploy-dev": "sst deploy",
     "remove": "sst remove",
