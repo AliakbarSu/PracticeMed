@@ -4,6 +4,7 @@ import { TestPerformanceResult } from './Result'
 
 export interface UserAppMetadata {
   test_history: TestPerformanceResult[]
+  raw_test_history: any[]
   plan: UserPlan
 }
 

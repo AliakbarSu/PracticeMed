@@ -14,7 +14,8 @@ export const handler = ApiHandler(async (_evt) => {
 
     await saveTestResult({
       result: analyzedResult,
-      user_id: userId
+      user_id: userId,
+      raw_result: result
     })
     return {
       body: analyzedResult as unknown as string

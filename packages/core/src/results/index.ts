@@ -120,16 +120,25 @@ export const analyze = async (
 
 export const saveTestResult = async ({
   user_id,
-  result
+  result,
+  raw_result
 }: {
   user_id: string
   result: TestPerformanceResult
+  raw_result?: UserSubmittedResult
 }): Promise<UserAppMetadata> => {
   const user_app_metadata = await getUserAppMetadata(user_id)
-  const { test_history } = user_app_metadata
+  const { test_history, raw_test_history } = user_app_metadata
+
+  const user_submitted_result = [...(raw_test_history || [])]
+  if (raw_result) {
+    user_submitted_result.push(raw_result)
+  }
+
   const updated_app_metadata: UserAppMetadata = {
     ...user_app_metadata,
-    test_history: [...test_history, result]
+    test_history: [...test_history, result],
+    raw_test_history: user_submitted_result
   }
   return updateUserAppMetadata({ id: user_id, data: updated_app_metadata })
 }
