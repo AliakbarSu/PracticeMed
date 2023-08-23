@@ -4,6 +4,7 @@
       @submit="testStore.submit"
       v-if="alerts.readyToSubmit"
       @cancel="cancelAlert('readyToSubmit')"
+      :submitting="submitting"
     />
     <TestComponentsAlertsSelectOption
       v-if="alerts.selectOption"
