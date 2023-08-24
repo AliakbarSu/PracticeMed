@@ -1,5 +1,6 @@
 import { Question } from '../../types/Question'
 import { AnalyzedAnswer, ResultEnum, SubmittedAnswer } from '../../types/Result'
+import moment from 'moment'
 
 export const isCorrectOption = (
   { option_id }: SubmittedAnswer,
@@ -10,9 +11,10 @@ export const isCorrectOption = (
 }
 
 export const calculateTimeTaken = (answer: SubmittedAnswer) => {
-  const startTime = new Date(Number(answer.start_at))
-  const endTime = new Date(Number(answer.end_at))
-  const timeTaken = (endTime.getTime() - startTime.getTime()) / 1000
+  const startTime = moment(answer.start_at)
+  const endTime = moment(answer.end_at)
+  const timeTaken = moment.duration(endTime.diff(startTime)).asMinutes()
+
   return { ...answer, timeTaken }
 }
 
@@ -27,30 +29,22 @@ export const calculateTimeTakenPerCategory = (data: AnalyzedAnswer[]) => {
       categoryTimes[answer.field] = timeTaken
     }
   })
+  for (const key in categoryTimes) {
+    categoryTimes[key] = parseInt(categoryTimes[key].toFixed(2))
+  }
   return categoryTimes
 }
 
 export const calculateAverageTimeTaken = (data: AnalyzedAnswer[]) => {
-  let totalTime = 0
-  let answerCount = 0
-  data.forEach((answer) => {
+  const totalTime = data.reduce((total, answer) => {
     const { timeTaken } = calculateTimeTaken(answer)
-    totalTime += timeTaken
-    answerCount += 1
-  })
-
-  const averageTime = totalTime / answerCount
-  return averageTime
+    return timeTaken + total
+  }, 0)
+  return parseInt((totalTime / data.length).toFixed())
 }
 
 export const calculateTotalPoint = (data: AnalyzedAnswer[]) => {
-  let totalPoint = 0
-  data.forEach((answer) => {
-    if (answer.point >= 1 && answer.point <= 100) {
-      totalPoint += answer.point
-    }
-  })
-  return totalPoint
+  return data.reduce((acc, cur) => acc + cur.point, 0)
 }
 
 export const calculateTotalPointPerCategory = (data: AnalyzedAnswer[]) => {
@@ -225,41 +219,102 @@ export const calculateIncorrectAnswersCountPerField = (
   return counts
 }
 
-export const calculateCorrectAnswersByMinuteInterval = (
-  answersArray: AnalyzedAnswer[]
-): { [key: string]: number } => {
-  const correctAnswersByMinuteInterval = {} as any
+const getMinuteIntervals = (
+  startAt: string,
+  endAt: string,
+  interval: number = 2,
+  defaultValue: any = 0
+) => {
+  const testStartTime = moment(startAt)
+  const testEndTime = moment(endAt)
+  const testDuration = moment.duration(testEndTime.diff(testStartTime))
+  const result: {
+    [key: string]: number
+  } = {}
 
-  for (const answer of answersArray) {
-    const minuteInterval = Math.floor(Number(answer.start_at) / 60000)
-    if (!correctAnswersByMinuteInterval[minuteInterval]) {
-      correctAnswersByMinuteInterval[minuteInterval] = 0
-    }
-    if (answer.correct) {
-      correctAnswersByMinuteInterval[minuteInterval]++
-    }
+  for (let i = 0; i <= testDuration.asMinutes(); i += interval) {
+    result[i] = defaultValue
   }
-
-  return correctAnswersByMinuteInterval
+  return result
 }
 
-export const calculateSpeedByMinuteIntervals = (data: AnalyzedAnswer[]) => {
-  const timeIntervals = {} as any
-  data.forEach((item) => {
-    const start = new Date(parseInt(item.start_at))
-    const end = new Date(parseInt(item.end_at))
-    const diff = end.getTime() - start.getTime()
-    const minutes = Math.floor(diff / 60000) // 1 minute = 60,000 milliseconds
-    for (let i = 0; i <= minutes; i++) {
-      const key = start.getTime() + i * 60000
-      if (timeIntervals[key]) {
-        timeIntervals[key]++
-      } else {
-        timeIntervals[key] = 1
+export const calculateCorrectAnswersByMinuteInterval = (
+  startAt: string,
+  endAt: string,
+  answersArray: AnalyzedAnswer[]
+): { [key: string]: number } => {
+  const testStartTime = moment(startAt)
+  const testEndTime = moment(endAt)
+  const chunkSize = 2
+  const testDuration = moment.duration(testEndTime.diff(testStartTime))
+  const result: {
+    [key: string]: number
+  } = getMinuteIntervals(startAt, endAt, chunkSize)
+
+  answersArray.forEach((answer) => {
+    const timeElapsed = moment.duration(
+      moment(answer.end_at).diff(testStartTime)
+    )
+    const intervals = Object.keys(result)
+    for (let i = 0; i < intervals.length; i++) {
+      const nextIndex = i + 1
+      const interval = parseInt(intervals[i])
+      const nextInterval =
+        parseInt(intervals[nextIndex]) || testDuration.asMinutes() + chunkSize
+      if (
+        timeElapsed.asMinutes() >= interval &&
+        timeElapsed.asMinutes() <= nextInterval
+      ) {
+        result[interval] += answer.correct ? 1 : 0
       }
     }
   })
-  return timeIntervals
+  return result
+}
+
+export const calculateSpeedByMinuteIntervals = (
+  startAt: string,
+  endAt: string,
+  answersArray: AnalyzedAnswer[]
+) => {
+  const testStartTime = moment(startAt)
+  const testEndTime = moment(endAt)
+  const chunkSize = 2
+  const testDuration = moment.duration(testEndTime.diff(testStartTime))
+  const result: {
+    [key: string]: any
+  } = getMinuteIntervals(startAt, endAt, chunkSize)
+
+  const intervals = Object.keys(result)
+  for (let i = 0; i < intervals.length; i++) {
+    const nextIndex = i + 1
+    const interval = parseInt(intervals[i])
+    const nextInterval =
+      parseInt(intervals[nextIndex]) || testDuration.asMinutes() + chunkSize
+
+    const answers = answersArray
+      .filter((answer) => {
+        const timeElapsed = moment.duration(
+          moment(answer.end_at).diff(testStartTime)
+        )
+        return (
+          timeElapsed.asMinutes() >= interval &&
+          timeElapsed.asMinutes() <= nextInterval
+        )
+      })
+      .map((answer) => {
+        const answerDuration = moment
+          .duration(moment(answer.end_at).diff(moment(answer.start_at)))
+          .asSeconds()
+        return answerDuration
+      })
+    const total = answers.reduce((acc, cur) => acc + cur, 0)
+    result[interval] = parseInt(
+      (answers.length > 0 ? total / answers.length : 0).toFixed(2)
+    )
+  }
+
+  return result
 }
 
 export const distributePoints = (points: number, objects: Question[]) => {
@@ -278,70 +333,6 @@ export const distributePoints = (points: number, objects: Question[]) => {
   objects.forEach((obj) => {
     obj.point *= scalingFactor
   })
-
-  // Sort the objects array in descending order of points
-  objects.sort((a, b) => b.point - a.point)
-
-  // Loop through the objects array to adjust the points to meet the requirements
-  let totalAdjustedPoints = 0
-  let lowestObjectIndex = objects.length - 1
-  let highestObjectIndex = 0
-  for (let i = 0; i < objects.length; i++) {
-    const obj = objects[i]
-
-    // Calculate the maximum point that this object can have to meet the requirements
-    const maxPoint = Math.min(
-      obj.point,
-      Math.floor(points - totalPoints + obj.point) / (objects.length - i)
-    )
-
-    // If the maximum point is less than the current point, adjust the point
-    if (maxPoint < obj.point) {
-      obj.point = maxPoint
-    }
-
-    // Add the adjusted point to the total adjusted points
-    totalAdjustedPoints += obj.point
-
-    // Keep track of the lowest and highest object index that has the same point value
-    if (i > 0 && obj.point === objects[i - 1].point) {
-      lowestObjectIndex = i
-    }
-    if (i < objects.length - 1 && obj.point === objects[i + 1].point) {
-      highestObjectIndex = i
-    }
-  }
-
-  // If the total adjusted points are less than or equal to the number, return the objects array
-  if (totalAdjustedPoints <= points) {
-    return objects
-  }
-
-  // Adjust the points of the objects with the lowest point value
-  for (let i = lowestObjectIndex; i >= 0; i--) {
-    const obj = objects[i]
-    const maxPoint = Math.min(
-      obj.point,
-      Math.floor(points - totalAdjustedPoints + obj.point) /
-        (lowestObjectIndex + 1 - i)
-    )
-    obj.point = maxPoint
-    totalAdjustedPoints += obj.point - maxPoint
-  }
-
-  // Adjust the points of the objects with the highest point value
-  for (let i = highestObjectIndex; i < objects.length; i++) {
-    const obj = objects[i]
-    const maxPoint = Math.min(
-      obj.point,
-      Math.floor(points - totalAdjustedPoints + obj.point) /
-        (i - highestObjectIndex + 1)
-    )
-    obj.point = maxPoint
-    totalAdjustedPoints += obj.point - maxPoint
-  }
-
-  // Return the objects array with the adjusted points
   return objects
 }
 
@@ -350,6 +341,5 @@ export const calculateFieldsAverageTime = (data: AnalyzedAnswer[]) => {
     calculateTimeTakenPerCategory(data)
   const values = Object.values(averageTimePerField)
   const sum = values.reduce((total, value) => total + value, 0)
-  const average = sum / values.length
-  return average
+  return parseInt((sum / values.length).toFixed(2))
 }

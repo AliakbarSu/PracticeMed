@@ -36,14 +36,10 @@ const analyzeAnswer = (
   test: UserTest
 ): AnalyzedAnswer[] => {
   const questions = test.questions
-
   const result = data.map((answer) => {
     const { question_id } = answer
     const timeTaken = calculateTimeTaken(answer).timeTaken
-    const updatedQuestions = distributePoints(test.points, questions)
-    const question = updatedQuestions.find(
-      ({ id }) => id === question_id
-    ) as Question
+    const question = questions.find(({ id }) => id === question_id) as Question
     const correct = isCorrectOption(answer, question)
     return {
       ...answer,
@@ -53,7 +49,13 @@ const analyzeAnswer = (
     }
   })
 
-  return result
+  return result.map((question) => {
+    const point = question.correct ? test.points / test.questionsNumber : 0
+    return {
+      ...question,
+      point: Math.round(point)
+    }
+  })
 }
 
 export const analyze = async (
@@ -89,8 +91,16 @@ export const analyze = async (
 
   // Time performace
   const correctAnswersByMinuteInterval =
-    calculateCorrectAnswersByMinuteInterval(analyzedAnswers)
-  const speedByMinuteInterval = calculateSpeedByMinuteIntervals(analyzedAnswers)
+    calculateCorrectAnswersByMinuteInterval(
+      submittedTest.start_at,
+      submittedTest.end_at,
+      analyzedAnswers
+    )
+  const speedByMinuteInterval = calculateSpeedByMinuteIntervals(
+    submittedTest.start_at,
+    submittedTest.end_at,
+    analyzedAnswers
+  )
   const result = calculateTestResult(totalPoints, loadedTest.passingPoint)
   return {
     id: uuidv4(),

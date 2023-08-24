@@ -129,7 +129,7 @@
               <dt class="text-base font-normal text-gray-900">
                 Overall Time Performance
                 <p class="max-w-4xl text-sm text-gray-500">
-                  time taken per question during test
+                  average time taken to answer during test
                 </p>
               </dt>
               <dd
@@ -138,6 +138,7 @@
                 <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ResultsComponentsLine
                   v-if="!loading"
+                  title="Answer In (avg s)"
                   :data="speedOverTime.datasets"
                   :labels="speedOverTime.labels"
                 />
@@ -436,7 +437,7 @@ export default defineComponent({
       const labels = Object.keys(
         this.testHistory.stats.correctAnswersByMinuteInterval
       ).map((key) => {
-        return (Number(key) / 600000).toFixed(2) + ' m'
+        return Number(key).toFixed(2) + ' m'
       })
       const values = Object.keys(
         this.testHistory.stats.correctAnswersByMinuteInterval
@@ -460,7 +461,7 @@ export default defineComponent({
           (key) =>
             Number(this.testHistory.stats.speedByMinuteInterval[key]).toFixed(
               2
-            ) + ' m'
+            ) + ' s'
         )
       }
     },
