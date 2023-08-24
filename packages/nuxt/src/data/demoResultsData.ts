@@ -13,14 +13,14 @@ export const demoResultsData = {
       Pediatrics: 33,
       'Public Health': 7.294
     },
-    fieldsAverageTime: 6.830666666666666,
+    fieldsAverageTime: 6.83,
     totalPointsPerField: {
-      'Obstetrics Gynecology': -3187.5835206899956,
-      Medicine: -1138.1800602711855,
-      Surgery: -116.89046941678521,
-      Psychiatry: -67.52177485620378,
-      Pediatrics: -173.21654443672975,
-      'Public Health': -6847.833333333333
+      'Obstetrics Gynecology': 3,
+      Medicine: 85,
+      Surgery: 10,
+      Psychiatry: 100,
+      Pediatrics: 55,
+      'Public Health': 20
     },
     correctResponseRate: 14.29,
     incorrectResponseRate: 85.71,
@@ -51,15 +51,15 @@ export const demoResultsData = {
       'Public Health': 25
     },
     correctAnswersByMinuteInterval: {
-      '18199747': 1,
-      '28199748': 2,
-      '38199748': 1,
-      '48199748': 2,
-      '58199748': 1,
-      '68199748': 3,
-      '78199748': 1,
-      '88199748': 4,
-      '98199748': 4
+      '0': 1,
+      '2': 2,
+      '4': 1,
+      '6': 2,
+      '8': 1,
+      '10': 3,
+      '12': 1,
+      '14': 4,
+      '16': 4
     },
     incorrectResponseCountPerField: {
       'Obstetrics Gynecology': 20,
