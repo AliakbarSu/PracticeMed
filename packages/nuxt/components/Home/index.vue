@@ -6,5 +6,6 @@
     <HomeComponentsUISection />
     <HomeComponentsTestimonial />
     <HomeComponentsUIGetStarted />
+    <HomeComponentsUISocialMedia />
   </div>
 </template>
