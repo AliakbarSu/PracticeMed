@@ -1,4 +1,4 @@
-import { StackContext, Api, Config } from 'sst/constructs'
+import { StackContext, Api, Config, Cron } from 'sst/constructs'
 
 const AUTH0_DOMAIN = 'https://practicemed.uk.auth0.com'
 
@@ -126,8 +126,35 @@ export function API({ stack }: StackContext) {
       // CONTACTS
       'POST /api/contact/message': `${fnPath}/contact/index.message`,
       'POST /api/auth/welcome': `${fnPath}/welcomeEmail/index.message`
+      // AUTOMATIONS
+      // 'POST /api/daily-recalls': `${fnPath}/daily_recalls/index.send`
     }
   })
+
+  const cronStack = new Cron(stack, 'Cron', {
+    schedule: 'cron(0 17 * * ? *)',
+    job: {
+      function: {
+        runtime: 'nodejs18.x',
+        timeout: 60,
+        environment: {
+          stage: stack.stage
+        },
+        handler:
+          stack.stage === 'dev'
+            ? `${fnPath}/daily_recalls/index.empty`
+            : `${fnPath}/daily_recalls/index.send`
+      }
+    }
+  })
+
+  cronStack.bind([
+    HYGRAPH_ENDPOINT,
+    HYGRAPH_TOKEN,
+    DOMAIN,
+    SENDGRID_API_KEY,
+    SANITY_ENDPOINT
+  ])
 
   api.bind([
     HYGRAPH_ENDPOINT,
@@ -147,6 +174,7 @@ export function API({ stack }: StackContext) {
   })
 
   return {
-    api
+    api,
+    cron: cronStack
   }
 }
