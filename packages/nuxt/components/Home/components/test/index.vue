@@ -4,7 +4,7 @@
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
         Try Our Demo Mock Test
       </h2>
-      <p class="mt-4 text-lg leading-8 text-gray-900">
+      <p class="w-3/4 mx-auto mt-4 text-lg leading-8 text-gray-900">
         Take our demo mock test to get a feel for the format, experience a
         simulated testing environment, and instantly review your performance.
       </p>
@@ -95,7 +95,7 @@ const cancelAlert = (key: keyof Alerts) => {
   alerts[key] = false
 }
 const viewResults = () => {
-  router.push(`/results/${resultId.value}`)
+  // router.push(`/results/${resultId.value}`)
 }
 const endTestAlert = () => {
   setAlert('readyToSubmit')
@@ -106,7 +106,7 @@ const next = () => {
     setAlert('selectOption')
   } else {
     testStore.next()
-    questionRef.value?.scrollIntoView({ behavior: 'smooth' })
+    ;(questionRef.value as any).scrollIntoView({ behavior: 'smooth' })
   }
 }
 

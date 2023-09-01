@@ -16,7 +16,7 @@
       <div
         class="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none"
       >
-        <div class="-mt-8 sm:-mx-4 sm:columns-2 sm:text-[0] lg:columns-3">
+        <div class="-mt-8 sm:-mx-4 flex flex-wrap sm:flex-nowrap sm:text-[0]">
           <div
             v-for="testimonial in testimonials"
             :key="testimonial.author.name"
@@ -52,47 +52,47 @@
 <script lang="ts" setup>
 const testimonials = [
   {
-    body: "I'm so grateful for this. It was difficult to find quality resources for medical exam preparation. But Practice Med was a game-changer for me. Thanks to the practice tests and feedback reports, I was able to pass the USMLE Step 1 exam on my first attempt. Thank you!",
+    body: "I'm so grateful for this. It was difficult to find quality resources for medical exam preparation. But Practice Med was a game-changer for me. Thanks to the practice tests and feedback reports, I was able to pass my test on my first attempt. Thank you!",
     author: {
-      name: 'Amira, USA'
+      name: 'Zaher, New Zealand'
     }
   },
   {
-    body: 'I highly recommend this service to anyone preparing for AMC MCQ exam. The practice tests are challenging but accurate, and the feedback reports helped me identify my weak areas and improve my performance. I passed the AMC MCQ exam on my first attempt. Super happy!',
+    body: 'I highly recommend this service to anyone preparing for multiple choice exams. The practice tests are challenging but accurate, and the feedback reports helped me identify my weak areas and improve my performance.',
     author: {
-      name: 'Andrei, Romania'
+      name: 'Andrei, New Zealamd'
     }
   },
   {
-    body: "What an absolute lifesaver! I was struggling to prepare for the USMLE Step 1 exam, but with the help of the practice tests, I was able to pass on my second attempt. I'm so grateful for the existence of such service",
+    body: "What an absolute lifesaver! I was struggling to prepare for my MCQ exam, but with the help of the practice tests, I was able to pass on my second attempt. I'm so grateful for the existence of such service",
     author: {
-      name: 'Ali, Egypt'
+      name: 'Noor, Egypt'
     }
-  },
-  {
-    body: 'As someone from Eastern Europe, it can be difficult to navigate the medical exam process in other countries. But this Practice Med made it so much easier for me. The practice tests were excellent, and the feedback reports helped me focus my study efforts. Thanks to this platform, I was able to pass the USMLE Step 1 exam on my first attempt.',
-    author: {
-      name: 'Elena, Russia'
-    }
-  },
-  {
-    body: 'I had taken the AMC MCQ exam twice before and failed both times. I was feeling pretty discouraged until I found this platform. The practice tests were incredibly helpful, and the feedback reports helped me understand exactly where I needed to improve. Thanks to this platform, I was able to pass the exam on my third attempt. Thank you!',
-    author: {
-      name: 'Hasan, Iran'
-    }
-  },
+  }
+  // {
+  //   body: 'As someone from Eastern Europe, it can be difficult to navigate the medical exam process in other countries. But this Practice Med made it so much easier for me. The practice tests were excellent, and the feedback reports helped me focus my study efforts. Thanks to this platform, I was able to pass the USMLE Step 1 exam on my first attempt.',
+  //   author: {
+  //     name: 'Elena, Russia'
+  //   }
+  // },
+  // {
+  //   body: 'I had taken the AMC MCQ exam twice before and failed both times. I was feeling pretty discouraged until I found this platform. The practice tests were incredibly helpful, and the feedback reports helped me understand exactly where I needed to improve. Thanks to this platform, I was able to pass the exam on my third attempt. Thank you!',
+  //   author: {
+  //     name: 'Hasan, Iran'
+  //   }
+  // },
   // {
   //   body: "This platform was a game-changer for me. The practice tests were challenging and accurate, and the feedback reports helped me focus my study efforts. Thanks to this platform, I was able to pass the USMLE Step 1 exam on my first attempt. I couldn't have done it without you!",
   //   author: {
   //     name: 'Maria, Bulgaria'
   //   }
   // },
-  {
-    body: 'I was feeling overwhelmed by the amount of material I needed to know for the AMC MCQ exam, but this platform made it so much more manageable. The practice tests were comprehensive and accurate, and the feedback reports helped me identify my weak areas.',
-    author: {
-      name: 'Ziad, UK'
-    }
-  }
+  // {
+  //   body: 'I was feeling overwhelmed by the amount of material I needed to know for the AMC MCQ exam, but this platform made it so much more manageable. The practice tests were comprehensive and accurate, and the feedback reports helped me identify my weak areas.',
+  //   author: {
+  //     name: 'Ziad, UK'
+  //   }
+  // }
   // {
   //   body: "I'm so glad I found this platform. The practice tests were challenging and realistic, and the feedback reports helped me focus my study efforts. Thanks to this platform, I was able to pass the USMLE Step 1 exam on my first attempt. I would highly recommend this platform to anyone preparing for a medical exam.",
   //   author: {

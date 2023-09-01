@@ -37,9 +37,9 @@
             We can help you pass your Medical Licensing Exam!
           </h1>
           <p class="mt-6 text-lg leading-8 text-gray-600">
-            Experience Realistic Testing Conditions, Expert Feedback, and
-            Comprehensive Coverage to Ace Your Medical Exams with Confidence and
-            Ease.
+            Experience Realistic Testing Conditions, Meaningful Feedback, and
+            Comprehensive Topics Coverage to Ace Your Medical Exams with
+            Confidence and Ease.
           </p>
           <div class="mt-10 flex items-center justify-center gap-x-6">
             <!-- <RouterLink

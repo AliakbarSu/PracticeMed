@@ -64,13 +64,13 @@ const perks = [
     name: 'Receive Feedback',
     icon: ClipboardDocumentListIcon,
     description:
-      ' Get detailed feedback and analysis of your performance, including strengths and weaknesses. Use this information to develop a targeted study plan that addresses areas of improvement.'
+      'Get detailed feedback and analysis of your performance, including strengths and weaknesses. Use this information to develop a targeted study plan that addresses areas of improvement.'
   },
   {
     name: 'Improve Your Scores',
     icon: ClipboardDocumentListIcon,
     description:
-      " With the comprehensive coverage and expert feedback provided by our service, you'll be fully prepared to boost your scores and achieve success on your medical exams!"
+      "With meaningful feedbacks provided by our service, you'll be fully prepared to boost your scores and achieve success on your medical exams!"
   }
 ]
 </script>
