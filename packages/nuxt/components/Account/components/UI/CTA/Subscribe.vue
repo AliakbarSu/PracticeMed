@@ -34,7 +34,7 @@ export default defineComponent({
     description: {
       type: String,
       default:
-        'Experience Realistic Testing Conditions, Expert Feedback, and Comprehensive Coverage to Ace Your Medical Exams with Confidence and Ease.'
+        'Experience Realistic Testing Conditions, Meaningful Feedback, and Comprehensive Coverage to Ace Your Medical Exams with Confidence and Ease.'
     }
   },
   methods: {

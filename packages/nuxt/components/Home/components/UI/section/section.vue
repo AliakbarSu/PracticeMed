@@ -70,7 +70,7 @@ const features = [
     icon: ClipboardDocumentIcon
   },
   {
-    name: 'Expert Feedback and Analysis',
+    name: 'Feedback and Analysis',
     description:
       'Practice Med offers in-depth evaluations and insights on student performance in practice tests. By pinpointing their strong and weak points, learners can devise a tailored study strategy that focuses on enhancing their areas in need of growth.',
     icon: ClipboardDocumentListIcon

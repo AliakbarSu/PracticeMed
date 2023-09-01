@@ -6,7 +6,8 @@
           Resources
         </h2>
         <p class="mt-2 text-lg leading-8 text-gray-600">
-          Learn how to pass your medical licensing exam with our expert advice.
+          Learn how to pass your medical licensing exam with our great
+          resources.
         </p>
         <div
           class="mt-10 space-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16"

@@ -185,7 +185,7 @@
         <div
           class="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch"
         >
-          <div class="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
+          <!-- <div class="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
             <div
               class="relative aspect-[2/1] h-full md:-mx-8 xl:mx-0 xl:aspect-auto"
             >
@@ -195,7 +195,7 @@
                 alt=""
               />
             </div>
-          </div>
+          </div> -->
           <div
             class="w-full max-w-2xl xl:max-w-none xl:flex-auto xl:px-16 xl:py-24"
           >
@@ -216,16 +216,16 @@
                 class="text-xl font-semibold leading-8 text-white sm:text-2xl sm:leading-9"
               >
                 <p>
-                  'I highly recommend this service to anyone preparing for AMC
-                  MCQ exam. The practice tests are challenging but accurate, and
-                  the feedback reports helped me identify my weak areas and
-                  improve my performance. I passed the AMC MCQ exam on my first
-                  attempt. Super happy!'
+                  'I'm so grateful for this. It was difficult to find quality
+                  resources for medical exam preparation. But Practice Med was a
+                  game-changer for me. Thanks to the practice tests and feedback
+                  reports, I was able to pass my test on my first attempt. Thank
+                  you!'
                 </p>
               </blockquote>
               <figcaption class="mt-8 text-base">
-                <div class="font-semibold text-white">Andrei</div>
-                <div class="mt-1 text-gray-400">From Romania</div>
+                <div class="font-semibold text-white">Zaher</div>
+                <div class="mt-1 text-gray-400">New Zealand</div>
               </figcaption>
             </figure>
           </div>
@@ -464,7 +464,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
 import { CheckIcon } from '@heroicons/vue/20/solid'
@@ -498,7 +497,7 @@ const features = [
     icon: ClipboardDocumentIcon
   },
   {
-    name: 'Expert Feedback and Analysis',
+    name: 'Feedback and Analysis',
     description:
       'Practice Med offers in-depth evaluations and insights on student performance in practice tests. By pinpointing their strong and weak points, learners can devise a tailored study strategy that focuses on enhancing their areas in need of growth.',
     icon: ClipboardDocumentListIcon
@@ -515,7 +514,7 @@ const faqs = [
   {
     question: 'What is the AMC MCQ Exam?',
     answer:
-      "The AMC MCQ Exam is a multiple-choice examination for medical graduates who want to practice medicine in countries like Australia, New Zealand, and the UK. It assesses the candidate's knowledge, clinical reasoning, and problem-solving skills to ensure they meet the required standards for safe and effective practice."
+      "The AMC MCQ Exam is a multiple-choice examination for international medical graduates who want to practice medicine in countries like Australia, New Zealand, and the UK. It assesses the candidate's knowledge, clinical reasoning, and problem-solving skills to ensure they meet the required standards for safe and effective practice."
   },
   {
     question: 'How does Practice Med help me prepare for the AMC MCQ Exam?',
@@ -536,12 +535,7 @@ const faqs = [
     question:
       'Can I use Practice Med if I am not from Australia, New Zealand, or the UK?',
     answer:
-      'Yes, our platform is designed for people from any country who are preparing for the AMC MCQ Exam to work as registered doctors in Australia, New Zealand, or the UK. As long as you meet the eligibility criteria for the exam, you can use the platform to help you prepare.'
-  },
-  {
-    question: 'How often are the practice tests updated?',
-    answer:
-      "The practice tests are regularly updated to ensure they remain relevant and aligned with the latest changes in the AMC MCQ Exam's content and format. This ensures that you are always practicing with the most up-to-date material."
+      'Yes, our platform is designed for people from anywhere in the world. As long as you meet the eligibility criteria for the exam, you can use the platform to help you prepare.'
   },
   {
     question:
