@@ -22,5 +22,5 @@ export interface Test {
   description: string
   thumbnail: { url: string }[]
   instructions: string
-  questionsNumber: number
+  questionsNumber?: number
 }

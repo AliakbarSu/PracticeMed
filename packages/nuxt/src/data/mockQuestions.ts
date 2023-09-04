@@ -23,7 +23,7 @@ export const mockTest: Test = {
   questions: [
     {
       id: 'questionOne',
-      text: '<p>A 15-year old girl presents with a 5-day history of sore throat, low-grade fever, and easy fatigability. Physical examination shows bilateral tonsillar enlargement with exudate. Her spleen is palpable 3 cm below the left costal margin. Her throat culture is negative for group A Streptococcus. Monospot test is positive. Which of the following is the most appropriate management for this patient?</p>',
+      text: '<p>What is the most suitable course of action for managing a 16-year-old girl who has been experiencing a sore throat, low-grade fever, and persistent fatigue for the past 6 days? During her physical examination, bilateral tonsillar enlargement with exudate is observed, and her spleen is palpable at a depth of 3 cm below the left costal margin. Her throat culture has tested negative for group A Streptococcus, but the Monospot test has yielded a positive result.</p>',
       field: 'Medicine',
       options: [
         {
@@ -47,17 +47,17 @@ export const mockTest: Test = {
     },
     {
       id: 'QuestionTwo',
-      text: '<p>A 37 year old florist comes to the employee health clinic for a routine evaluation. He is healthy and without complaints. Five units of tuberculin protein (PPD) is injected intradermally. He returns to the clinic 48-72 hours later. Which of the following would indicate a positive reaction in this patient?</p>',
+      text: '<p>During a routine evaluation at the employee health clinic, a 36-year-old florist receives an intradermal injection of five units of tuberculin protein (PPD). He returns to the clinic after 48-72 hours. What specific sign would suggest a positive reaction in this patient?</p>',
       field: 'Medicine',
       options: [
         {
           alpha: 'a',
-          text: '5 mm of erythema and 5 mm induration',
+          text: '11 mm of erythema and 5 mm induration',
           id: 'a'
         },
         {
           alpha: 'b',
-          text: '10 mm of erythema and 5 mm induration',
+          text: '9 mm of erythema and 5 mm induration',
           id: 'b'
         },
         {
@@ -67,7 +67,7 @@ export const mockTest: Test = {
         },
         {
           alpha: 'd',
-          text: '15 mm of erythema and 15 mm induration',
+          text: '16 mm of erythema and 15 mm induration',
           id: 'd'
         },
         {
@@ -81,7 +81,7 @@ export const mockTest: Test = {
     },
     {
       id: 'questionThree',
-      text: '<p>The cytochrome P450 (CYP) enzyme system is important in the rational prescribing of the psychotropics in clinical practice because its role in metabolism is such that the enzyme system:</p>',
+      text: '<p>The significance of the cytochrome P450 (CYP) enzyme system in the judicious prescription of psychotropic medications in clinical practice stems from its metabolic role, which can be described as:</p>',
       field: 'Medicine',
       options: [
         {

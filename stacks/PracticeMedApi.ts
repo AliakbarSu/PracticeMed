@@ -79,7 +79,7 @@ export function API({ stack }: StackContext) {
       },
       'GET /api/user/reset-password': {
         authorizer: 'auth0Authorizer',
-        function: `${fnPath}/resetPassword/index.handler`
+        function: `${fnPath}/reset_password/index.handler`
       },
       // PLANS
       'GET /api/plans': `${fnPath}/plans/index.handler`,
@@ -103,16 +103,16 @@ export function API({ stack }: StackContext) {
       // TESTS
       'GET /api/tests': {
         authorizer: 'auth0Authorizer',
-        function: `${fnPath}/listTests/index.handler`
+        function: `${fnPath}/list_tests/index.handler`
       },
       'GET /api/tests/history': {
         authorizer: 'auth0Authorizer',
-        function: `${fnPath}/getTest/index.history`
+        function: `${fnPath}/get_test/index.history`
       },
-      'GET /api/tests/{id}': `${fnPath}/getTest/index.handler`,
+      'GET /api/tests/{id}': `${fnPath}/get_test/index.handler`,
       'GET /api/tests/{id}/load': {
         authorizer: 'auth0Authorizer',
-        function: `${fnPath}/loadTest/index.handler`
+        function: `${fnPath}/load_test/index.handler`
       },
       'POST /api/test/{id}/result': {
         authorizer: 'auth0Authorizer',
@@ -125,14 +125,18 @@ export function API({ stack }: StackContext) {
       'POST /api/newsletter/unsubscribe': `${fnPath}/newsletter/index.unsubscribe`,
       // CONTACTS
       'POST /api/contact/message': `${fnPath}/contact/index.message`,
-      'POST /api/auth/welcome': `${fnPath}/welcomeEmail/index.message`
+      'POST /api/auth/welcome': `${fnPath}/welcome_email/index.message`,
+      'GET /api/tests/{id}/personalised-tips': {
+        authorizer: 'auth0Authorizer',
+        function: `${fnPath}/personalised_tips/index.handler`
+      }
       // AUTOMATIONS
       // 'POST /api/daily-recalls': `${fnPath}/daily_recalls/index.send`
     }
   })
 
   const cronStack = new Cron(stack, 'Cron', {
-    schedule: 'cron(0 17 * * ? *)',
+    schedule: stack.stage === 'dev' ? 'rate(1 day)' : 'cron(0 17 * * ? *)',
     job: {
       function: {
         runtime: 'nodejs18.x',
