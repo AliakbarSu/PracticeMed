@@ -147,7 +147,7 @@ export function API({ stack }: StackContext) {
         handler:
           stack.stage === 'dev'
             ? `${fnPath}/daily_recalls/index.empty`
-            : `${fnPath}/daily_recalls/index.send`
+            : `${fnPath}/daily_recalls/index.empty`
       }
     }
   })
