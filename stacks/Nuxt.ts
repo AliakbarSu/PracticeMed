@@ -2,13 +2,18 @@ import { Api, Function, StackContext, StaticSite, use } from 'sst/constructs'
 import { HttpMethods } from 'aws-cdk-lib/aws-s3'
 import { API } from './PracticeMedApi'
 
+const stages = {
+  dev: "dev",
+  prod: "prod"
+}
+
 export function NuxtStack({ stack }: StackContext) {
   const {
     api: { url }
   } = use(API)
   const nuxt = new Api(stack, 'Nuxt', {
     customDomain:
-      stack.stage === 'dev' ? 'web.practicemed.org' : 'practicemed.org',
+      stack.stage === stages.dev ? 'web.practicemed.org' : 'practicemed.org',
     cors: {
       allowHeaders: ['*'],
       allowMethods: ['ANY'],
