@@ -1,6 +1,7 @@
 import { SSTConfig } from 'sst'
 import { API } from './stacks/PracticeMedApi'
 import { NuxtStack } from './stacks/Nuxt'
+import { QueueStack } from "./stacks/Queue"
 
 export default {
   config(_input) {
@@ -10,6 +11,6 @@ export default {
     }
   },
   stacks(app) {
-    app.stack(API).stack(NuxtStack)
+    app.stack(API).stack(NuxtStack).stack(QueueStack)
   }
 } satisfies SSTConfig
