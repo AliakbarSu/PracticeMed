@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import path from 'path'
 const cdn = 'https://dsl7ar6bugrck.cloudfront.net'
 export default defineNuxtConfig({
   app: {
@@ -132,7 +133,11 @@ export default defineNuxtConfig({
     '@custom-auth': './src/auth',
     '@types': './src/types',
     '@gtag': './src/gtag',
-    'mpt-types': '../core/types'
+    'mpt-types': '../core/types',
+    'vue/server-renderer': path.resolve(
+      __dirname,
+      '../../node_modules/vue/server-renderer'
+    )
   },
 
   css: ['~/assets/css/main.css'],

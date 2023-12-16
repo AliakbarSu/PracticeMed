@@ -2,16 +2,20 @@ import { Api, Function, StackContext, StaticSite, use } from 'sst/constructs'
 import { HttpMethods } from 'aws-cdk-lib/aws-s3'
 import { API } from './PracticeMedApi'
 import { dev } from '../resources/stages'
-import { endpoints } from "../resources/endpoints"
-
+import { endpoints } from '../resources/endpoints'
 
 export function NuxtStack({ stack }: StackContext) {
   const {
-    api: { url }
+    api: { customDomainUrl }
   } = use(API)
   const nuxt = new Api(stack, 'Nuxt', {
-    customDomain:
-      stack.stage == dev ? endpoints.custom_domains.web.dev : endpoints.custom_domains.web.prod,
+    customDomain: {
+      domainName:
+        stack.stage == dev
+          ? endpoints.custom_domains.web.dev
+          : endpoints.custom_domains.web.prod,
+      hostedZone: endpoints.hosted_zone
+    },
     cors: {
       allowHeaders: ['*'],
       allowMethods: ['ANY'],
@@ -19,8 +23,13 @@ export function NuxtStack({ stack }: StackContext) {
     }
   })
   const publicAsset = new StaticSite(stack, 'PublicAssetCdn', {
-    // customDomain:
-    //   stack.stage === 'dev' ? 'web.practicemed.org' : 'nuxt.practicemed.org',
+    customDomain: {
+      domainName:
+        stack.stage == dev
+          ? endpoints.custom_domains.cdn.dev
+          : endpoints.custom_domains.cdn.prod,
+      hostedZone: endpoints.hosted_zone
+    },
     path: 'packages/nuxt/.output/public',
     // we wait for CloudFront cache invalidation to avoid any issue. It is increase the build time
     waitForInvalidation: true,
@@ -67,8 +76,8 @@ export function NuxtStack({ stack }: StackContext) {
         install: ['tslib']
       },
       environment: {
-        NUXT_APP_CDN_URL: publicAsset.url || '',
-        NUXT_PUBLIC_API_ENDPOINT: `${url}/api`
+        NUXT_APP_CDN_URL: publicAsset.customDomainUrl || '',
+        NUXT_PUBLIC_API_ENDPOINT: `${customDomainUrl}/api`
       }
     })
   })

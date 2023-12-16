@@ -1,7 +1,7 @@
 import { StackContext, Api, Cron } from 'sst/constructs'
-import { endpoints } from "../resources/endpoints"
-import { configure_parameters } from "./Parameters"
-
+import { endpoints } from '../resources/endpoints'
+import { configure_parameters } from './Parameters'
+import { dev } from '../resources/stages'
 
 export function API(context: StackContext) {
   const { stack } = context
@@ -17,12 +17,16 @@ export function API(context: StackContext) {
     STRIPE_SIGNING_SECRET,
     SENDGRID_API_KEY
   } = configure_parameters(context)
-  
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
-    customDomain:
-      stack.stage == 'dev' ? endpoints.custom_domains.api.dev : endpoints.custom_domains.api.prod,
+    customDomain: {
+      domainName:
+        stack.stage == dev
+          ? endpoints.custom_domains.api.dev
+          : endpoints.custom_domains.api.prod,
+      hostedZone: endpoints.hosted_zone
+    },
     defaults: {
       function: {
         runtime: 'nodejs18.x',
@@ -115,7 +119,7 @@ export function API(context: StackContext) {
           stage: stack.stage
         },
         handler:
-          stack.stage === 'dev'
+          stack.stage === dev
             ? `${fnPath}/daily_recalls/index.empty`
             : `${fnPath}/daily_recalls/index.empty`
       }

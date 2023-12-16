@@ -6,16 +6,16 @@
   "scripts": {
     "dev": "sst dev",
     "build": "sst build",
-    "deploy-dev": "sst deploy",
+    "deploy-dev": "npm run build --prefix ./packages/nuxt && npx sst deploy --stage dev",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
     "deploy": "npm run build --prefix ./packages/nuxt && npx sst deploy --stage prod"
   },
   "devDependencies": {
-    "sst": "^2.4.0",
-    "aws-cdk-lib": "2.62.2",
-    "constructs": "10.1.156",
+    "sst": "2.38.7",
+    "aws-cdk-lib": "2.110.1",
+    "constructs": "10.3.0",
     "typescript": "^5.0.3",
     "@tsconfig/node16": "^1.0.3"
   },
