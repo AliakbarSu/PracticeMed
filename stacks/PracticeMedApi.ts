@@ -1,58 +1,28 @@
-import { StackContext, Api, Config, Cron } from 'sst/constructs'
+import { StackContext, Api, Cron } from 'sst/constructs'
+import { endpoints } from "../resources/endpoints"
+import { configure_parameters } from "./Parameters"
 
-const AUTH0_DOMAIN = 'https://practicemed.uk.auth0.com'
 
-export function API({ stack }: StackContext) {
-  // HYGRAPH
-  const HYGRAPH_TOKEN = new Config.Secret(stack, 'HYGRAPH_TOKEN')
-  const HYGRAPH_ENDPOINT = new Config.Parameter(stack, 'HYGRAPH_ENDPOINT', {
-    value:
-      stack.stage === 'dev'
-        ? 'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
-        : 'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
-  })
-
-  const SANITY_ENDPOINT = new Config.Parameter(stack, 'SANITY_ENDPOINT', {
-    value:
-      stack.stage === 'dev'
-        ? 'https://5f74k37r.api.sanity.io/v1/graphql/production/default'
-        : 'https://5f74k37r.api.sanity.io/v1/graphql/production/default'
-  })
-
-  // AUTH0
-  const DOMAIN = new Config.Parameter(stack, 'DOMAIN', {
-    value: AUTH0_DOMAIN
-  })
-  const AUTH0_CLIENT_ID = new Config.Parameter(stack, 'AUTH0_CLIENT_ID', {
-    value:
-      stack.stage === 'dev'
-        ? '99gQVHl3gaeIuSoXJEfOZACGmjZmtEYa'
-        : '99gQVHl3gaeIuSoXJEfOZACGmjZmtEYa'
-  })
-  const AUTH0_CLIENT_SECRET = new Config.Secret(stack, 'AUTH0_CLIENT_SECRET')
-
-  // URL
-  const FRONT_END_URL = new Config.Parameter(stack, 'FRONT_END_URL', {
-    value:
-      stack.stage === 'dev'
-        ? 'http://localhost:3000'
-        : 'https://practicemed.org'
-  })
-
-  // STRIPE
-  const STRIPE_SECRET = new Config.Secret(stack, 'STRIPE_SECRET')
-  const STRIPE_SIGNING_SECRET = new Config.Secret(
-    stack,
-    'STRIPE_SIGNING_SECRET'
-  )
-
-  // SENDGRID
-  const SENDGRID_API_KEY = new Config.Secret(stack, 'SENDGRID_API_KEY')
+export function API(context: StackContext) {
+  const { stack } = context
+  const {
+    HYGRAPH_TOKEN,
+    HYGRAPH_ENDPOINT,
+    SANITY_ENDPOINT,
+    DOMAIN,
+    AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET,
+    FRONT_END_URL,
+    STRIPE_SECRET,
+    STRIPE_SIGNING_SECRET,
+    SENDGRID_API_KEY
+  } = configure_parameters(context)
+  
 
   const fnPath = 'packages/functions/src'
   const api = new Api(stack, 'api', {
     customDomain:
-      stack.stage === 'dev' ? 'dev.practicemed.org' : 'api.practicemed.org',
+      stack.stage == 'dev' ? endpoints.custom_domains.api.dev : endpoints.custom_domains.api.prod,
     defaults: {
       function: {
         runtime: 'nodejs18.x',
@@ -66,7 +36,7 @@ export function API({ stack }: StackContext) {
       auth0Authorizer: {
         type: 'jwt',
         jwt: {
-          issuer: `${AUTH0_DOMAIN}/`,
+          issuer: `${endpoints.auth0_domain.dev}/`,
           audience: ['https://jwt-token-authorizer.com']
         }
       }
