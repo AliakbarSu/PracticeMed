@@ -6,11 +6,11 @@
   "scripts": {
     "dev": "sst dev",
     "build": "sst build",
-    "deploy-dev": "npm run build --prefix ./packages/nuxt && npx sst deploy --stage dev",
+    "deploy-dev": "export LOCAL_ENV=dev && npm run build --prefix ./packages/nuxt && npx sst deploy --stage dev",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "deploy": "npm run build --prefix ./packages/nuxt && npx sst deploy --stage prod"
+    "deploy-prod": "export LOCAL_ENV=prod && npm run build --prefix ./packages/nuxt && npx sst deploy --stage prod"
   },
   "devDependencies": {
     "sst": "2.38.7",

@@ -5,9 +5,10 @@ import { dev } from '../resources/stages'
 import { endpoints } from '../resources/endpoints'
 
 export function NuxtStack({ stack }: StackContext) {
+  const api = use(API)
   const {
-    api: { customDomainUrl }
-  } = use(API)
+    api: { customDomainUrl: api_url }
+  } = api
   const nuxt = new Api(stack, 'Nuxt', {
     customDomain: {
       domainName:
@@ -22,6 +23,7 @@ export function NuxtStack({ stack }: StackContext) {
       allowOrigins: ['*']
     }
   })
+  nuxt.bind([api.api])
   const publicAsset = new StaticSite(stack, 'PublicAssetCdn', {
     customDomain: {
       domainName:
@@ -52,7 +54,7 @@ export function NuxtStack({ stack }: StackContext) {
             /**
              * Here we provide nuxt api url on the allowed origins
              */
-            allowedOrigins: ['*', nuxt.url]
+            allowedOrigins: ['*', nuxt.url, nuxt.customDomainUrl || '']
           }
         ]
       }
@@ -77,7 +79,7 @@ export function NuxtStack({ stack }: StackContext) {
       },
       environment: {
         NUXT_APP_CDN_URL: publicAsset.customDomainUrl || '',
-        NUXT_PUBLIC_API_ENDPOINT: `${customDomainUrl}/api`
+        NUXT_PUBLIC_API_ENDPOINT: `${api_url}/api`
       }
     })
   })
@@ -86,7 +88,9 @@ export function NuxtStack({ stack }: StackContext) {
    * Show the endpoint in the output
    */
   stack.addOutputs({
-    CdnUrl: publicAsset.url,
-    NuxtEndpoint: nuxt.url
+    cdn_url: publicAsset.url,
+    cdn_domain: publicAsset.customDomainUrl || '',
+    web_app_url: nuxt.url,
+    web_app_domain: nuxt.customDomainUrl || ''
   })
 }

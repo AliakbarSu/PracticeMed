@@ -1,6 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { dev, local, prod } from '../../resources/stages'
+import { endpoints } from '../../resources/endpoints'
 import path from 'path'
-const cdn = 'https://dsl7ar6bugrck.cloudfront.net'
+let cdn = `http://localhost:3000`
+if (process.env.LOCAL_ENV == dev) {
+  cdn = 'https://' + endpoints.custom_domains.cdn.dev
+} else if (process.env.LOCAL_ENV == prod) {
+  cdn = 'https://' + endpoints.custom_domains.cdn.prod
+}
+
+const alias =
+  process.env.LOCAL_ENV == local
+    ? {}
+    : {
+        'vue/server-renderer': path.resolve(
+          __dirname,
+          '../../node_modules/vue/server-renderer'
+        )
+      }
+
 export default defineNuxtConfig({
   app: {
     cdnURL: cdn,
@@ -120,7 +138,6 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      api_endpoint: 'https://dev.practicemed.org/api',
       hygraph_endpoint:
         'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
     }
@@ -134,10 +151,7 @@ export default defineNuxtConfig({
     '@types': './src/types',
     '@gtag': './src/gtag',
     'mpt-types': '../core/types',
-    'vue/server-renderer': path.resolve(
-      __dirname,
-      '../../node_modules/vue/server-renderer'
-    )
+    ...alias
   },
 
   css: ['~/assets/css/main.css'],

@@ -110,7 +110,7 @@ export function API(context: StackContext) {
   })
 
   const cronStack = new Cron(stack, 'Cron', {
-    schedule: stack.stage === 'dev' ? 'rate(1 day)' : 'cron(0 17 * * ? *)',
+    schedule: stack.stage == dev ? 'rate(1 day)' : 'cron(0 17 * * ? *)',
     job: {
       function: {
         runtime: 'nodejs18.x',
@@ -147,8 +147,8 @@ export function API(context: StackContext) {
     SANITY_ENDPOINT
   ])
   stack.addOutputs({
-    ApiDomain: api.customDomainUrl,
-    ApiEndpoint: api.url
+    api_domain: api.customDomainUrl,
+    api_url: api.url
   })
 
   return {
