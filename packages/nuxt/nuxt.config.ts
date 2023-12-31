@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { dev, local, prod } from '../../resources/stages'
-import { endpoints } from '../../resources/endpoints'
 import path from 'path'
 let cdn = `http://localhost:3000`
-if (process.env.LOCAL_ENV == dev) {
-  cdn = 'https://' + endpoints.custom_domains.cdn.dev
-} else if (process.env.LOCAL_ENV == prod) {
-  cdn = 'https://' + endpoints.custom_domains.cdn.prod
+let api_endpoint = `https://dev.api.practicemed.org/api`
+if (process.env.LOCAL_ENV == prod) {
+  cdn = 'https://prod.cdn.practicemed.org'
+  api_endpoint = 'https://prod.api.practicemed.org/api'
+} else if (process.env.LOCAL_ENV == dev) {
+  cdn = 'https://dev.cdn.practicemed.org'
 }
 
 const alias =
@@ -138,6 +139,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      api_endpoint,
       hygraph_endpoint:
         'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
     }
