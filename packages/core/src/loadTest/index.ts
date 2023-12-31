@@ -62,3 +62,11 @@ export const loadTest = async ({
   const { questions, questionsNumber, ...rest } = await getTest(testId)
   return { ...rest, questions: getRandomQuestions(questions, questionsNumber) }
 }
+
+export const loadMockTest = async (mockTestId: string) => {
+  const { questions, questionsNumber, ...rest } = await getTest(
+    mockTestId,
+    true
+  )
+  return { ...rest, questions: getRandomQuestions(questions, questionsNumber) }
+}

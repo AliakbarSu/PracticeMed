@@ -12,6 +12,7 @@ export const functions = {
   get_single_test: `${fnPath}/get_test/index.handler`,
   get_test_history: `${fnPath}/get_test/index.history`,
   load_test: `${fnPath}/load_test/index.handler`,
+  get_demo_test: `${fnPath}/load_test/index.demoTestHandler`,
   get_test_result: `${fnPath}/result/index.handler`,
   stripe_webhook: `${fnPath}/webhook/stripe.handler`,
   newsletter_signup: `${fnPath}/newsletter/index.signup`,

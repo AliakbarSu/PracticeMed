@@ -88,6 +88,9 @@ export function API(context: StackContext) {
         authorizer: 'auth0Authorizer',
         function: functions.load_test
       },
+      'GET /api/tests/demo': {
+        function: functions.get_demo_test
+      },
       'POST /api/test/{id}/result': {
         authorizer: 'auth0Authorizer',
         function: functions.get_test_result

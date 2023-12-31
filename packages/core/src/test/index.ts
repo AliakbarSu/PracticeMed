@@ -1,6 +1,11 @@
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
-import { getQuestionQuery, getTestQuery, listTestsQuery } from './queries'
+import {
+  get30QuestionQuery,
+  getQuestionQuery,
+  getTestQuery,
+  listTestsQuery
+} from './queries'
 import { UserTest } from '../../types/Test'
 
 const query = (query: string, variables: any) => {
@@ -30,14 +35,17 @@ const sanityQuery = (query: string, variables: any) => {
   })
 }
 
-export const getTest = async (id: string) => {
+export const getTest = async (id: string, limit: boolean = false) => {
   const response = await query(getTestQuery, { id })
   const parsed = await response.json()
   const loadedTest = (parsed as { data: { test: UserTest } }).data.test
 
-  const questionsResponse = await sanityQuery(getQuestionQuery, {
-    type: loadedTest.type
-  })
+  const questionsResponse = await sanityQuery(
+    limit ? get30QuestionQuery : getQuestionQuery,
+    {
+      type: loadedTest.type
+    }
+  )
   const QuestionsParsed = await questionsResponse.json()
   const questions = (
     QuestionsParsed as { data: { allQuestion: any[] } }

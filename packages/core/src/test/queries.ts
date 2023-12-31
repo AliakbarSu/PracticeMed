@@ -57,3 +57,21 @@ export const getQuestionQuery = gql`
     }
   }
 `
+
+export const get30QuestionQuery = gql`
+  query GetQuestions($type: String!) {
+    allQuestion(limit: 30, where: { type: { eq: $type } }) {
+      id
+      point
+      textRaw
+      options {
+        alpha
+        correct
+        text
+      }
+      field
+      correct_option_id
+      correct_option_explanation
+    }
+  }
+`
