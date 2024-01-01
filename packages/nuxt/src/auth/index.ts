@@ -1,5 +1,6 @@
 import { createAuth0Client, Auth0Client } from '@auth0/auth0-spa-js'
 import { domain, clientId } from '../../auth_config.json'
+import { useAuthStore } from '../store/auth'
 
 // let auth0Client: Auth0Client | null = null
 let redirectLink = 'http://localhost:3000'
@@ -41,16 +42,22 @@ export const getAuth0Client = async () => {
 }
 
 export const loginWithRedirect = async () => {
-  const client = await getAuth0Client()
-  client.loginWithRedirect().then((user) => {})
+  const client = await buildAuthClient()
+  const authStore = useAuthStore()
+  await client.loginWithRedirect()
+  const token = await getAuthToken()
+  authStore.setToken(token)
 }
 
-export const signup = () =>
-  getAuth0Client().then((client) =>
-    client.loginWithRedirect({
-      authorizationParams: { screen_hint: 'signup' }
-    })
-  )
+export const signup = async () => {
+  const client = await buildAuthClient()
+  const authStore = useAuthStore()
+  await client.loginWithRedirect({
+    authorizationParams: { screen_hint: 'signup' }
+  })
+  const token = await getAuthToken()
+  authStore.setToken(token)
+}
 
 export const getAccessTokenSilently = () =>
   getAuth0Client().then((client) => client.getTokenSilently())
@@ -64,7 +71,9 @@ export const getAuthToken = async () => {
   }
 }
 
-export const logout = () =>
-  getAuth0Client().then((client) =>
-    client.logout({ logoutParams: { returnTo: window.location.origin } })
-  )
+export const logout = async () => {
+  const client = await buildAuthClient()
+  const authStore = useAuthStore()
+  authStore.$reset()
+  return client.logout({ logoutParams: { returnTo: window.location.origin } })
+}

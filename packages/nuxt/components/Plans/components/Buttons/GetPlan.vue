@@ -52,12 +52,14 @@ import { useAppStore } from '../../../../src/store/main'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { usePlansStore } from '../../../../src/store/plans'
+import { useAuthStore } from '../../../../src/store/auth'
 import { watch } from 'vue'
 
 const store = useAppStore()
 const plansStore = usePlansStore()
+const authStore = useAuthStore()
 
-const { isAuth, loading } = storeToRefs(store)
+const { loading } = storeToRefs(store)
 const { checkoutUrl, hasActivePlan } = storeToRefs(plansStore)
 
 const { loginWithRedirect } = process.client
@@ -71,21 +73,20 @@ const props = defineProps({
   }
 })
 
-const loginIfNotAuthenticated = () => {
-  if (!isAuth.value) {
-    loginWithRedirect({
+const loginIfNotAuthenticated = async () => {
+  if (!authStore.isAuthenticated) {
+    await loginWithRedirect({
       authorizationParams: {
         redirect_uri: window.location.origin
       }
     })
-    return
   }
 }
 
 const isPlanActive = computed(() => plansStore.hasThisPlan(props.plan.id))
 
 const subscribeToPlan = async () => {
-  loginIfNotAuthenticated()
+  await loginIfNotAuthenticated()
   plansStore.subscribe(props.plan)
 }
 

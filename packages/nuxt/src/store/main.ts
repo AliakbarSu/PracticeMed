@@ -1,43 +1,33 @@
 import type { Test } from '@/types/test'
 import type { Profile, UserAppMetadata } from '@/types/user'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+import {
+  loadProfileData,
+  loadTestHistory,
+  loadPortalLink,
+  loadTests
+} from '../api/profileApi'
 
 export const useAppStore = defineStore('app', () => {
   const loading = ref(false)
   const error = ref<Error | null>(null)
   const profile = ref<Profile | null>(null)
   const portalLink = ref<string | null>(null)
-  const authToken = ref<string | null>(null)
   const testsHistory = ref<UserAppMetadata['test_history']>([])
   const tests = ref<Test[]>([])
 
-  const isAuth = computed(() => authToken.value !== null)
-
   function $reset() {
     profile.value = null
-    authToken.value = null
     testsHistory.value = []
     tests.value = []
     portalLink.value = null
   }
 
-  const setAuthToken = (token: string) => {
-    authToken.value = token
-  }
-
   const fetchProfileData = async () => {
-    const config = useRuntimeConfig()
     try {
       loading.value = true
-      const response = await useFetch<{ body: string }>(
-        `${config.public.api_endpoint}/user/profile`,
-        {
-          method: 'GET',
-          headers: { Authorization: `Bearer ${authToken.value}` }
-        }
-      )
-      profile.value = JSON.parse(response.data.value?.body || '')
+      profile.value = await loadProfileData()
     } catch (err) {
       error.value = err as Error
     } finally {
@@ -46,15 +36,9 @@ export const useAppStore = defineStore('app', () => {
   }
 
   const fetchTestsHistory = async () => {
-    const config = useRuntimeConfig()
     try {
       loading.value = true
-      const response = await useFetch<{
-        body: UserAppMetadata['test_history']
-      }>(`${config.public.api_endpoint}/tests/history`, {
-        headers: { Authorization: `Bearer ${authToken.value}` }
-      })
-      testsHistory.value = response.data.value?.body || []
+      testsHistory.value = await loadTestHistory()
     } catch (err) {
       error.value = err as Error
     } finally {
@@ -63,15 +47,8 @@ export const useAppStore = defineStore('app', () => {
   }
 
   const fetchTests = async () => {
-    const config = useRuntimeConfig()
     try {
-      const response = await useFetch<{ body: string }>(
-        `${config.public.api_endpoint}/tests`,
-        {
-          headers: { Authorization: `Bearer ${authToken.value}` }
-        }
-      )
-      tests.value = JSON.parse(response.data.value?.body || '')
+      tests.value = await loadTests()
     } catch (err) {
       error.value = err as Error
     } finally {
@@ -80,16 +57,9 @@ export const useAppStore = defineStore('app', () => {
   }
 
   const fetchPortalLink = async () => {
-    const config = useRuntimeConfig()
     try {
       loading.value = true
-      const response = await useFetch<{ body: string }>(
-        `${config.public.api_endpoint}/billing/manage`,
-        {
-          headers: { Authorization: `Bearer ${authToken.value}` }
-        }
-      )
-      portalLink.value = response.data.value?.body || null
+      portalLink.value = await loadPortalLink()
     } finally {
       loading.value = false
     }
@@ -105,10 +75,7 @@ export const useAppStore = defineStore('app', () => {
     profile,
     loading,
     error,
-    isAuth,
     $reset,
-    setAuthToken,
-    authToken,
     portalLink
   }
 })

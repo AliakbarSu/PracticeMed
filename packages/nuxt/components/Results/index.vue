@@ -235,12 +235,14 @@ import axios from 'axios'
 import type { UserAppMetadata } from '@/types/user'
 import type { Stats } from '../../src/types/test'
 import { useUIStore } from '../../src/store/UI'
+import { useAuthStore } from '../../src/store/auth'
 import { demoResultsData } from '../../src/data/demoResultsData'
 
 export default defineComponent({
   setup() {
     const UIStore = useUIStore()
-    return { UIStore }
+    const authStore = useAuthStore()
+    return { UIStore, authStore }
   },
   created() {
     this.fetchTestHistory()
@@ -294,10 +296,9 @@ export default defineComponent({
         return
       }
       try {
-        const token = await this.$auth0.getAccessTokenSilently()
         const response = await axios.get(`${api_endpoint}/tests/history`, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${this.authStore.token}`
           }
         })
         const testHistoryArray = response.data

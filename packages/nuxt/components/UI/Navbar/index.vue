@@ -118,20 +118,17 @@ import { Disclosure } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useAppStore } from '../../../src/store/main'
 import { usePlansStore } from '../../../src/store/plans'
-import { useAuth0 } from '@auth0/auth0-vue'
+import { useAuthStore } from '../../../src/store/auth'
 import { signup, loginWithRedirect } from '../../../src/auth/index'
 
-const store = useAppStore()
 const plansStore = usePlansStore()
-
-const { isAuth } = storeToRefs(store)
+const authStore = useAuthStore()
 
 const router = useRouter()
 const route = useRoute()
-const auth0 = process.client ? useAuth0() : undefined
+
+const isAuth = computed(() => authStore.isAuthenticated)
 
 const hideTrialButton = computed(
   () => plansStore.hasActivePlan == true || route.fullPath == '/plans'

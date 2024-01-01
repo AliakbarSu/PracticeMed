@@ -1,50 +1,40 @@
 <template>
   <NuxtLayout>
-    <UIAlertsError v-if="error" />
+    <UIAlertsError v-if="UIStore.error" />
     <UILoading />
     <NuxtPage />
   </NuxtLayout>
 </template>
 <script lang="ts" setup>
 import { useUIStore } from './src/store/UI'
+import { useAuthStore } from './src/store/auth'
 import { useAppStore } from './src/store/main'
-import { storeToRefs } from 'pinia'
-import { useAuth0 } from '@auth0/auth0-vue'
+import { buildAuthClient, getAuthToken } from './src/auth/index'
 
-const store = useAppStore()
 const UIStore = useUIStore()
+const store = useAppStore()
+const authStore = useAuthStore()
 
-const { authToken } = storeToRefs(store)
-const { error } = storeToRefs(UIStore)
-
-// Composition API
-const auth0 = process.client ? useAuth0() : undefined
-if (process.client) await auth0?.checkSession()
-const isAuthenticated = computed(() => {
-  return auth0?.isAuthenticated.value
-})
-
-watch(
-  isAuthenticated,
-  async () => {
-    if (isAuthenticated.value) {
-      const token = await auth0?.getAccessTokenSilently()
-      store.setAuthToken(token || '')
+onMounted(async () => {
+  if (process.client) {
+    try {
+      const client = await buildAuthClient()
+      client.checkSession()
+      const authToken = await getAuthToken()
+      authStore.setToken(authToken)
+    } catch (e) {
+      console.log('Something went wrong when checking session', e)
+      authStore.$reset()
     }
-  },
-  { immediate: true }
-)
-
+  }
+})
 watch(
-  authToken,
-  () => {
-    if (authToken.value && process.client) {
+  () => authStore.isAuthenticated,
+  (isAuth) => {
+    if (isAuth) {
       store.fetchProfileData()
-      store.fetchTests()
-      store.fetchTestsHistory()
       store.fetchPortalLink()
     }
-  },
-  { immediate: true }
+  }
 )
 </script>

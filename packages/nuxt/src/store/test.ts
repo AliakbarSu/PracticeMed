@@ -3,9 +3,10 @@ import type { Answer, SubmittedAnswer, Test } from '@/types/test'
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useAppStore } from './main'
-import { mockTest } from '../data/mockQuestions'
+// import { mockTest } from '../data/mockQuestions'
 import { useUIStore } from './UI'
+import { useAuthStore } from './auth'
+import { loadTestApi, loadDemoTestApi } from '../api/testApi'
 
 export interface TestInProgress extends Omit<Test, 'questions'> {
   questions: QuestionInProgress[]
@@ -25,7 +26,7 @@ export interface QuestionInProgress extends Question {
 }
 
 export const useTestStore = defineStore('test', () => {
-  const appStore = useAppStore()
+  const authStore = useAuthStore()
   const UIStore = useUIStore()
 
   const previewMode = ref(false)
@@ -34,6 +35,7 @@ export const useTestStore = defineStore('test', () => {
   const submitting = ref(false)
   const hasTestsRemaning = ref(true)
   const test = ref<TestInProgress | null>(null)
+  const questions = ref<Question[]>([])
   const resultId = ref<string | null>(null)
   const skippedQuestions = ref<QuestionInProgress[]>([])
   const currentQuestionIndex = ref(0)
@@ -105,16 +107,9 @@ export const useTestStore = defineStore('test', () => {
 
   const loadTest = async (testId: string) => {
     try {
-      const { api_endpoint } = useRuntimeConfig()
       $reset()
       loading.value = true
-      const token = appStore.authToken || ''
-      const response = await axios.get(`${api_endpoint}/tests/${testId}/load`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      const result = response.data.body as TestInProgress
+      const result = await loadTestApi(testId)
       test.value = {
         ...result,
         lastIndex: result.questions.length - 1
@@ -131,20 +126,28 @@ export const useTestStore = defineStore('test', () => {
     }
   }
 
-  const loadMockTest = () => {
-    $reset()
-    previewMode.value = true
-    const loadedTest = mockTest
-    test.value = {
-      ...(loadedTest as TestInProgress),
-      lastIndex: loadedTest.questions.length - 1
+  const loadDemoTest = async () => {
+    try {
+      $reset()
+      loading.value = true
+      demoMode.value = true
+      previewMode.value = true
+      const result = await loadDemoTestApi()
+      questions.value = result.questions
+      test.value = {
+        ...(result as TestInProgress),
+        lastIndex: result.questions.length - 1
+      }
+      instructions.value = result.instructions
+    } catch (err: any) {
+      UIStore.error = new Error(err as string)
+      const statusCode = err.response?.status
+      if (statusCode === 403) {
+        hasTestsRemaning.value = false
+      }
+    } finally {
+      loading.value = false
     }
-    instructions.value = loadedTest.instructions
-  }
-
-  const loadDemoTest = () => {
-    loadMockTest()
-    demoMode.value = true
   }
 
   const start = () => {
@@ -155,6 +158,16 @@ export const useTestStore = defineStore('test', () => {
     currentQuestionIndex.value = 0
     openedAt.value = now
     testStarted.value = true
+  }
+
+  const setDemoQuestions = () => {
+    if (!test.value) return
+    test.value.questions = questions.value.splice(0, 5) as QuestionInProgress[]
+  }
+
+  const setAllQuestions = () => {
+    if (!test.value) return
+    test.value.questions = questions.value.splice(0, 7) as QuestionInProgress[]
   }
 
   const select = (option: Option) => {
@@ -237,7 +250,7 @@ export const useTestStore = defineStore('test', () => {
     submitting.value = true
     try {
       const { api_endpoint } = useRuntimeConfig()
-      const token = appStore.authToken || ''
+      const token = authStore.token || ''
       const response = await axios.post(
         `${api_endpoint}/test/${test.value.id}/result`,
         payload,
@@ -264,9 +277,10 @@ export const useTestStore = defineStore('test', () => {
 
   return {
     loadTest,
-    loadMockTest,
     loadDemoTest,
     start,
+    setDemoQuestions,
+    setAllQuestions,
     skip,
     next,
     select,

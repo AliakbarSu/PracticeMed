@@ -1,6 +1,6 @@
 <template>
   <div class="test mb-12 p-2 bg-white">
-    <div class="text-center sm:w-2/3 md:1/3 mx-auto">
+    <div class="text-center sm:w-2/3 md:1/3 mx-auto" v-if="!flags.upgrade">
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
         Try Our Demo Mock Test
       </h2>
@@ -9,30 +9,31 @@
         simulated testing environment, and instantly review your performance.
       </p>
     </div>
+    <HomeComponentsTestSignupMessage v-if="needToSignup" />
     <TestComponentsAlertsReadyToSubmit
       @submit="testStore.submit"
-      v-if="alerts.readyToSubmit"
-      @cancel="cancelAlert('readyToSubmit')"
+      v-if="flags.readyToSubmit"
+      @cancel="flags.readyToSubmit = false"
     />
     <TestComponentsAlertsSelectOption
-      v-if="alerts.selectOption"
-      @cancel="cancelAlert('selectOption')"
+      v-if="flags.selectOption"
+      @cancel="flags.selectOption = false"
     />
-    <div class="content" v-if="testStarted && !alerts.upgrade && !loading">
+    <div class="content" v-if="displayTestConsole">
       <div class="mt-6 overflow-hidden rounded-lg bg-white shadow">
         <div class="px-4 py-5 sm:p-6" ref="questionRef">
-          <TestComponentsUIQuestion :question="question" />
+          <TestComponentsUIQuestion :question="testStore.question" />
           <TestComponentsUIOptions
             @select="testStore.select"
-            :options="question.options"
+            :options="testStore.question.options"
           />
         </div>
       </div>
       <TestComponentsUIQuestionControls
-        :canSkip="!question.skipped"
+        :canSkip="!testStore.question.skipped"
         @next="next"
         @skip="testStore.skip"
-        @end="endTestAlert"
+        @end="flags.endTest = true"
         class="mr-12"
       />
     </div>
@@ -40,13 +41,14 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { reactive, ref, onMounted, computed } from 'vue'
 import { useTestStore } from '../../../../src/store/test'
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
+import { useAppStore } from '../../../../src/store/main'
+import { useAuthStore } from '../../../../src/store/auth'
+import { useRouter } from 'vue-router'
 
-export interface Alerts {
+export interface Flags {
+  endTest: boolean
   timeOver: boolean
   selectOption: boolean
   readyToSubmit: boolean
@@ -54,65 +56,60 @@ export interface Alerts {
 }
 
 const questionRef = ref(null)
-const router = useRouter()
-const route = useRoute()
 
 const testStore = useTestStore()
+const appStore = useAppStore()
+const authStore = useAuthStore()
+const router = useRouter()
 
-const {
-  timeElapsed,
-  timeRemained,
-  submitting,
-  loading,
-  question,
-  test,
-  testStarted,
-  hasTestsRemaning,
-  isTimeOver,
-  previewMode,
-  testEnded,
-  selectedOption
-} = storeToRefs(testStore)
-
-const alerts = reactive({
+const flags = reactive({
   timeOver: false,
   selectOption: false,
   readyToSubmit: false,
   endTest: false,
   upgrade: false
-} as Alerts)
+})
 
-testStore.loadDemoTest()
+onMounted(async () => {
+  await testStore.loadDemoTest()
+  if (authStore.isAuthenticated) {
+    testStore.setAllQuestions()
+    testStore.start()
+  } else {
+    testStore.setDemoQuestions()
+    testStore.start()
+  }
+})
 
-setTimeout(() => {
-  testStore.start()
-}, 0)
+const needToSignup = computed(
+  () => !authStore.isAuthenticated && testStore.testEnded
+)
+const displayTestConsole = computed(
+  () => !testStore.loading && !needToSignup.value && testStore.testStarted
+)
 
-const setAlert = (key: keyof Alerts) => {
-  alerts[key] = true
-}
-const cancelAlert = (key: keyof Alerts) => {
-  alerts[key] = false
-}
 const viewResults = () => {
-  // router.push(`/results/${resultId.value}`)
+  router.push(`/results/demo_test`)
 }
-const endTestAlert = () => {
-  setAlert('readyToSubmit')
-}
-
 const next = () => {
-  if (selectedOption.value == null) {
-    setAlert('selectOption')
+  if (testStore.selectedOption == null) {
+    flags.selectOption = true
   } else {
     testStore.next()
     ;(questionRef.value as any).scrollIntoView({ behavior: 'smooth' })
   }
 }
 
-watch(testEnded, () => {
-  if (testEnded.value && previewMode.value) {
-    router.push(`/results/demo_test`)
+watch([testStore, appStore], () => {
+  if (testStore.testEnded && testStore.previewMode) {
+    viewResults()
+  }
+  if (
+    testStore.testEnded &&
+    testStore.previewMode &&
+    !authStore.isAuthenticated
+  ) {
+    flags.upgrade = true
   }
 })
 </script>

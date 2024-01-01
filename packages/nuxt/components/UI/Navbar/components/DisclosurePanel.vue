@@ -90,9 +90,9 @@
 <script lang="ts" setup>
 import { useAppStore } from '../../../../src/store/main'
 import { usePlansStore } from '../../../../src/store/plans'
+import { useAuthStore } from '../../../../src/store/auth'
 import { DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
-import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { logout, signup, loginWithRedirect } from '../../../../src/auth/index'
@@ -100,11 +100,11 @@ import { useAuth0 } from '@auth0/auth0-vue'
 const router = useRouter()
 const store = useAppStore()
 const plansStore = usePlansStore()
+const authStore = useAuthStore()
 
-const { isAuth } = storeToRefs(store)
 const route = useRoute()
-
 const { user } = useAuth0()
+const isAuth = computed(() => authStore.isAuthenticated)
 
 const goTo = (link: string) => {
   router.push(link)

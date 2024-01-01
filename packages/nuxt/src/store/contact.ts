@@ -1,10 +1,8 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useAppStore } from './main'
 
 export const useContactStore = defineStore('contact', () => {
-  const appStore = useAppStore()
   const loading = ref(false)
   const signedup = ref(false)
   const email = ref<string | null>(null)
