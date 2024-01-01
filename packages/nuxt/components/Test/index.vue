@@ -109,7 +109,7 @@ const alerts = reactive({
 const testId = (route.params.id as string) || ''
 const preview = route.query.preview === 'true'
 if (preview) {
-  testStore.loadMockTest()
+  testStore.loadDemoTest()
 } else {
   testStore.loadTest(testId)
 }

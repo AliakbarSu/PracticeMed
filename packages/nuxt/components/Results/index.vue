@@ -278,7 +278,9 @@ export default defineComponent({
       window.print()
     },
     async fetchTestHistory() {
-      const { api_endpoint } = useRuntimeConfig()
+      const {
+        public: { api_endpoint }
+      } = useRuntimeConfig()
       this.loading = true
       const resultId = this.$route.params.id || ''
 

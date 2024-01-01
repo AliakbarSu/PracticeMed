@@ -4,9 +4,11 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useAppStore } from './main'
 import { useUIStore } from './UI'
+import { useAuthStore } from './auth'
 
 export const usePlansStore = defineStore('plans', () => {
   const appStore = useAppStore()
+  const authStore = useAuthStore()
   const UIStore = useUIStore()
 
   const loading = ref(false)
@@ -26,7 +28,6 @@ export const usePlansStore = defineStore('plans', () => {
   }
 
   const fetchPlans = async () => {
-    const config = useRuntimeConfig()
     try {
       loading.value = true
       const result = await useFetch<Plan[]>(`/api/plans`, {
@@ -45,7 +46,7 @@ export const usePlansStore = defineStore('plans', () => {
     if (hasThisPlan(plan.id)) return
     try {
       subscribingTo.value = plan.id
-      const token = appStore.authToken
+      const token = authStore.token
       const url = `${config.public.api_endpoint}/plans/${plan.id}`
       const endpoint = plan.freeTrial
         ? `${url}/subscribe/free-trial`

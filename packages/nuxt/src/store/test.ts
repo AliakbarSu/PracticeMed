@@ -6,7 +6,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 // import { mockTest } from '../data/mockQuestions'
 import { useUIStore } from './UI'
 import { useAuthStore } from './auth'
-import { loadTestApi, loadDemoTestApi } from '../api/testApi'
+import { loadTestApi, loadDemoTestApi, submitTestApi } from '../api/testApi'
 
 export interface TestInProgress extends Omit<Test, 'questions'> {
   questions: QuestionInProgress[]
@@ -249,18 +249,7 @@ export const useTestStore = defineStore('test', () => {
     }
     submitting.value = true
     try {
-      const { api_endpoint } = useRuntimeConfig()
-      const token = authStore.token || ''
-      const response = await axios.post(
-        `${api_endpoint}/test/${test.value.id}/result`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      resultId.value = response.data.body.id as string
+      resultId.value = (await submitTestApi(test.value.id, payload)) as string
     } catch (err) {
       UIStore.error = new Error(err as string)
     } finally {

@@ -170,7 +170,10 @@
           :test="test"
         />
         <DashboardComponentsUICTANoTestHistory
-          v-if="(previousTests as TestType[]).length <= 0 && state.currentView === 'history'"
+          v-if="
+            (previousTests as TestType[]).length <= 0 &&
+            state.currentView === 'history'
+          "
         />
         <DashboardComponentsTestHistory
           v-if="state.currentView === 'history'"
@@ -194,16 +197,18 @@ import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import * as Gtag from '../../src/gtag/index'
 import { usePlansStore } from '../../src/store/plans'
+import { useAuthStore } from '../../src/store/auth'
 import { watch } from 'vue'
 import { Switch } from '@headlessui/vue'
 
 const route = useRoute()
-const store = useAppStore()
+const appStore = useAppStore()
 const plansStore = usePlansStore()
+const authStore = useAuthStore()
 
 const { plans } = storeToRefs(plansStore)
 
-const { tests, testsHistory, loading } = storeToRefs(store)
+const { tests, testsHistory, loading } = storeToRefs(appStore)
 
 const state = reactive<{ currentView: 'tests' | 'history' }>({
   currentView: 'tests'
@@ -246,6 +251,13 @@ watch(plans, () => {
     } else {
       Gtag.purchase(plan)
     }
+  }
+})
+
+watch(authStore, (auth) => {
+  if (auth.isAuthenticated) {
+    appStore.fetchTests()
+    appStore.fetchTestsHistory()
   }
 })
 
