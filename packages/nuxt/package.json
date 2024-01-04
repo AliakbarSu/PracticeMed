@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "export LOCAL_ENV=local && sst bind npx nuxi dev",
+    "build-dev": "npx nuxi build --dotenv .env.development",
+    "build-prod": "npx nuxi build --dotenv .env.production",
+    "dev": "export LOCAL_ENV=local && sst bind npx nuxi dev --dotenv .env.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -35,6 +36,7 @@
     "vue-tsc": "^1.2.0"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.7.3",
     "@auth0/auth0-vue": "^2.1.0",
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.17",

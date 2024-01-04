@@ -1,15 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { dev, local, prod } from '../../resources/stages'
+import { local } from '../../resources/stages'
 import path from 'path'
-let cdn = `http://localhost:3000`
-let api_endpoint = `https://dev.api.practicemed.org/api`
-if (process.env.LOCAL_ENV == prod) {
-  cdn = 'https://prod.cdn.practicemed.org'
-  api_endpoint = 'https://prod.api.practicemed.org/api'
-} else if (process.env.LOCAL_ENV == dev) {
-  cdn = 'https://dev.cdn.practicemed.org'
-}
-
 const alias =
   process.env.LOCAL_ENV == local
     ? {}
@@ -22,7 +13,6 @@ const alias =
 
 export default defineNuxtConfig({
   app: {
-    cdnURL: cdn,
     head: {
       script: [
         {
@@ -53,77 +43,100 @@ export default defineNuxtConfig({
           rel: 'stylesheet'
         },
         {
-          href: cdn + '/assets/favicons/apple-icon-57x57.png',
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-57x57.png',
           rel: 'apple-touch-icon',
           sizes: '57x57'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '60x60',
-          href: cdn + '/assets/favicons/apple-icon-60x60.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-60x60.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '72x72',
-          href: cdn + '/assets/favicons/apple-icon-72x72.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-72x72.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '76x76',
-          href: cdn + '/assets/favicons/apple-icon-76x76.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-76x76.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '114x114',
-          href: cdn + '/assets/favicons/apple-icon-114x114.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-114x114.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '120x120',
-          href: cdn + '/assets/favicons/apple-icon-120x120.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-120x120.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '144x144',
-          href: cdn + '/assets/favicons/apple-icon-144x144.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-144x144.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '152x152',
-          href: cdn + '/assets/favicons/apple-icon-152x152.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-152x152.png'
         },
         {
           rel: 'apple-touch-icon',
           sizes: '180x180',
-          href: cdn + '/assets/favicons/apple-icon-180x180.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/apple-icon-180x180.png'
         },
         {
           rel: 'icon',
           type: 'image/png',
           sizes: '192x192',
-          href: cdn + '/assets/favicons/android-icon-192x192.png'
+          href:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/android-icon-192x192.png'
         },
         {
           rel: 'icon',
           type: 'image/png',
           sizes: '32x32',
-          href: cdn + '/assets/favicons/favicon-32x32.png'
+          href:
+            process.env.NUXT_APP_CDN_URL + '/assets/favicons/favicon-32x32.png'
         },
         {
           rel: 'icon',
           type: 'image/png',
           sizes: '96x96',
-          href: cdn + '/assets/favicons/favicon-96x96.png'
+          href:
+            process.env.NUXT_APP_CDN_URL + '/assets/favicons/favicon-96x96.png'
         },
         {
           rel: 'icon',
           type: 'image/png',
           sizes: '16x16',
-          href: cdn + '/assets/favicons/favicon-16x16.png'
+          href:
+            process.env.NUXT_APP_CDN_URL + '/assets/favicons/favicon-16x16.png'
         },
         {
           rel: 'manifest',
-          href: cdn + '/assets/favicons/manifest.json'
+          href: process.env.NUXT_APP_CDN_URL + '/assets/favicons/manifest.json'
         }
       ],
       meta: [
@@ -131,7 +144,9 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#ffffff' },
         {
           name: 'msapplication-TileImage',
-          content: cdn + '/assets/favicons/ms-icon-144x144.png'
+          content:
+            process.env.NUXT_APP_CDN_URL +
+            '/assets/favicons/ms-icon-144x144.png'
         },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
       ]
@@ -139,9 +154,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      api_endpoint,
-      hygraph_endpoint:
-        'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master'
+      api_endpoint: '',
+      hygraph_endpoint: '',
+      domain_name: ''
     }
   },
   modules: ['@pinia/nuxt', '@nuxt/devtools'],

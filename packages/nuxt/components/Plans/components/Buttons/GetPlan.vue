@@ -44,7 +44,6 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue'
-import { useAuth0 } from '@auth0/auth0-vue'
 import type { PropType } from 'vue'
 import type { Plan } from '../../../../src/types/plans'
 import * as Gtag from '../../../../src/gtag/index'
@@ -53,6 +52,7 @@ import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { usePlansStore } from '../../../../src/store/plans'
 import { useAuthStore } from '../../../../src/store/auth'
+import { loginWithRedirect } from '../../../../src/auth/index'
 import { watch } from 'vue'
 
 const store = useAppStore()
@@ -61,10 +61,6 @@ const authStore = useAuthStore()
 
 const { loading } = storeToRefs(store)
 const { checkoutUrl, hasActivePlan } = storeToRefs(plansStore)
-
-const { loginWithRedirect } = process.client
-  ? useAuth0()
-  : { loginWithRedirect: () => null }
 
 const props = defineProps({
   plan: {
@@ -75,11 +71,7 @@ const props = defineProps({
 
 const loginIfNotAuthenticated = async () => {
   if (!authStore.isAuthenticated) {
-    await loginWithRedirect({
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    })
+    await loginWithRedirect()
   }
 }
 

@@ -54,13 +54,16 @@
 <script lang="ts" setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useRouter } from 'vue-router'
-import { useAuth0 } from '@auth0/auth0-vue'
-const router = useRouter()
+import { useAuthStore } from '../../../../src/store/auth'
+import { logout } from '../../../../src/auth/index'
 
-const { user, logout } = useAuth0()
+const router = useRouter()
+const authStore = useAuthStore()
+
+const user = computed(() => authStore.user)
 
 const logoutFromApp = async () => {
-  await logout({ logoutParams: { returnTo: window.location.origin } })
+  await logout()
 }
 const goTo = (link: string) => {
   router.push(link)

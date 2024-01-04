@@ -2,28 +2,22 @@ import { createAuth0Client, Auth0Client } from '@auth0/auth0-spa-js'
 import { domain, clientId } from '../../auth_config.json'
 import { useAuthStore } from '../store/auth'
 
-// let auth0Client: Auth0Client | null = null
-let redirectLink = 'http://localhost:3000'
-
-if (process.env.LOCAL_ENV == 'dev') {
-  redirectLink = 'https://dev.practicemed.org'
-} else if (process.env.LOCAL_ENV == 'prod') {
-  redirectLink = 'https://practicemed.org'
-}
-
 let auth0Client: Auth0Client | null = null
 
-export const auth = () =>
-  createAuth0Client({
+export const auth = () => {
+  const {
+    public: { domain_name }
+  } = useRuntimeConfig()
+  return createAuth0Client({
     domain,
     clientId,
     cacheLocation: 'localstorage',
-    useRefreshTokens: true,
     authorizationParams: {
-      redirect_uri: redirectLink,
+      redirect_uri: (domain_name as string) || '',
       audience: 'https://jwt-token-authorizer.com'
     }
   })
+}
 
 export const buildAuthClient = async () => {
   if (auth0Client) {
@@ -35,18 +29,22 @@ export const buildAuthClient = async () => {
 }
 
 export const getAuth0Client = async () => {
-  // if (!auth0Client) {
   return auth()
-  // }
-  // return auth0Client
 }
 
 export const loginWithRedirect = async () => {
-  const client = await buildAuthClient()
-  const authStore = useAuthStore()
-  await client.loginWithRedirect()
-  const token = await getAuthToken()
-  authStore.setToken(token)
+  try {
+    const client = await buildAuthClient()
+    const authStore = useAuthStore()
+    await client.loginWithRedirect()
+    const token = await getAuthToken()
+    const user = await client.getUser()
+    authStore.setToken(token)
+    authStore.setUser(user)
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
 }
 
 export const signup = async () => {
@@ -56,7 +54,9 @@ export const signup = async () => {
     authorizationParams: { screen_hint: 'signup' }
   })
   const token = await getAuthToken()
+  const user = await client.getUser()
   authStore.setToken(token)
+  authStore.setUser(user)
 }
 
 export const getAccessTokenSilently = () =>

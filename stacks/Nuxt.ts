@@ -61,6 +61,7 @@ export function NuxtStack({ stack }: StackContext) {
     }
   })
 
+  nuxt.bind([publicAsset])
   /**
    * Set up a default route to handle all call http call to the nuxt application
    */
@@ -79,7 +80,14 @@ export function NuxtStack({ stack }: StackContext) {
       },
       environment: {
         NUXT_APP_CDN_URL: publicAsset.customDomainUrl || '',
-        NUXT_PUBLIC_API_ENDPOINT: `${api_url}/api`
+        NUXT_PUBLIC_CDN: publicAsset.customDomainUrl || '',
+        NUXT_PUBLIC_API_ENDPOINT: `${api_url}/api`,
+        NUXT_PUBLIC_HYGRAPH_ENDPOINT:
+          'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master',
+        NUXT_PUBLIC_DOMAIN_NAME:
+          stack.stage == dev
+            ? `https://${endpoints.custom_domains.web.dev}`
+            : `https://${endpoints.custom_domains.web.prod}`
       }
     })
   })

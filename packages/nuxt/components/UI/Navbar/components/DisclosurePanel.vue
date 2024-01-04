@@ -28,7 +28,7 @@
       <div class="space-y-1 pb-3 p-2 pt-0" v-if="!isAuth">
         <DisclosureButton as="div">
           <button
-            @click="() => loginWithRedirect()"
+            @click="login"
             type="button"
             class="w-full relative inline-flex justify-center items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
@@ -37,7 +37,7 @@
         </DisclosureButton>
         <DisclosureButton as="div">
           <button
-            @click="() => signup()"
+            @click="signup"
             type="button"
             class="w-full relative inline-flex justify-center items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
@@ -88,32 +88,40 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from '../../../../src/store/main'
 import { usePlansStore } from '../../../../src/store/plans'
 import { useAuthStore } from '../../../../src/store/auth'
 import { DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { BellIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { logout, signup, loginWithRedirect } from '../../../../src/auth/index'
-import { useAuth0 } from '@auth0/auth0-vue'
+import {
+  logout,
+  signup as signupWithRedirect,
+  loginWithRedirect
+} from '../../../../src/auth/index'
 const router = useRouter()
-const store = useAppStore()
 const plansStore = usePlansStore()
 const authStore = useAuthStore()
 
 const route = useRoute()
-const { user } = useAuth0()
 const isAuth = computed(() => authStore.isAuthenticated)
+const user = computed(() => authStore.user)
 
 const goTo = (link: string) => {
   router.push(link)
 }
-const onLogout = () => {
-  logout().then(() => {
-    store.$reset()
-  })
+const onLogout = async () => {
+  await logout()
 }
+
+const login = async () => {
+  await loginWithRedirect()
+}
+
+const signup = async () => {
+  await signupWithRedirect()
+}
+
 const hideTrialButton = computed(
   () => plansStore.hasActivePlan == true || route.fullPath == '/plans'
 )

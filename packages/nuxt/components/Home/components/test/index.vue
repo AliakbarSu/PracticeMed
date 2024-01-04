@@ -101,7 +101,11 @@ const next = () => {
 }
 
 watch([testStore, appStore], () => {
-  if (testStore.testEnded && testStore.previewMode) {
+  if (
+    testStore.testEnded &&
+    testStore.previewMode &&
+    authStore.isAuthenticated
+  ) {
     viewResults()
   }
   if (
