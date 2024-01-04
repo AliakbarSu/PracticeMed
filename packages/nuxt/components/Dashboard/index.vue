@@ -254,8 +254,8 @@ watch(plans, () => {
   }
 })
 
-watch(authStore, (auth) => {
-  if (auth.isAuthenticated) {
+watch(authStore, () => {
+  if (authStore.isAuthenticated) {
     appStore.fetchTests()
     appStore.fetchTestsHistory()
   }

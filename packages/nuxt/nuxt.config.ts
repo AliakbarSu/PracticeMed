@@ -1,15 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { local } from '../../resources/stages'
 import path from 'path'
-// const alias =
-//   process.env.LOCAL_ENV == local
-//     ? {}
-//     : {
-//         'vue/server-renderer': path.resolve(
-//           __dirname,
-//           '../../node_modules/vue/server-renderer'
-//         )
-//       }
+const alias =
+  process.env.LOCAL_ENV == local
+    ? {}
+    : {
+        'vue/server-renderer': path.resolve(
+          __dirname,
+          '../../node_modules/vue/server-renderer'
+        )
+      }
 
 export default defineNuxtConfig({
   app: {
@@ -66,8 +66,8 @@ export default defineNuxtConfig({
     '@custom-auth': './src/auth',
     '@types': './src/types',
     '@gtag': './src/gtag',
-    'mpt-types': '../core/types'
-    // ...alias
+    'mpt-types': '../core/types',
+    ...alias
   },
 
   css: ['~/assets/css/main.css'],
