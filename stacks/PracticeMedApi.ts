@@ -6,6 +6,7 @@ import { functions } from '../resources/functions'
 
 export function API(context: StackContext) {
   const { stack } = context
+  const stage = stack.stage
   const {
     HYGRAPH_TOKEN,
     HYGRAPH_ENDPOINT,
@@ -21,10 +22,7 @@ export function API(context: StackContext) {
 
   const api = new Api(stack, 'api', {
     customDomain: {
-      domainName:
-        stack.stage == dev
-          ? endpoints.custom_domains.api.dev
-          : endpoints.custom_domains.api.prod,
+      domainName: `${stage}.api.${endpoints.domain}`,
       hostedZone: endpoints.hosted_zone
     },
     defaults: {
@@ -32,7 +30,7 @@ export function API(context: StackContext) {
         runtime: 'nodejs18.x',
         timeout: 60,
         environment: {
-          stage: stack.stage
+          stage
         }
       }
     },
@@ -113,16 +111,16 @@ export function API(context: StackContext) {
   })
 
   const cronStack = new Cron(stack, 'Cron', {
-    schedule: stack.stage == dev ? 'rate(1 day)' : 'cron(0 17 * * ? *)',
+    schedule: stage == dev ? 'rate(1 day)' : 'cron(0 17 * * ? *)',
     job: {
       function: {
         runtime: 'nodejs18.x',
         timeout: 60,
         environment: {
-          stage: stack.stage
+          stage
         },
         handler:
-          stack.stage === dev
+          stage == dev
             ? functions.send_daily_recalls
             : functions.send_daily_recalls
       }

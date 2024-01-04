@@ -109,6 +109,7 @@ export const useTestStore = defineStore('test', () => {
     try {
       $reset()
       loading.value = true
+      UIStore.startLoadingTest()
       const result = await loadTestApi(testId)
       test.value = {
         ...result,
@@ -123,12 +124,14 @@ export const useTestStore = defineStore('test', () => {
       }
     } finally {
       loading.value = false
+      UIStore.stopLoadingTest()
     }
   }
 
   const loadDemoTest = async () => {
     try {
       $reset()
+      UIStore.startLoadingTest()
       loading.value = true
       demoMode.value = true
       previewMode.value = true
@@ -147,6 +150,7 @@ export const useTestStore = defineStore('test', () => {
       }
     } finally {
       loading.value = false
+      UIStore.stopLoadingTest()
     }
   }
 

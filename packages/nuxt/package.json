@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build-dev": "npx nuxi build --dotenv .env.development",
-    "build-prod": "npx nuxi build --dotenv .env.production",
-    "dev": "export LOCAL_ENV=local && sst bind npx nuxi dev --dotenv .env.local",
+    "build-pr": "npx nuxi build",
+    "build-prod": "npx nuxi build",
+    "dev": "sst bind npx nuxi dev --dotenv .env.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"

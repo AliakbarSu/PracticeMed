@@ -19,6 +19,7 @@ export const endpoints = {
     dev: 'http://localhost:3000',
     prod: 'https://practicemed.org'
   },
+  domain: 'practicemed.org',
   custom_domains: {
     api: {
       dev: 'dev.api.practicemed.org',

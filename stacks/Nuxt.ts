@@ -1,20 +1,19 @@
 import { Api, Function, StackContext, StaticSite, use } from 'sst/constructs'
 import { HttpMethods } from 'aws-cdk-lib/aws-s3'
 import { API } from './PracticeMedApi'
-import { dev } from '../resources/stages'
+import { prod } from '../resources/stages'
 import { endpoints } from '../resources/endpoints'
 
 export function NuxtStack({ stack }: StackContext) {
   const api = use(API)
+  const stage = stack.stage
   const {
     api: { customDomainUrl: api_url }
   } = api
   const nuxt = new Api(stack, 'Nuxt', {
     customDomain: {
       domainName:
-        stack.stage == dev
-          ? endpoints.custom_domains.web.dev
-          : endpoints.custom_domains.web.prod,
+        stage == prod ? endpoints.domain : `${stage}.${endpoints.domain}`,
       hostedZone: endpoints.hosted_zone
     },
     cors: {
@@ -26,10 +25,7 @@ export function NuxtStack({ stack }: StackContext) {
   nuxt.bind([api.api])
   const publicAsset = new StaticSite(stack, 'PublicAssetCdn', {
     customDomain: {
-      domainName:
-        stack.stage == dev
-          ? endpoints.custom_domains.cdn.dev
-          : endpoints.custom_domains.cdn.prod,
+      domainName: `${stage}.cdn.${endpoints.domain}`,
       hostedZone: endpoints.hosted_zone
     },
     path: 'packages/nuxt/.output/public',
@@ -79,15 +75,15 @@ export function NuxtStack({ stack }: StackContext) {
         install: ['tslib']
       },
       environment: {
-        NUXT_APP_CDN_URL: publicAsset.customDomainUrl || '',
-        NUXT_PUBLIC_CDN: publicAsset.customDomainUrl || '',
+        NUXT_APP_CDN_URL: publicAsset.url || '',
+        NUXT_PUBLIC_CDN_URL: publicAsset.url || '',
         NUXT_PUBLIC_API_ENDPOINT: `${api_url}/api`,
         NUXT_PUBLIC_HYGRAPH_ENDPOINT:
           'https://api-ap-southeast-2.hygraph.com/v2/clgn1doxk5et901ug6uub1w1u/master',
         NUXT_PUBLIC_DOMAIN_NAME:
-          stack.stage == dev
-            ? `https://${endpoints.custom_domains.web.dev}`
-            : `https://${endpoints.custom_domains.web.prod}`
+          stage == prod
+            ? `https://${endpoints.domain}`
+            : `https://${stage}.${endpoints.domain}`
       }
     })
   })
