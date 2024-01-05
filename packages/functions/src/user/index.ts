@@ -29,11 +29,16 @@ export const billingLink = ApiHandler(async (_evt) => {
     }
   }
   const portalConfigId = (await configureCustomerPortal()).id
-  const portalLink = await customerPortalLink(
-    stripe_customer_id,
-    portalConfigId
-  )
+  let portalLink = null
+  try {
+    portalLink = await customerPortalLink(stripe_customer_id, portalConfigId)
+  } catch (e) {
+    console.error(
+      'Error: Encountered an error when trying to generate a portal link'
+    )
+  }
+
   return {
-    body: portalLink.url
+    body: portalLink?.url
   }
 })
