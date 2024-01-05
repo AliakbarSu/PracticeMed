@@ -65,7 +65,7 @@
               </p>
               <div class="mt-10 flex items-center justify-center gap-x-6">
                 <RouterLink
-                  to="/test/try-it-now?preview=true"
+                  to="/plans"
                   class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                   >Try it now</RouterLink
                 >
@@ -347,8 +347,8 @@
               tier?.mostPopular
                 ? ''
                 : tierIdx === 0
-                ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
-                : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
+                  ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
+                  : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
               'rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10'
             ]"
           >
