@@ -54,7 +54,7 @@
         :canSkip="!testStore.question.skipped"
         @next="next"
         @skip="testStore.skip"
-        @end="flags.endTest = true"
+        @end="endTest"
         class="mr-12"
       />
     </div>
@@ -122,6 +122,10 @@ const next = () => {
     testStore.next()
     ;(questionRef.value as any).scrollIntoView({ behavior: 'smooth' })
   }
+}
+
+const endTest = () => {
+  testStore.submit()
 }
 
 watch([testStore, appStore], () => {

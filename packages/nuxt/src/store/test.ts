@@ -14,6 +14,7 @@ export interface TestInProgress extends Omit<Test, 'questions'> {
   end_at: number
   lastIndex: number
   instructions: string
+  completed: boolean
 }
 
 export interface QuestionInProgress extends Question {
@@ -50,6 +51,7 @@ export const useTestStore = defineStore('test', () => {
   const testEndsIn = ref(0)
   const isTimeOver = ref(false)
   const interval = ref<number | null>(null)
+  const completed = ref(false)
 
   function $reset() {
     test.value = null
@@ -70,6 +72,7 @@ export const useTestStore = defineStore('test', () => {
     demoMode.value = false
     submitting.value = false
     loading.value = false
+    completed.value = false
   }
 
   onBeforeUnmount(() => {
@@ -202,6 +205,7 @@ export const useTestStore = defineStore('test', () => {
       } else {
         submit()
         testEnded.value = true
+        completed.value = true
       }
     } else {
       currentQuestionIndex.value += 1
@@ -293,6 +297,7 @@ export const useTestStore = defineStore('test', () => {
     previewMode,
     demoMode,
     resultId,
+    completed,
     $reset
   }
 })
