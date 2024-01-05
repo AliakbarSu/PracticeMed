@@ -111,8 +111,8 @@ onMounted(async () => {
       client.checkSession()
       const authToken = await getAuthToken()
       const user = await client.getUser()
-      authStore.setToken(authToken)
       authStore.setUser(user)
+      authStore.setToken(authToken)
     } catch (e) {
       console.log('Something went wrong when checking session', e)
     }

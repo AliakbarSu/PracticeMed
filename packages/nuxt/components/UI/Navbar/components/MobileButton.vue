@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts" setup>
-import {} from 'vue'
 import { DisclosureButton } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { toRef } from 'vue'
