@@ -1,5 +1,5 @@
 <template>
-  <div class="test mb-12 p-2 bg-white">
+  <div class="test mb-12 p-2 bg-white" ref="signupRef">
     <div class="text-center sm:w-2/3 md:1/3 mx-auto" v-if="!flags.upgrade">
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
         Try Our Demo Mock Test
@@ -78,6 +78,7 @@ export interface Flags {
 }
 
 const questionRef = ref(null)
+const signupRef = ref(null)
 
 const testStore = useTestStore()
 const appStore = useAppStore()
@@ -137,6 +138,9 @@ watch([testStore, appStore], () => {
     !authStore.isAuthenticated
   ) {
     flags.upgrade = true
+    ;(signupRef.value as any).scrollIntoView({
+      behavior: 'smooth'
+    })
   }
 })
 
