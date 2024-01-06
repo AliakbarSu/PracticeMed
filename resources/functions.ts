@@ -23,5 +23,6 @@ export const functions = {
   send_daily_recalls: `${fnPath}/daily_recalls/index.empty`,
   submit_answer: `${fnPath}/submit_answer/index.handler`,
   submit_answer_queue: `${fnPath}/submit_answer_queue/index.handler`,
-  submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`
+  submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`,
+  add_user_to_mongodb: `${fnPath}/add_user_to_mongodb/index.handler`
 }

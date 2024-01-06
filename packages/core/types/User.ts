@@ -18,3 +18,8 @@ export interface Profile {
   email: string
   plan: UserPlan
 }
+
+export interface MongoDBUser {
+  userId: string
+  tests: any[]
+}

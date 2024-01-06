@@ -107,6 +107,7 @@ export function API(context: StackContext) {
       },
       // WEBHOOKS
       'POST /api/webhooks/stripe': functions.stripe_webhook,
+      'POST /api/add-user-to-mongodb': functions.add_user_to_mongodb,
       // New Letter
       'POST /api/newsletter/signup': functions.newsletter_signup,
       'POST /api/newsletter/unsubscribe': functions.newsletter_unsubscribe,
@@ -157,7 +158,8 @@ export function API(context: StackContext) {
     AUTH0_CLIENT_SECRET,
     STRIPE_SIGNING_SECRET,
     SENDGRID_API_KEY,
-    SANITY_ENDPOINT
+    SANITY_ENDPOINT,
+    queue.MONGODB_URI
   ])
   stack.addOutputs({
     api_domain: api.customDomainUrl,
