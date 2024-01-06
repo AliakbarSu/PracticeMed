@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useAuthStore } from '../store/auth'
-import type { SubmittedAnswer } from '@/types/test'
+import type { Answer, SubmittedAnswer } from '@/types/test'
 
 export const loadTestApi = async (testId: string) => {
   const {
@@ -33,6 +33,23 @@ export const submitTestApi = async (
   const authStore = useAuthStore()
   const response = await axios.post(
     `${api_endpoint}/test/${testId}/result`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${authStore.token}`
+      }
+    }
+  )
+  return response.data.body.id as string
+}
+
+export const submitAnswerApi = async (payload: Answer, testId?: string) => {
+  const {
+    public: { api_endpoint }
+  } = useRuntimeConfig()
+  const authStore = useAuthStore()
+  const response = await axios.post(
+    `${api_endpoint}/test/${testId}/submit`,
     payload,
     {
       headers: {

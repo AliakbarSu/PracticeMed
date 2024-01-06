@@ -1,12 +1,15 @@
 import type { Option, Question } from '@/types/question'
 import type { Answer, SubmittedAnswer, Test } from '@/types/test'
-import axios from 'axios'
 import { defineStore } from 'pinia'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-// import { mockTest } from '../data/mockQuestions'
 import { useUIStore } from './UI'
 import { useAuthStore } from './auth'
-import { loadTestApi, loadDemoTestApi, submitTestApi } from '../api/testApi'
+import {
+  loadTestApi,
+  loadDemoTestApi,
+  submitTestApi,
+  submitAnswerApi
+} from '../api/testApi'
 
 export interface TestInProgress extends Omit<Test, 'questions'> {
   questions: QuestionInProgress[]
