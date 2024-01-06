@@ -2,6 +2,8 @@ import { getUserAppMetadata, updateUserAppMetadata } from '../auth0/index'
 import { UserAppMetadata } from '../../types/User'
 import { getTest } from '../test'
 import { Question } from '../../types/Question'
+import { addTest } from '../model/test'
+import { MongoDBTest, TestStatus } from '../../types/Test'
 
 const hasUserRemainingTests = async (
   userId: string
@@ -60,6 +62,20 @@ export const loadTest = async ({
   // Load test
 
   const { questions, questionsNumber, ...rest } = await getTest(testId)
+
+  const loadedTest: MongoDBTest = {
+    user_id: userId,
+    test_id: testId,
+    status: TestStatus.IN_PROGRESS,
+    submitted_answers: [],
+    results: [],
+    timezone: 'UTC',
+    started_at: new Date().toISOString(),
+    ended_at: ''
+  }
+
+  await addTest(loadedTest)
+
   return { ...rest, questions: getRandomQuestions(questions, questionsNumber) }
 }
 

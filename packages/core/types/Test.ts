@@ -1,4 +1,5 @@
 import { Question } from './Question'
+import { SubmittedAnswer } from './Result'
 
 export interface LoadedTest
   extends Omit<UserTest, 'passingPoint' | 'trial' | 'points'> {}
@@ -23,4 +24,21 @@ export interface Test {
   thumbnail: { url: string }[]
   instructions: string
   questionsNumber?: number
+}
+
+export enum TestStatus {
+  'IN_PROGRESS' = 'IN_PROGRESS',
+  'COMPLETED' = 'COMPLETED'
+}
+
+export interface MongoDBTest {
+  _id?: string
+  test_id: string
+  user_id: string
+  status: TestStatus
+  submitted_answers: SubmittedAnswer[]
+  results: any[]
+  timezone: string
+  started_at: string
+  ended_at: string
 }
