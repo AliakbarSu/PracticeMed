@@ -6,7 +6,7 @@ export const handler = ApiHandler(async (event, context) => {
   const { user } = JSON.parse(event.body || '') as {
     user: any
   }
-  await add_user(user.user_id)
+  await add_user(user.user_id, user.email)
   return {
     body: `User was saved to MongoDB successfully!`
   }

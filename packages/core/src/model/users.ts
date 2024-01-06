@@ -17,9 +17,10 @@ export const get_users = async () => {
   return ''
 }
 
-export const add_user = async (userId: string) => {
+export const add_user = async (userId: string, email: string) => {
   const user = {
     userId,
+    email,
     tests: []
   }
   const db = await connectToDatabase()
