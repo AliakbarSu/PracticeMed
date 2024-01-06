@@ -1,6 +1,7 @@
 import type { Test } from '@/types/test'
 import type { Profile, UserAppMetadata } from '@/types/user'
 import { defineStore } from 'pinia'
+import { useUIStore } from './UI'
 import { ref } from 'vue'
 import {
   loadProfileData,
@@ -16,6 +17,7 @@ export const useAppStore = defineStore('app', () => {
   const portalLink = ref<string | null>(null)
   const testsHistory = ref<UserAppMetadata['test_history']>([])
   const tests = ref<Test[]>([])
+  const UIStore = useUIStore()
 
   function $reset() {
     profile.value = null
@@ -37,31 +39,34 @@ export const useAppStore = defineStore('app', () => {
 
   const fetchTestsHistory = async () => {
     try {
-      loading.value = true
+      UIStore.startLoadingDashboard()
       testsHistory.value = await loadTestHistory()
+      console.log('TestHistory', testsHistory.value)
     } catch (err) {
       error.value = err as Error
     } finally {
-      loading.value = false
+      UIStore.stopLoadingDashboard()
     }
   }
 
   const fetchTests = async () => {
     try {
+      UIStore.startLoadingDashboard()
       tests.value = await loadTests()
+      console.log('Test', tests.value)
     } catch (err) {
       error.value = err as Error
     } finally {
-      loading.value = false
+      UIStore.stopLoadingDashboard()
     }
   }
 
   const fetchPortalLink = async () => {
     try {
-      loading.value = true
+      UIStore.startLoadingDashboard()
       portalLink.value = await loadPortalLink()
     } finally {
-      loading.value = false
+      UIStore.stopLoadingDashboard()
     }
   }
 
