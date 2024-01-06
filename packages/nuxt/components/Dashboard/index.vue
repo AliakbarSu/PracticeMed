@@ -283,7 +283,7 @@ watch(plans, () => {
 })
 
 const loading = computed(() => {
-  return UIStore.dashboard.loading
+  return UIStore.tests.loading || UIStore.testsHistory.loading
 })
 
 watch(authStore, () => {

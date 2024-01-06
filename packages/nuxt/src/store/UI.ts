@@ -4,11 +4,13 @@ import { ref } from 'vue'
 export const useUIStore = defineStore('ui', () => {
   const error = ref<Error | null>(null)
   const test = reactive({ loading: false })
-  const dashboard = reactive({ loading: false })
+  const tests = reactive({ loading: false })
+  const testsHistory = reactive({ loading: false })
   const $reset = () => {
     error.value = null
     test.loading = false
-    dashboard.loading = false
+    tests.loading = false
+    testsHistory.loading = false
   }
 
   const startLoadingTest = () => {
@@ -18,12 +20,20 @@ export const useUIStore = defineStore('ui', () => {
     test.loading = false
   }
 
-  const startLoadingDashboard = () => {
-    dashboard.loading = true
+  const startLoadingTests = () => {
+    tests.loading = true
   }
 
-  const stopLoadingDashboard = () => {
-    dashboard.loading = false
+  const stopLoadingTests = () => {
+    tests.loading = false
+  }
+
+  const startLoadingTestsHistory = () => {
+    testsHistory.loading = true
+  }
+
+  const stopLoadingTestsHistory = () => {
+    testsHistory.loading = false
   }
 
   return {
@@ -31,9 +41,12 @@ export const useUIStore = defineStore('ui', () => {
     test,
     startLoadingTest,
     stopLoadingTest,
-    dashboard,
-    startLoadingDashboard,
-    stopLoadingDashboard,
+    tests,
+    startLoadingTests,
+    stopLoadingTests,
+    testsHistory,
+    startLoadingTestsHistory,
+    stopLoadingTestsHistory,
     $reset
   }
 })
