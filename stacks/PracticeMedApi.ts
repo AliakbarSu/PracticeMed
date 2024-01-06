@@ -1,11 +1,13 @@
-import { StackContext, Api, Cron } from 'sst/constructs'
+import { StackContext, Api, Cron, use } from 'sst/constructs'
 import { endpoints } from '../resources/endpoints'
 import { configure_parameters } from './Parameters'
 import { dev } from '../resources/stages'
 import { functions } from '../resources/functions'
+import { QueueStack } from './Queue'
 
 export function API(context: StackContext) {
   const { stack } = context
+  const queue = use(QueueStack)
   const stage = stack.stage
   const {
     HYGRAPH_TOKEN,
@@ -92,6 +94,16 @@ export function API(context: StackContext) {
       'POST /api/test/{id}/result': {
         authorizer: 'auth0Authorizer',
         function: functions.get_test_result
+      },
+      'POST /api/test/{id}/submit': {
+        authorizer: 'auth0Authorizer',
+        function: {
+          handler: functions.submit_answer,
+          environment: {
+            queue_url: queue.submit_answer_queue.queueUrl
+          },
+          bind: [queue.submit_answer_queue]
+        }
       },
       // WEBHOOKS
       'POST /api/webhooks/stripe': functions.stripe_webhook,

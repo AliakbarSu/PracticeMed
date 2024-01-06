@@ -20,5 +20,8 @@ export const functions = {
   get_tips: `${fnPath}/personalised_tips/index.handler`,
   send_welcome_message: `${fnPath}/welcome_email/index.message`,
   contact_form: `${fnPath}/contact/index.message`,
-  send_daily_recalls: `${fnPath}/daily_recalls/index.empty`
+  send_daily_recalls: `${fnPath}/daily_recalls/index.empty`,
+  submit_answer: `${fnPath}/submit_answer/index.handler`,
+  submit_answer_queue: `${fnPath}/submit_answer_queue/index.handler`,
+  submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`
 }
