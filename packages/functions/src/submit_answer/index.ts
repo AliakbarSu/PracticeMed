@@ -15,8 +15,8 @@ export const handler = ApiHandler(async (event) => {
 
     const messageBody = {
       userId,
-      result,
-      testId: event.pathParameters?.id
+      testId: event.pathParameters?.id,
+      result
     }
     const params = {
       MessageBody: JSON.stringify(messageBody),

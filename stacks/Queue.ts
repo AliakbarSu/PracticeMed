@@ -1,7 +1,8 @@
-import { Queue, StackContext } from 'sst/constructs'
+import { Queue, StackContext, Config } from 'sst/constructs'
 import { functions } from '../resources/functions'
 
 export function QueueStack({ stack }: StackContext) {
+  const MONGODB_URI = new Config.Secret(stack, 'MONGODB_URI')
   const submit_answer_ddl = new Queue(stack, 'ddl', {
     consumer: functions.submit_answer_ddl
   })
@@ -17,8 +18,11 @@ export function QueueStack({ stack }: StackContext) {
     }
   })
 
+  submit_answer_queue.bind([MONGODB_URI])
+
   return {
     submit_answer_queue,
-    submit_answer_ddl
+    submit_answer_ddl,
+    MONGODB_URI
   }
 }
