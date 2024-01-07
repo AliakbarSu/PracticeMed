@@ -34,7 +34,7 @@
           <h1
             class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
           >
-            We can help you pass your Medical Licensing Exam!
+            What is not measured, cannot be improved
           </h1>
           <p class="mt-6 text-lg leading-8 text-gray-600">
             Experience Realistic Testing Conditions, Meaningful Feedback, and
