@@ -13,17 +13,18 @@ export const usePlansStore = defineStore('plans', () => {
 
   const loading = ref(false)
   const plans = ref<Plan[]>([{} as Plan, {} as Plan, {} as Plan])
-  const subscribingTo = ref<string | null>(null)
   const checkoutUrl = ref<string | null>(null)
 
-  const hasActivePlan = computed(() => !!appStore.profile?.plan.id || false)
-  const hasThisPlan = (planId: string) => appStore.profile?.plan?.id === planId
-  const subscribing = (planId: string) => subscribingTo.value === planId
+  const userActivePlan = computed(
+    () =>
+      appStore.profile?.plan &&
+      plans.value.find((plan) => plan.id === appStore.profile?.plan.id)
+  )
+  const userHasActivePlan = computed(() => !!userActivePlan.value)
 
-  function $reset() {
+  const $reset = () => {
     plans.value = []
     loading.value = false
-    subscribingTo.value = null
     checkoutUrl.value = null
   }
 
@@ -42,35 +43,48 @@ export const usePlansStore = defineStore('plans', () => {
   }
 
   const subscribe = async (plan: Plan) => {
-    const config = useRuntimeConfig()
-    if (hasThisPlan(plan.id)) return
+    const {
+      public: { api_endpoint }
+    } = useRuntimeConfig()
     try {
-      subscribingTo.value = plan.id
-      const token = authStore.token
-      const url = `${config.public.api_endpoint}/plans/${plan.id}`
-      const endpoint = plan.freeTrial
-        ? `${url}/subscribe/free-trial`
-        : `${url}/subscribe`
-      const result = await axios.get(endpoint, {
+      const url = `${api_endpoint}/plans/${plan.id}/subscribe`
+      const result = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${authStore.token}`
         }
       })
       checkoutUrl.value = result.data.body
-    } finally {
-      subscribingTo.value = null
+    } catch (err) {
+      UIStore.error = err as Error
+    }
+  }
+
+  const subscribeToFreeTrial = async (plan: Plan) => {
+    const {
+      public: { api_endpoint }
+    } = useRuntimeConfig()
+    try {
+      const url = `${api_endpoint}/plans/${plan.id}/subscribe/free-trial`
+      const result = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${authStore.token}`
+        }
+      })
+      checkoutUrl.value = result.data.body
+    } catch (err) {
+      UIStore.error = err as Error
     }
   }
 
   return {
     fetchPlans,
     subscribe,
+    subscribeToFreeTrial,
     plans,
     loading,
-    hasActivePlan,
-    hasThisPlan,
+    userHasActivePlan,
+    userActivePlan,
     $reset,
-    checkoutUrl,
-    subscribing
+    checkoutUrl
   }
 })

@@ -1,9 +1,8 @@
 import { ApiHandler } from 'sst/node/api'
 import { getPlan, getPlans } from '@mpt-sst/core/plans/index'
 export const handler = ApiHandler(async (_evt) => {
-  const plans = await (
-    await getPlans()
-  )
+  const plans = await getPlans()
+  const activePlans = plans
     .filter((plan) => plan.active)
     .map((plan) => ({
       id: plan.id,
@@ -16,7 +15,7 @@ export const handler = ApiHandler(async (_evt) => {
       freeTrial: plan.metadata.free_trial_limit || false
     }))
   return {
-    body: JSON.stringify(plans)
+    body: JSON.stringify(activePlans)
   }
 })
 

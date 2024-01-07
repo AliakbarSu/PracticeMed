@@ -14,7 +14,7 @@ import { UserAppMetadata } from '@mpt-types/User'
 import { Config } from 'sst/node/config'
 import { ApiGatewayAuth } from '@mpt-types/System'
 
-export const checkoutUrl = ApiHandler(async (_evt) => {
+export const subscribe = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
@@ -47,7 +47,7 @@ export const checkoutUrl = ApiHandler(async (_evt) => {
   }
 })
 
-export const checkoutUrlWithFreeTrial = ApiHandler(async (_evt, c) => {
+export const subscribeToFreeTrial = ApiHandler(async (_evt, c) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''

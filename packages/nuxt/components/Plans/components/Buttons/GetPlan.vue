@@ -9,11 +9,7 @@
       'mt-8 block rounded-md py-2 px-3 text-center cursor-pointer text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
     ]"
   >
-    <div
-      role="status"
-      class="flex justify-center"
-      v-if="plansStore.subscribing(plan.id)"
-    >
+    <div role="status" class="flex justify-center" v-if="subscribing">
       <svg
         aria-hidden="true"
         class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -33,12 +29,12 @@
       <span class="sr-only">Loading...</span>
     </div>
 
-    <span v-else-if="hasActivePlan && isPlanActive">Active</span>
-    <span v-else-if="hasActivePlan" @click="subscribeToPlan">Switch plan</span>
-    <span v-else-if="plan.freeTrial" @click="subscribeToPlan">
+    <span v-else-if="userHasActivePlan && isActivePlan">Active</span>
+    <span v-else-if="userHasActivePlan" @click="subscribe">Switch plan</span>
+    <span v-else-if="plan.freeTrial" @click="subscribeToFreeTrial">
       {{ `Start ${plan.freeTrial} days free trial` }}
     </span>
-    <span v-else @click="subscribeToPlan"> Get plan </span>
+    <span v-else @click="subscribe"> Get plan </span>
   </a>
 </template>
 
@@ -59,8 +55,10 @@ const store = useAppStore()
 const plansStore = usePlansStore()
 const authStore = useAuthStore()
 
+const subscribing = ref(false)
+
 const { loading } = storeToRefs(store)
-const { checkoutUrl, hasActivePlan } = storeToRefs(plansStore)
+const { checkoutUrl, userHasActivePlan } = storeToRefs(plansStore)
 
 const props = defineProps({
   plan: {
@@ -75,17 +73,27 @@ const loginIfNotAuthenticated = async () => {
   }
 }
 
-const isPlanActive = computed(() => plansStore.hasThisPlan(props.plan.id))
+const isActivePlan = computed(
+  () => plansStore.userActivePlan?.id == props.plan.id
+)
 
-const subscribeToPlan = async () => {
+const subscribe = async () => {
   await loginIfNotAuthenticated()
-  plansStore.subscribe(props.plan)
+  subscribing.value = true
+  await plansStore.subscribe(props.plan)
+  subscribing.value = false
+}
+
+const subscribeToFreeTrial = async () => {
+  await loginIfNotAuthenticated()
+  subscribing.value = true
+  await plansStore.subscribeToFreeTrial(props.plan)
+  subscribing.value = false
 }
 
 watch(checkoutUrl, () => {
-  if (checkoutUrl.value) {
-    // Gtag.begin_checkout(props.plan)
-    process.client ? window.location.replace(checkoutUrl.value) : null
+  if (checkoutUrl.value && process.client) {
+    window.location.replace(checkoutUrl.value)
     plansStore.$reset()
   }
 })
