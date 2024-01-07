@@ -14,7 +14,7 @@ export const functions = {
   load_test: `${fnPath}/load_test/index.handler`,
   get_demo_test: `${fnPath}/load_test/index.demoTestHandler`,
   get_test_result: `${fnPath}/result/index.handler`,
-  stripe_webhook: `${fnPath}/webhook/stripe.handler`,
+  stripe_webhook: `${fnPath}/webhooks/stripe.handler`,
   newsletter_signup: `${fnPath}/newsletter/index.signup`,
   newsletter_unsubscribe: `${fnPath}/newsletter/index.unsubscribe`,
   get_tips: `${fnPath}/personalised_tips/index.handler`,
