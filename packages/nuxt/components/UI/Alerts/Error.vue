@@ -59,7 +59,7 @@
                   class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   @click="goBack"
                 >
-                  Go back
+                  Close
                 </button>
               </div>
             </DialogPanel>
@@ -86,10 +86,9 @@ import { useUIStore } from '../../../src/store/UI'
 const UIStore = useUIStore()
 
 const router = useRouter()
-const open = ref(true)
+const open = ref(false)
 const goBack = () => {
   open.value = false
   UIStore.$reset()
-  router.go(-1)
 }
 </script>

@@ -56,7 +56,7 @@ export const useTestStore = defineStore('test', () => {
   const interval = ref<number | null>(null)
   const completed = ref(false)
 
-  function $reset() {
+  const $reset = () => {
     test.value = null
     resultId.value = null
     skippedQuestions.value = []

@@ -80,12 +80,6 @@ export interface Flags {
 const questionRef = ref(null)
 const signupRef = ref(null)
 
-const testStore = useTestStore()
-const appStore = useAppStore()
-const authStore = useAuthStore()
-const UIStore = useUIStore()
-const router = useRouter()
-
 const flags = reactive({
   timeOver: false,
   selectOption: false,
@@ -93,6 +87,19 @@ const flags = reactive({
   endTest: false,
   upgrade: false
 })
+
+const testStore = useTestStore()
+const appStore = useAppStore()
+const authStore = useAuthStore()
+const UIStore = useUIStore()
+const router = useRouter()
+
+const needToSignup = computed(
+  () => !authStore.isAuthenticated && testStore.testEnded
+)
+const displayTestConsole = computed(
+  () => !testStore.loading && !needToSignup.value && testStore.testStarted
+)
 
 onMounted(async () => {
   await testStore.loadDemoTest()
@@ -104,13 +111,6 @@ onMounted(async () => {
     testStore.start()
   }
 })
-
-const needToSignup = computed(
-  () => !authStore.isAuthenticated && testStore.testEnded
-)
-const displayTestConsole = computed(
-  () => !testStore.loading && !needToSignup.value && testStore.testStarted
-)
 
 const viewResults = () => {
   router.push(`/results/demo_test`)
@@ -126,12 +126,14 @@ const next = () => {
 
 const endTest = () => {
   testStore.submit()
+  viewResults()
 }
 
 watch([testStore, appStore], () => {
   if (
     testStore.testEnded &&
     testStore.previewMode &&
+    testStore.isTimeOver &&
     authStore.isAuthenticated
   ) {
     viewResults()
