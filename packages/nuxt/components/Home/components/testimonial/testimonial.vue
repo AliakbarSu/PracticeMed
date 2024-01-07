@@ -54,19 +54,19 @@ const testimonials = [
   {
     body: "I'm so grateful for this. It was difficult to find quality resources for medical exam preparation. But Practice Med was a game-changer for me. Thanks to the practice tests and feedback reports, I was able to pass my test on my first attempt. Thank you!",
     author: {
-      name: 'Zaher, New Zealand'
+      name: 'Ibrahim'
     }
   },
   {
     body: 'I highly recommend this service to anyone preparing for multiple choice exams. The practice tests are challenging but accurate, and the feedback reports helped me identify my weak areas and improve my performance.',
     author: {
-      name: 'Andrei, New Zealamd'
+      name: 'Faris'
     }
   },
   {
     body: "What an absolute lifesaver! I was struggling to prepare for my MCQ exam, but with the help of the practice tests, I was able to pass on my second attempt. I'm so grateful for the existence of such service",
     author: {
-      name: 'Noor, Egypt'
+      name: 'Hossein'
     }
   }
   // {
