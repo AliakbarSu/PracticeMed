@@ -24,7 +24,7 @@ export const handler = ApiHandler(async (event) => {
     }
     await sqs.sendMessage(params).promise()
     return {
-      body: 'Answer submited and put on the queue'
+      body: 'Answer submitted successfully'
     }
   } catch (err) {
     console.error(err)
