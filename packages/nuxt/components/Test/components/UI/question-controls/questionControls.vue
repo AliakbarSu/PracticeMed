@@ -13,10 +13,12 @@
         @click="skip"
         type="button"
         class="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+        :class="{ 'rounded-r-md': !canEnd }"
       >
         Skip
       </button>
       <button
+        v-if="canEnd"
         @click="end"
         type="button"
         class="relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
@@ -29,7 +31,7 @@
 
 <script lang="ts">
 export default {
-  props: ['canSkip'],
+  props: ['canSkip', 'canEnd'],
   methods: {
     next() {
       this.$emit('next')

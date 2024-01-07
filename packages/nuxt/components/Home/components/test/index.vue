@@ -1,6 +1,6 @@
 <template>
   <div class="test mb-12 p-2 bg-white" ref="signupRef">
-    <div class="text-center sm:w-2/3 md:1/3 mx-auto" v-if="!flags.upgrade">
+    <div class="text-center sm:w-2/3 md:1/3 mx-auto">
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
         Try Our Demo Mock Test
       </h2>
