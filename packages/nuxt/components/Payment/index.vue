@@ -22,18 +22,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { XCircleIcon } from '@heroicons/vue/20/solid'
 
-export default {
-  beforeCreate() {
-    const queryParamValue = this.$route.query.canceled
-    if (queryParamValue === 'true') {
-      this.$router.push('/plans')
-    }
-  },
-  components: {
-    XCircleIcon
+const router = useRouter()
+
+onBeforeMount(() => {
+  const queryParamValue = router.currentRoute.value.query.canceled
+  if (queryParamValue === 'true') {
+    router.push('/plans')
   }
-}
+})
 </script>
