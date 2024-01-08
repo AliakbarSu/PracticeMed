@@ -7,10 +7,7 @@ import {
 } from '@mpt-sst/core/webhooks/stripe'
 
 export const handler = ApiHandler(async (_evt) => {
-  const payload = _evt.body || ''
-  const sig = _evt.headers['stripe-signature'] || ''
-  const event = constructEvent({ payload, sig })
-
+  const event = (JSON.parse(_evt.body || '') as unknown as Stripe.Event) || {}
   if (event.type == 'customer.subscription.created') {
     const subscription = event.data.object as Stripe.Subscription
     try {

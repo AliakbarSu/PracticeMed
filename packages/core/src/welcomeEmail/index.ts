@@ -1,5 +1,6 @@
 import sgMailClient from '@sendgrid/client'
 import { Config } from 'sst/node/config'
+import { sendSingleEmail } from '../emails/index'
 sgMailClient.setApiKey(Config.SENDGRID_API_KEY)
 
 export const sendWelcomeEmail = async (email: string) => {
@@ -19,22 +20,12 @@ export const sendWelcomeEmail = async (email: string) => {
     ],
     template_id: 'd-b88f14175b2c4b39931e5d4d91540169' //sendgrid dynamic template id
   }
-  const request = {
-    url: `/v3/mail/send`,
-    method: 'POST' as any,
-    headers: {
-      Authorization: `Bearer ${Config.SENDGRID_API_KEY}`
-    },
-    body: data
-  }
   try {
     await signupToPlatformUsers(email)
   } catch {
     console.log('Error while signing up to platform users')
   }
-  return new Promise((resolve, reject) => {
-    sgMailClient.request(request).then(resolve).catch(reject)
-  })
+  return sendSingleEmail(data)
 }
 
 const signupToPlatformUsers = (email: string) => {
