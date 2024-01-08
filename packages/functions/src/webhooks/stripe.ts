@@ -36,16 +36,16 @@ export const handler = ApiHandler(async (_evt) => {
         body: `User subscription created successfully!`
       }
     case 'customer.subscription.updated':
-      try {
-        const subscription = event.data.object as Stripe.Subscription
-        await updateSubscription(subscription)
-      } catch (err) {
-        console.log(err)
-        return {
-          body: `Error updating subscription`,
-          statusCode: 500
-        }
-      }
+      // try {
+      //   const subscription = event.data.object as Stripe.Subscription
+      //   await updateSubscription(subscription)
+      // } catch (err) {
+      //   console.log(err)
+      //   return {
+      //     body: `Error updating subscription`,
+      //     statusCode: 500
+      //   }
+      // }
       return {
         body: `User subscription updated successfully!`
       }

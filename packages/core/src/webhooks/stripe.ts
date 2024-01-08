@@ -47,9 +47,21 @@ const sendSubscriptionStartedEmail = async (email: string) => {
 
 export const createSubscription = async (subscription: Stripe.Subscription) => {
   const userId = subscription.metadata.user_id as string
-  const { app_metadata, email = '' } = await getUser(userId)
+  const { app_metadata } = await getUser(userId)
   const trial = !!Number(subscription.metadata?.trial) || false
   const planId = subscription.metadata?.plan_id || ''
+  try {
+    const existingSubscription = await getSubscription(
+      app_metadata.plan.subscription.id
+    )
+    console.log(
+      `Existing subscription found, cancelling it. ${existingSubscription.id}`
+    )
+    await cancelSubscription(existingSubscription.id)
+  } catch (err) {
+    console.log('No existing subscription found')
+  }
+
   // Getting the plan
   const product = await getPlan(planId)
   const updatedUserAppMetadata: UserAppMetadata = {
