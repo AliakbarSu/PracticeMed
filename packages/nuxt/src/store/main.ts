@@ -41,7 +41,7 @@ export const useAppStore = defineStore('app', () => {
     try {
       UIStore.startLoadingTestsHistory()
       testsHistory.value = await loadTestHistory()
-      console.log('TestHistory', testsHistory.value)
+      UIStore.testsHistoryLoaded()
     } catch (err) {
       error.value = err as Error
     } finally {
@@ -53,7 +53,7 @@ export const useAppStore = defineStore('app', () => {
     try {
       UIStore.startLoadingTests()
       tests.value = await loadTests()
-      console.log('Test', tests.value)
+      UIStore.testsLoaded()
     } catch (err) {
       error.value = err as Error
     } finally {

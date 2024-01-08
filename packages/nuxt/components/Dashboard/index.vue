@@ -158,9 +158,9 @@ watch(
   [authStore, appStore],
   () => {
     if (authStore.isAuthenticated) {
-      if (appStore.tests.length <= 0) {
+      if (!UIStore.tests.loaded) {
         appStore.fetchTests()
-      } else if (appStore.testsHistory.length <= 0) {
+      } else if (!UIStore.testsHistory.loaded) {
         appStore.fetchTestsHistory()
       }
     }
