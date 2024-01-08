@@ -9,6 +9,17 @@ import {
 
 export const handler = ApiHandler(async (_evt) => {
   const event = (JSON.parse(_evt.body || '') as unknown as Stripe.Event) || {}
+  const stage = process.env.stage
+  const subscriptionStage =
+    (event.data.object as Stripe.Subscription).metadata?.stage || ''
+  if (stage !== subscriptionStage) {
+    console.warn(
+      `Subscription stage doesn't match the current stage. current: ${stage}, subscription: ${subscriptionStage}`
+    )
+    return {
+      body: `Subscription stage doesn't match the current stage`
+    }
+  }
   switch (event.type) {
     case 'customer.subscription.created':
       try {

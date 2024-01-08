@@ -50,6 +50,10 @@ export const resumeSubscription = async (id: string) => {
   return stripe.subscriptions.resume(id, { billing_cycle_anchor: 'now' })
 }
 
+export const getSubscription = async (id: string) => {
+  return stripe.subscriptions.retrieve(id)
+}
+
 export const cancelSubscription = async (id: string) => {
   return stripe.subscriptions.cancel(id, {
     cancellation_details: {

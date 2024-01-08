@@ -11,10 +11,14 @@ import { getUser, updateUserAppMetadata } from '@mpt-sst/core/auth0'
 import { StripeCustomer } from '@mpt-types/Stripe'
 import { Stripe } from 'stripe'
 import { UserAppMetadata } from '@mpt-types/User'
-import { Config } from 'sst/node/config'
 import { ApiGatewayAuth } from '@mpt-types/System'
+import { endpoints } from '../../../../resources/endpoints'
 
 export const subscribe = ApiHandler(async (_evt) => {
+  const endpoint =
+    process.env.stage == 'dev'
+      ? `${endpoints.frontend.dev}`
+      : `https://${process.env.stage}.${endpoints.domain}`
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
@@ -35,19 +39,24 @@ export const subscribe = ApiHandler(async (_evt) => {
       metadata: {
         user_id: userId,
         trial: 0,
-        plan_id: planId
+        plan_id: planId,
+        stage: process.env.stage || ''
       }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
-    success_url: `${Config.FRONT_END_URL}/dashboard?success=true&id=${planId}`,
-    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true&id=${planId}`
+    success_url: `${endpoint}/dashboard?success=true&id=${planId}`,
+    cancel_url: `${endpoint}/payment/failed?canceled=true&id=${planId}`
   })
   return {
     body: checkoutUrl.url || ''
   }
 })
 
-export const subscribeToFreeTrial = ApiHandler(async (_evt, c) => {
+export const subscribeToFreeTrial = ApiHandler(async (_evt) => {
+  const endpoint =
+    process.env.stage == 'dev'
+      ? `${endpoints.frontend.dev}`
+      : `https://${process.env.stage}.${endpoints.domain}`
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
@@ -69,12 +78,13 @@ export const subscribeToFreeTrial = ApiHandler(async (_evt, c) => {
       metadata: {
         user_id: userId,
         trial: 1,
-        plan_id: planId
+        plan_id: planId,
+        stage: process.env.stage || ''
       }
     },
     line_items: [{ price: product.default_price as string, quantity: 1 }],
-    success_url: `${Config.FRONT_END_URL}/dashboard?success=true&id=${planId}&free_trial=true`,
-    cancel_url: `${Config.FRONT_END_URL}/payment/failed?canceled=true&id=${planId}&free_trial=true`
+    success_url: `${endpoint}/dashboard?success=true&id=${planId}&free_trial=true`,
+    cancel_url: `${endpoint}/payment/failed?canceled=true&id=${planId}&free_trial=true`
   })
   return {
     body: checkoutUrl.url || ''

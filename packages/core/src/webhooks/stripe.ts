@@ -1,6 +1,6 @@
 import { getUser, updateUserAppMetadata } from '../auth0'
 import { getPlan } from '../plans'
-import { cancelSubscription } from '../stripe'
+import { cancelSubscription, getSubscription } from '../stripe'
 import { UserAppMetadata } from '../../types/User'
 import { Stripe } from 'stripe'
 import { sendSingleEmail } from '../emails/index'
@@ -67,6 +67,43 @@ export const createSubscription = async (subscription: Stripe.Subscription) => {
     }
   }
   // Update user app metadata in Auth 0
+  return updateUserAppMetadata({ id: userId, data: updatedUserAppMetadata })
+}
+
+export const updateSubscription = async (subscription: Stripe.Subscription) => {
+  const userId = subscription.metadata.user_id as string
+  const planId = subscription.metadata?.plan_id || ''
+  const { app_metadata, email = '' } = await getUser(userId)
+  const existingSubscription = await getSubscription(subscription.id)
+  let updatedUserAppMetadata: UserAppMetadata = app_metadata
+
+  if (existingSubscription.id !== subscription.id) {
+    await cancelSubscription(existingSubscription.id)
+  }
+
+  if (
+    subscription.status === 'active' &&
+    !subscription.cancellation_details?.reason
+  ) {
+    const trial = !!Number(subscription.metadata?.trial) || false
+    const product = await getPlan(planId)
+    updatedUserAppMetadata = {
+      ...app_metadata,
+      plan: {
+        id: product.id,
+        stripe_customer_id: (subscription.customer as string) || '',
+        name: product.name,
+        limit: Number(product.metadata.limit),
+        used: 0,
+        subscription: {
+          id: subscription.id as string,
+          onTrial: trial
+        }
+      }
+    }
+  }
+
+  // Update user app metadata in Auth 0
   try {
     await sendSubscriptionStartedEmail(email)
   } finally {
@@ -99,41 +136,6 @@ export const deleteSubscription = async (subscription: Stripe.Subscription) => {
   // Update user app metadata in Auth 0
   try {
     await sendSubscriptionCancelEmail(email)
-  } finally {
-    return updateUserAppMetadata({ id: userId, data: updatedUserAppMetadata })
-  }
-}
-
-export const updateSubscription = async (subscription: Stripe.Subscription) => {
-  const userId = subscription.metadata.user_id as string
-  const planId = subscription.metadata?.plan_id || ''
-  const { app_metadata, email = '' } = await getUser(userId)
-  let updatedUserAppMetadata: UserAppMetadata = app_metadata
-  if (
-    subscription.status === 'active' &&
-    !subscription.cancellation_details?.reason
-  ) {
-    const trial = !!Number(subscription.metadata?.trial) || false
-    const product = await getPlan(planId)
-    updatedUserAppMetadata = {
-      ...app_metadata,
-      plan: {
-        id: product.id,
-        stripe_customer_id: (subscription.customer as string) || '',
-        name: product.name,
-        limit: Number(product.metadata.limit),
-        used: 0,
-        subscription: {
-          id: subscription.id as string,
-          onTrial: trial
-        }
-      }
-    }
-  }
-
-  // Update user app metadata in Auth 0
-  try {
-    await sendSubscriptionStartedEmail(email)
   } finally {
     return updateUserAppMetadata({ id: userId, data: updatedUserAppMetadata })
   }
