@@ -3,46 +3,62 @@ import { ApiHandler } from 'sst/node/api'
 import { Stripe } from 'stripe'
 import {
   createSubscription,
-  deleteSubscription
+  deleteSubscription,
+  updateSubscription
 } from '@mpt-sst/core/webhooks/stripe'
 
 export const handler = ApiHandler(async (_evt) => {
   const event = (JSON.parse(_evt.body || '') as unknown as Stripe.Event) || {}
-  if (event.type == 'customer.subscription.created') {
-    const subscription = event.data.object as Stripe.Subscription
-    try {
-      await createSubscription(subscription)
-    } catch (err: any) {
-      console.log(err)
-      return {
-        body: `Error creating subscription`,
-        statusCode: 500
+  switch (event.type) {
+    case 'customer.subscription.created':
+      try {
+        const subscription = event.data.object as Stripe.Subscription
+        await createSubscription(subscription)
+      } catch (err: any) {
+        console.log(err)
+        return {
+          body: `Error creating subscription`,
+          statusCode: 500
+        }
       }
-    }
-    return {
-      body: `User subscription created successfully!`
-    }
-  } else if (event.type === 'customer.subscription.deleted') {
-    const subscription = event.data.object as Stripe.Subscription
-    try {
-      await deleteSubscription(subscription)
-    } catch (err) {
-      console.log(err)
       return {
-        body: `Error deleting subscription`,
-        statusCode: 500
+        body: `User subscription created successfully!`
       }
-    }
-    return {
-      body: `User subscription canceled successfully!`
-    }
-  } else if (event.type === 'customer.subscription.trial_will_end') {
-    return {
-      body: `User subscription trial will end soon!`
-    }
-  } else {
-    return {
-      body: `Unhandled event type: ${event.type}`
-    }
+    case 'customer.subscription.updated':
+      try {
+        const subscription = event.data.object as Stripe.Subscription
+        await updateSubscription(subscription)
+      } catch (err) {
+        console.log(err)
+        return {
+          body: `Error updating subscription`,
+          statusCode: 500
+        }
+      }
+      return {
+        body: `User subscription updated successfully!`
+      }
+    case 'customer.subscription.deleted':
+      try {
+        const subscription = event.data.object as Stripe.Subscription
+        await deleteSubscription(subscription)
+      } catch (err) {
+        console.log(err)
+        return {
+          body: `Error deleting subscription`,
+          statusCode: 500
+        }
+      }
+      return {
+        body: `User subscription canceled successfully!`
+      }
+    case 'customer.subscription.trial_will_end':
+      return {
+        body: `User subscription trial will end soon!`
+      }
+    default:
+      return {
+        body: `Unhandled event type: ${event.type}`
+      }
   }
 })
