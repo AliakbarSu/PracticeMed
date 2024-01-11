@@ -133,7 +133,7 @@ watch([testStore, appStore], () => {
   if (
     testStore.testEnded &&
     testStore.previewMode &&
-    testStore.isTimeOver &&
+    testStore.completed &&
     authStore.isAuthenticated
   ) {
     viewResults()
