@@ -94,15 +94,11 @@
 <script lang="ts" setup>
 import type { Test } from '../../../src/types/test'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 import type { PropType } from 'vue'
 import { usePlansStore } from '../../../src/store/plans'
 
 const router = useRouter()
-
 const plansStore = usePlansStore()
-
-const { hasActivePlan } = storeToRefs(plansStore)
 
 const { test } = defineProps({
   test: {
@@ -111,7 +107,7 @@ const { test } = defineProps({
 })
 
 const takeTest = (test?: Test) => {
-  if (hasActivePlan.value === false) {
+  if (plansStore.userHasActivePlan === false) {
     router.push('/plans')
   } else {
     router.push(`/test/${test?.id}`)
