@@ -1,19 +1,21 @@
 import { UserPlan } from '../../types/Plan'
 import { Profile } from '../../types/User'
-import { getUser } from '../auth0'
+import { getUser as getUserAuth0 } from '../auth0'
+import { getUser } from '../model/users'
 
 export const getProfile = async (id: string): Promise<Profile> => {
-  const { email = '', name = '', app_metadata } = await getUser(id)
+  const { name = '' } = (await getUserAuth0(id)) as any
+  const user = await getUser(id)
   const profile: Profile = {
     id: id,
     name: name,
-    email: email,
+    email: user.email,
     plan: {
-      id: app_metadata.plan.id,
-      name: app_metadata.plan.name,
-      limit: app_metadata.plan.limit,
-      used: app_metadata.plan.used,
-      stripe_customer_id: app_metadata.plan.stripe_customer_id
+      id: user.plan.id,
+      name: user.plan.name,
+      limit: user.plan.limit,
+      used: user.plan.used,
+      stripe_customer_id: user.plan.stripe_customer_id
     } as UserPlan
   }
   return profile

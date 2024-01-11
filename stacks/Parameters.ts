@@ -43,6 +43,8 @@ export const configure_parameters = ({ stack }: StackContext) => {
   // SENDGRID
   const SENDGRID_API_KEY = new Config.Secret(stack, 'SENDGRID_API_KEY')
 
+  const MONGODB_URI = new Config.Secret(stack, 'MONGODB_URI')
+
   return {
     HYGRAPH_TOKEN,
     HYGRAPH_ENDPOINT,
@@ -53,6 +55,7 @@ export const configure_parameters = ({ stack }: StackContext) => {
     FRONT_END_URL,
     STRIPE_SECRET,
     STRIPE_SIGNING_SECRET,
-    SENDGRID_API_KEY
+    SENDGRID_API_KEY,
+    MONGODB_URI
   }
 }

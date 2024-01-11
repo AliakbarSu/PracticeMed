@@ -7,8 +7,8 @@ import {
   UserSubmittedResult
 } from '../../types/Result'
 import { UserTest } from '../../types/Test'
-import { UserAppMetadata } from '../../types/User'
-import { getUserAppMetadata, updateUserAppMetadata } from '../auth0'
+import { User } from '../../types/User'
+import { getUser, updateUser } from '../model/users'
 import { getTest } from '../test'
 import { calculateFieldsAverageTime, distributePoints } from './calculations'
 import {
@@ -136,19 +136,19 @@ export const saveTestResult = async ({
   user_id: string
   result: TestPerformanceResult
   raw_result?: UserSubmittedResult
-}): Promise<UserAppMetadata> => {
-  const user_app_metadata = await getUserAppMetadata(user_id)
-  const { test_history, raw_test_history } = user_app_metadata
+}): Promise<User> => {
+  const user_data = await getUser(user_id)
+  const { tests_history, tests } = user_data
 
-  const user_submitted_result = [...(raw_test_history || [])]
+  const user_submitted_result = [...(tests_history || [])]
   if (raw_result) {
     user_submitted_result.push(raw_result)
   }
 
-  const updated_app_metadata: UserAppMetadata = {
-    ...user_app_metadata,
-    test_history: [...test_history, result],
-    raw_test_history: user_submitted_result
+  const updated_user_data = {
+    ...user_data,
+    tests: [...tests, result],
+    tests_history: user_submitted_result
   }
-  return updateUserAppMetadata({ id: user_id, data: updated_app_metadata })
+  return updateUser(user_id, updated_user_data)
 }

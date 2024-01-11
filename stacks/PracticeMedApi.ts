@@ -1,13 +1,11 @@
-import { StackContext, Api, Cron, use } from 'sst/constructs'
+import { StackContext, Api, Cron, Queue } from 'sst/constructs'
 import { endpoints } from '../resources/endpoints'
 import { configure_parameters } from './Parameters'
 import { dev } from '../resources/stages'
 import { functions } from '../resources/functions'
-import { QueueStack } from './Queue'
 
 export function API(context: StackContext) {
   const { stack } = context
-  const queue = use(QueueStack)
   const stage = stack.stage
   const {
     HYGRAPH_TOKEN,
@@ -19,8 +17,26 @@ export function API(context: StackContext) {
     FRONT_END_URL,
     STRIPE_SECRET,
     STRIPE_SIGNING_SECRET,
-    SENDGRID_API_KEY
+    SENDGRID_API_KEY,
+    MONGODB_URI
   } = configure_parameters(context)
+
+  const submit_answer_ddl = new Queue(stack, 'ddl', {
+    consumer: functions.submit_answer_ddl
+  })
+  const submit_answer_queue = new Queue(stack, 'queue', {
+    consumer: functions.submit_answer_queue,
+    cdk: {
+      queue: {
+        deadLetterQueue: {
+          queue: submit_answer_ddl.cdk.queue,
+          maxReceiveCount: 1
+        }
+      }
+    }
+  })
+
+  submit_answer_queue.bind([MONGODB_URI])
 
   const api = new Api(stack, 'api', {
     customDomain: {
@@ -100,9 +116,9 @@ export function API(context: StackContext) {
         function: {
           handler: functions.submit_answer,
           environment: {
-            queue_url: queue.submit_answer_queue.queueUrl
+            queue_url: submit_answer_queue.queueUrl
           },
-          bind: [queue.submit_answer_queue]
+          bind: [submit_answer_queue]
         }
       },
       // WEBHOOKS
@@ -145,7 +161,8 @@ export function API(context: StackContext) {
     HYGRAPH_TOKEN,
     DOMAIN,
     SENDGRID_API_KEY,
-    SANITY_ENDPOINT
+    SANITY_ENDPOINT,
+    MONGODB_URI
   ])
 
   api.bind([
@@ -159,7 +176,7 @@ export function API(context: StackContext) {
     STRIPE_SIGNING_SECRET,
     SENDGRID_API_KEY,
     SANITY_ENDPOINT,
-    queue.MONGODB_URI
+    MONGODB_URI
   ])
   stack.addOutputs({
     api_domain: api.customDomainUrl,
@@ -168,6 +185,7 @@ export function API(context: StackContext) {
 
   return {
     api,
-    cron: cronStack
+    cron: cronStack,
+    queue: submit_answer_queue
   }
 }

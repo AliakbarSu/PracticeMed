@@ -1,11 +1,11 @@
 export interface UserPlan {
-  id: string
-  stripe_customer_id: string
-  name: string
+  id: string | null
+  stripe_customer_id: string | null
+  name: string | null
   limit: number
   used: number
   subscription: {
-    id: string
+    id: string | null
     onTrial: boolean
   }
 }

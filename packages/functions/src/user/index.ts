@@ -1,4 +1,3 @@
-import { getUserAppMetadata } from '@mpt-sst/core/auth0'
 import {
   configureCustomerPortal,
   customerPortalLink
@@ -6,6 +5,7 @@ import {
 import { getProfile } from '@mpt-sst/core/user/index'
 import { ApiGatewayAuth } from '@mpt-types/System'
 import { ApiHandler } from 'sst/node/api'
+import { getUser } from '@mpt-sst/core/model/users'
 
 export const profile = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
@@ -21,7 +21,7 @@ export const billingLink = ApiHandler(async (_evt) => {
     .jwt.claims.sub
   const {
     plan: { stripe_customer_id }
-  } = await getUserAppMetadata(userId)
+  } = await getUser(userId)
   if (!stripe_customer_id) {
     return {
       body: 'User does not have a billing account yet!',

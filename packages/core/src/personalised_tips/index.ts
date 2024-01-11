@@ -1,7 +1,7 @@
 import { Config } from 'sst/node/config'
 import { ChatGPTAPI } from 'chatgpt'
 import { TestPerformanceResult } from '../../types/Result'
-import { getUserAppMetadata } from '../auth0'
+import { getUser } from '../model/users'
 
 export const generate_tips = async ({
   testId,
@@ -10,8 +10,8 @@ export const generate_tips = async ({
   testId: string
   userId: string
 }): Promise<string> => {
-  const userAppMetadata = await getUserAppMetadata(userId)
-  const test = userAppMetadata.test_history.find((test) => test.id === testId)
+  const user = await getUser(userId)
+  const test = user.tests.find((test) => test.id === testId)
 
   if (!test) {
     return Promise.reject('Test not found')

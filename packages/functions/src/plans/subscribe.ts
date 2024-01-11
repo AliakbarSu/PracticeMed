@@ -7,10 +7,10 @@ import {
   createCheckoutUrl
 } from '@mpt-sst/core/stripe/index'
 import { SubscribeEventPayload } from '@mpt-types/Plan'
-import { getUser, updateUserAppMetadata } from '@mpt-sst/core/auth0'
+import { getUser, updateUser } from '@mpt-sst/core/model/users'
 import { StripeCustomer } from '@mpt-types/Stripe'
 import { Stripe } from 'stripe'
-import { UserAppMetadata } from '@mpt-types/User'
+import { User } from '@mpt-types/User'
 import { ApiGatewayAuth } from '@mpt-types/System'
 import { endpoints } from '../../../../resources/endpoints'
 
@@ -22,12 +22,12 @@ export const subscribe = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
-  const { email, app_metadata } = await getUser(userId)
+  const user = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)
-  const customerId = app_metadata.plan.stripe_customer_id
+  const customerId = user.plan.stripe_customer_id
   const checkoutUrl = await createCheckoutUrl({
-    ...(customerId ? { customer: customerId } : { customer_email: email }),
+    ...(customerId ? { customer: customerId } : { customer_email: user.email }),
     allow_promotion_codes: true,
     mode: 'subscription',
     metadata: {
@@ -60,12 +60,12 @@ export const subscribeToFreeTrial = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
-  const { email, app_metadata } = await getUser(userId)
+  const user = await getUser(userId)
   // Getting the plan
   const product = await getPlan(planId)
-  const customerId = app_metadata.plan.stripe_customer_id
+  const customerId = user.plan.stripe_customer_id
   const checkoutUrl = await createCheckoutUrl({
-    ...(customerId ? { customer: customerId } : { customer_email: email }),
+    ...(customerId ? { customer: customerId } : { customer_email: user.email }),
     mode: 'subscription',
     allow_promotion_codes: true,
     metadata: {
@@ -98,22 +98,17 @@ export const handler = ApiHandler(async (_evt) => {
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''
   const eventPayload: SubscribeEventPayload = JSON.parse(_evt.body || '{}')
-  const {
-    user_id: auth0_id = '',
-    email = '',
-    app_metadata
-  } = await getUser(userId)
-  const { plan } = app_metadata || {}
+  const user = await getUser(userId)
 
   // Create Stripe Customer
 
   let customer: StripeCustomer | Stripe.DeletedCustomer | undefined = undefined
-  if (plan?.stripe_customer_id) {
-    customer = await getCustomer(plan.stripe_customer_id)
+  if (user.plan?.stripe_customer_id) {
+    customer = await getCustomer(user.plan.stripe_customer_id)
   } else {
     customer = await createCustomer({
-      auth0_id,
-      email,
+      auth0_id: userId,
+      email: user.email,
       source: eventPayload.token
     })
   }
@@ -127,8 +122,8 @@ export const handler = ApiHandler(async (_evt) => {
     customer: customer.id
   })
 
-  const updatedUserAppMetadata: UserAppMetadata = {
-    ...app_metadata,
+  const updatedUserData: User = {
+    ...user,
     plan: {
       id: product.id,
       stripe_customer_id: customer.id,
@@ -143,7 +138,7 @@ export const handler = ApiHandler(async (_evt) => {
   }
 
   // Update user app metadata in Auth 0
-  await updateUserAppMetadata({ id: auth0_id, data: updatedUserAppMetadata })
+  await updateUser(user.userId, updatedUserData)
 
   return {
     body: 'Subscription created successfully'

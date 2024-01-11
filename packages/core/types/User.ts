@@ -1,4 +1,3 @@
-import { User } from 'auth0'
 import { UserPlan } from './Plan'
 import { TestPerformanceResult } from './Result'
 
@@ -22,4 +21,12 @@ export interface Profile {
 export interface MongoDBUser {
   userId: string
   tests: any[]
+}
+
+export interface User {
+  userId: string
+  email: string
+  plan: UserPlan
+  tests: TestPerformanceResult[]
+  tests_history: any[]
 }

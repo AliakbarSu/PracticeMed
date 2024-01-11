@@ -1,30 +1,21 @@
-import { getUserAppMetadata, updateUserAppMetadata } from '../auth0/index'
-import { UserAppMetadata } from '../../types/User'
+import { getUser, updateUser } from '../model/users'
 import { getTest } from '../test'
 import { Question } from '../../types/Question'
 import { addTest } from '../model/test'
 import { MongoDBTest, TestStatus } from '../../types/Test'
 
-const hasUserRemainingTests = async (
-  userId: string
-): Promise<{ hasAccess: boolean; metadata: UserAppMetadata }> => {
-  const userAppMetadata = await getUserAppMetadata(userId)
-  return {
-    hasAccess: userAppMetadata.plan.limit > userAppMetadata.plan.used,
-    metadata: userAppMetadata
-  }
+const hasUserRemainingTests = async (userId: string): Promise<boolean> => {
+  const user = await getUser(userId)
+  return user.plan.limit > user.plan.used
 }
 
 const reduceUserRemainingTests = async (userId: string) => {
-  const userAppMetadata = await getUserAppMetadata(userId)
-  return updateUserAppMetadata({
-    id: userId,
-    data: {
-      ...userAppMetadata,
-      plan: {
-        ...userAppMetadata.plan,
-        used: userAppMetadata.plan.used + 1
-      }
+  const user = await getUser(userId)
+  return updateUser(userId, {
+    ...user,
+    plan: {
+      ...user.plan,
+      used: user.plan.used + 1
     }
   })
 }
@@ -53,7 +44,7 @@ export const loadTest = async ({
   userId: string
 }) => {
   // Check if user has access to tests
-  const { hasAccess } = await hasUserRemainingTests(userId)
+  const hasAccess = await hasUserRemainingTests(userId)
   if (!hasAccess) {
     return Promise.reject('User has no remaining tests!')
   }

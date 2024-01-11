@@ -320,6 +320,8 @@ export default defineComponent({
         this.loading = false
       } catch (err) {
         this.UIStore.error = new Error(err as string)
+      } finally {
+        this.loading = false
       }
     },
     calculateChangeRate(key: keyof Stats) {
