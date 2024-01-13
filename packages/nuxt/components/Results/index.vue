@@ -17,6 +17,31 @@
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ResultsComponentsUISampleBadge v-if="demoMode" />
+          <div v-if="demoMode">
+            <dl
+              class="flex justify-center mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
+            >
+              <div class="px-4 py-5 sm:p-6">
+                <dt class="text-base font-normal text-gray-900"></dt>
+                <dd
+                  class="mt-1 flex items-baseline justify-between md:block lg:flex"
+                >
+                  <div
+                    class="text-center items-baseline text-2xl font-semibold text-indigo-600"
+                  >
+                    Subscribe to a premium plan to view your results
+                    <div
+                      class="pt-4 text-center text-sm font-medium text-gray-500"
+                    >
+                      Upgrade to our premium plan for full-length mock tests and
+                      benchmark your performance against peers! Elevate your
+                      preparation and maximize success.
+                    </div>
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
           <div>
             <!-- <h3 class="text-base font-semibold leading-6 text-gray-900">
               Last 30 days
@@ -83,7 +108,7 @@
           >
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900">
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Subject-wise Percentage
                 <p class="max-w-4xl text-sm text-gray-500">
                   percentage of correct responses per subject
@@ -102,7 +127,7 @@
             </div>
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900">
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Overall Question Accuracy
                 <p class="max-w-4xl text-sm text-gray-500">
                   number of correct questions over time intervals
@@ -126,7 +151,7 @@
           >
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900">
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Overall Time Performance
                 <p class="max-w-4xl text-sm text-gray-500">
                   average time taken to answer during test
@@ -146,7 +171,7 @@
             </div>
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900">
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Mean Subject Time
                 <p class="max-w-4xl text-sm text-gray-500">
                   total time taken per subject
@@ -170,7 +195,7 @@
           >
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900">
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Incorrect Response Count
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of incorrect responses per subject
@@ -190,7 +215,7 @@
             </div>
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900">
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Correct Response Count
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of correct responses per subject
@@ -293,7 +318,7 @@ export default defineComponent({
           ] as UserAppMetadata['test_history']
           this.testHistory =
             demoResultsData as UserAppMetadata['test_history'][0]
-          this.loading = false
+          // this.loading = false
         }, 1000)
         return
       }
@@ -351,7 +376,7 @@ export default defineComponent({
         return [
           { name: 'Total Points' },
           { name: 'Average Time' },
-          { name: 'Average Time' }
+          { name: 'Subjects Average Time' }
         ] as any[]
       }
       if (!this.testHistory?.stats) return []
