@@ -216,16 +216,16 @@
                 class="text-xl font-semibold leading-8 text-white sm:text-2xl sm:leading-9"
               >
                 <p>
-                  'I'm so grateful for this. It was difficult to find quality
+                  “I'm so grateful for this. It was difficult to find quality
                   resources for medical exam preparation. But Practice Med was a
                   game-changer for me. Thanks to the practice tests and feedback
                   reports, I was able to pass my test on my first attempt. Thank
-                  you!'
+                  you!”
                 </p>
               </blockquote>
               <figcaption class="mt-8 text-base">
-                <div class="font-semibold text-white">Zaher</div>
-                <div class="mt-1 text-gray-400">New Zealand</div>
+                <div class="font-semibold text-white">Ibrahim</div>
+                <!-- <div class="mt-1 text-gray-400">New Zealand</div> -->
               </figcaption>
             </figure>
           </div>
