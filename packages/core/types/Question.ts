@@ -15,3 +15,18 @@ export interface Question {
   correct_option_id: string
   correct_option_explanation: string
 }
+
+export interface QuestionOption {
+  id: string
+  alpha: string
+  text: string
+  explanation: string
+  is_correct: boolean
+}
+
+export interface QuestionObject {
+  _id: string
+  text: string
+  options: QuestionOption[]
+  correct_option: QuestionOption
+}
