@@ -161,7 +161,7 @@ const signup = (event: Event) => {
 
 const items = {
   products: [
-    { name: 'MCAT', href: '/dashboard?test=mcat' },
+    { name: 'Audio MCQS', href: '/landing/audio-mock' },
     { name: 'USMLE', href: '/dashboard?test=usmle' },
     { name: 'AMC', href: '/landing/amc-mcq' }
   ],

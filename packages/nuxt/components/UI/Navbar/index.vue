@@ -46,6 +46,12 @@
                 class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
                 >Resources</NuxtLink
               >
+              <NuxtLink
+                active-class="border-indigo-500 border-b-2"
+                to="/landing/audio-mock"
+                class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                >Audio MCQs</NuxtLink
+              >
             </div>
           </div>
           <div class="hidden md:flex items-center">

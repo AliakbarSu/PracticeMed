@@ -13,7 +13,9 @@ export const useContactStore = defineStore('contact', () => {
   }
 
   const signup = async (em: string) => {
-    const { api_endpoint } = useRuntimeConfig()
+    const {
+      public: { api_endpoint }
+    } = useRuntimeConfig()
     email.value = em
     if (signedup.value) return
     try {
