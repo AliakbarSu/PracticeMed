@@ -7,6 +7,7 @@ import {
   listTestsQuery
 } from './queries'
 import { UserTest } from '../../types/Test'
+import { getQuestions } from '../model/question'
 
 const query = (query: string, variables: any) => {
   return fetch(Config.HYGRAPH_ENDPOINT, {
@@ -54,6 +55,9 @@ export const getTest = async (id: string, limit: boolean = false) => {
     textRaw: '',
     text: question.textRaw[0].children[0].text
   }))
+
+  const loadedQuestions = await getQuestions()
+  console.log('Loaded questions', loadedQuestions.length)
 
   return {
     ...loadedTest,
