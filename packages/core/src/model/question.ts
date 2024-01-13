@@ -14,7 +14,10 @@ async function connectToDatabase() {
   return cachedDb
 }
 
-export const getQuestions = async (): Promise<QuestionObject[]> => {
+export const getQuestions = async (
+  type = 'amc',
+  limit = 100
+): Promise<QuestionObject[]> => {
   const db = await connectToDatabase()
-  return db.collection('questions').find({}).toArray()
+  return db.collection('questions').find().limit(limit).toArray()
 }
