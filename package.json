@@ -7,10 +7,12 @@
     "dev": "sst dev",
     "build": "sst build",
     "deploy-pr": "npm run build-pr --prefix ./packages/nuxt && npx sst deploy --stage pr",
+    "deploy-prod": "npm run build-prod --prefix ./packages/nuxt && npx sst deploy --stage prod",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
-    "deploy-prod": "npm run build-prod --prefix ./packages/nuxt && npx sst deploy --stage prod"
+    "migration-up": "bun ./packages/core/src/migrations/run.ts up",
+    "migration-down": "bun ./packages/core/src/migrations/run.ts down"
   },
   "devDependencies": {
     "sst": "2.38.7",
