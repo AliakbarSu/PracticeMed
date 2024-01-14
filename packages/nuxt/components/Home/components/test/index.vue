@@ -31,6 +31,7 @@
       </div>
     </div>
     <HomeComponentsTestSignupMessage v-if="needToSignup" />
+    <HomeComponentsTestSignupModal v-if="needToSignup" />
     <TestComponentsAlertsReadyToSubmit
       @submit="testStore.submit"
       v-if="flags.readyToSubmit"
