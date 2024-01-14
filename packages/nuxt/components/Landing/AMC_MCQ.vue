@@ -344,11 +344,9 @@
               tier?.mostPopular
                 ? 'relative bg-gray-900 shadow-2xl'
                 : 'bg-white/60 sm:mx-8 lg:mx-0',
-              tier?.mostPopular
-                ? ''
-                : tierIdx === 0
-                  ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
-                  : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
+              tierIdx === 0
+                ? 'rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl'
+                : 'sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none',
               'rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10'
             ]"
           >
@@ -374,8 +372,7 @@
                   tier?.mostPopular ? 'text-gray-400' : 'text-gray-500',
                   'text-base'
                 ]"
-                >/month</span
-              >
+              ></span>
             </p>
             <p
               :class="[

@@ -1,30 +1,31 @@
 <template>
   <div class="bg-white py-24 sm:py-32">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl px-6 lg:px-8">
       <div class="mx-auto max-w-4xl text-center">
-        <h2 class="text-base font-semibold leading-7 text-indigo-600">
+        <!-- <h2 class="text-base font-semibold leading-7 text-indigo-600">
           Pricing
-        </h2>
+        </h2> -->
+        <!-- Note: This is commented out for A/B testing -->
         <p
-          class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
+          class="mt-2 text-4xl font-bold tracking-tight text-indigo-600 sm:text-5xl"
         >
-          Affordable Pricing Options for Medical Exam Mock Tests
+          Pricing
         </p>
       </div>
-      <p
+      <!-- Note: This is commented out for A/B testing -->
+      <!-- <p
         class="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600"
       >
-        Access Extensive Mock Tests at Competitive Prices. Boost Your Exam
-        Preparation with High-Quality Test Materials
-      </p>
+        We have tried to make our study materials as affordable as possible.
+      </p> -->
       <div
-        class="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+        class="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2"
       >
         <div
           v-for="(plan, tierIdx) in plans"
           :key="plan.id"
           :class="[
-            plan.mostPopular ? 'lg:z-10 lg:rounded-b-none' : 'lg:mt-8',
+            // plan.mostPopular ? 'lg:z-10 lg:rounded-b-none' : 'lg:mt-8',
             tierIdx === 0 ? 'lg:rounded-r-none' : '',
             tierIdx === plans.length - 1 ? 'lg:rounded-l-none' : '',
             'flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10'
@@ -57,7 +58,7 @@
                 plan.price
               }}</span>
               <span class="text-sm font-semibold leading-6 text-gray-600">
-                USD /month</span
+                USD</span
               >
             </p>
             <ul
