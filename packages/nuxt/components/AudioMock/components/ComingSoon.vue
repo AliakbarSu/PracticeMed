@@ -29,6 +29,9 @@
                 Thanks for signing up to our newsletter, we will let you know
                 when our audio based MCQs are available.
               </p>
+              <div class="py-4">
+                <AudioMockComponentsMediaPlayer />
+              </div>
               <div class="mt-10 sm:mt-12" v-if="!contactStore.signedup">
                 <!-- This is a working waitlist form. Create your access key from https://web3forms.com/s to setup.  -->
                 <form
@@ -76,6 +79,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { AudioMockComponentsMediaPlayer } from '../../../.nuxt/components'
 import { useContactStore } from '../../../src/store/contact'
 import { ref } from 'vue'
 
