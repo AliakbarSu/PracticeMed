@@ -17,7 +17,7 @@ const getTest = async (testId: string, userId: string) => {
     name: result.name,
     type: result.type,
     description: result.description,
-    questions: result.questions,
+    questions: result.questions as any,
     text: result.text,
     thumbnail: result.thumbnail,
     timeLimit: result.timeLimit,

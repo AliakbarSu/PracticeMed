@@ -10,11 +10,14 @@ async function connectToDatabase() {
     return cachedDb
   }
   const client = await MongoClient.connect(Config.MONGODB_URI)
-  cachedDb = await client.db('question_bank')
+  cachedDb = await client.db('Questions')
   return cachedDb
 }
 
-export const getQuestions = async (): Promise<QuestionObject[]> => {
+export const getQuestions = async (
+  type = 'amc',
+  limit = 100
+): Promise<QuestionObject[]> => {
   const db = await connectToDatabase()
-  return db.collection('questions').find({}).toArray()
+  return db.collection('questions').find().limit(limit).toArray()
 }

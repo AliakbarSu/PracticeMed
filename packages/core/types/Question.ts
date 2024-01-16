@@ -29,4 +29,5 @@ export interface QuestionObject {
   text: string
   options: QuestionOption[]
   correct_option: QuestionOption
+  field: string
 }

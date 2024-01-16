@@ -1,6 +1,6 @@
 import { getUser, updateUser } from '../model/users'
 import { getTest } from '../test'
-import { Question } from '../../types/Question'
+import { QuestionObject } from '../../types/Question'
 import { addTest } from '../model/test'
 import { MongoDBTest, TestStatus } from '../../types/Test'
 
@@ -20,7 +20,7 @@ const reduceUserRemainingTests = async (userId: string) => {
   })
 }
 
-function getRandomQuestions(array: Question[], count = 1) {
+function getRandomQuestions(array: QuestionObject[], count = 1) {
   const randomItems = []
 
   // Shuffle the array
