@@ -10,7 +10,7 @@ async function connectToDatabase() {
     return cachedDb
   }
   const client = await MongoClient.connect(Config.MONGODB_URI)
-  cachedDb = await client.db('question_bank')
+  cachedDb = await client.db('Questions')
   return cachedDb
 }
 
