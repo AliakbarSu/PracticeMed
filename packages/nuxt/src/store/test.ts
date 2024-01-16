@@ -172,7 +172,7 @@ export const useTestStore = defineStore('test', () => {
 
   const setDemoQuestions = () => {
     if (!test.value) return
-    test.value.questions = questions.value.splice(0, 5) as QuestionInProgress[]
+    test.value.questions = questions.value.splice(0, 10) as QuestionInProgress[]
   }
 
   const setAllQuestions = () => {
