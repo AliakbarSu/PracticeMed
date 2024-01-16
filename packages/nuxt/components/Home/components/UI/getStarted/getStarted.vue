@@ -52,7 +52,7 @@ const perks = [
     name: 'Choose Your Test',
     icon: ClipboardDocumentListIcon,
     description:
-      "Select the mock medical exam that matches your needs, whether it's for the AMC, USMLE, or another exam."
+      'Select the mock medical exam that matches your needs, such as AMC MCQ.'
   },
   {
     name: 'Take the Test',
