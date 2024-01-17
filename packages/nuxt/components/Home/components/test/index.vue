@@ -5,8 +5,7 @@
         Try Our Demo Mock Test
       </h2>
       <p class="w-3/4 mx-auto mt-4 text-lg leading-8 text-gray-900">
-        Take our demo mock test to get a feel for the format, experience a
-        simulated testing environment, and instantly review your performance.
+        Take our demo mock test to get a feel for the format.
       </p>
     </div>
     <div class="w-full flex justify-center py-5" v-if="UIStore.test.loading">
