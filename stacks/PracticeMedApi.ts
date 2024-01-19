@@ -186,6 +186,8 @@ export function API(context: StackContext) {
   return {
     api,
     cron: cronStack,
-    queue: submit_answer_queue
+    queue: submit_answer_queue,
+    HYGRAPH_TOKEN,
+    HYGRAPH_ENDPOINT
   }
 }
