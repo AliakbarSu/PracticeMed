@@ -10,11 +10,13 @@ export const listBlogsQuery = gql`
 `
 
 export default defineEventHandler(async (event) => {
+  const secret = process.env.SST_Secret_value_HYGRAPH_TOKEN
   try {
     const {
       public: { hygraph_endpoint },
-      hygraph_token
+      hygraph_token: tkn
     } = useRuntimeConfig()
+    const hygraph_token = tkn || secret
     const query = (query: string) => {
       return fetch(hygraph_endpoint, {
         method: 'POST',

@@ -57,7 +57,7 @@ export function NuxtStack({ stack }: StackContext) {
     }
   })
 
-  nuxt.bind([publicAsset])
+  nuxt.bind([publicAsset, api.HYGRAPH_TOKEN])
   /**
    * Set up a default route to handle all call http call to the nuxt application
    */
@@ -75,11 +75,10 @@ export function NuxtStack({ stack }: StackContext) {
         install: ['tslib']
       },
       environment: {
-        NUXT_HYGRAPH_TOKEN: api.HYGRAPH_TOKEN.toString(),
         NUXT_APP_CDN_URL: publicAsset.url || '',
         NUXT_PUBLIC_CDN_URL: publicAsset.url || '',
         NUXT_PUBLIC_API_ENDPOINT: `${api_url}/api`,
-        NUXT_PUBLIC_HYGRAPH_ENDPOINT: api.HYGRAPH_ENDPOINT.toString(),
+        NUXT_PUBLIC_HYGRAPH_ENDPOINT: api.HYGRAPH_ENDPOINT.value,
         NUXT_PUBLIC_DOMAIN_NAME:
           stage == prod
             ? `https://${endpoints.domain}`
