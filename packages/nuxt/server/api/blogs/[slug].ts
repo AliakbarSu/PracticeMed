@@ -1,5 +1,6 @@
 import { gql } from 'graphql-request'
 import { blog } from '../../queries'
+import { Config } from 'sst/node/config'
 
 export const getSingleBlog = gql`
   query GetBlog($slug: String) {
@@ -11,10 +12,10 @@ export const getSingleBlog = gql`
 
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, 'slug') || ''
+  const hygraph_token = (Config as any).HYGRAPH_TOKEN
   try {
     const {
-      public: { hygraph_endpoint },
-      hygraph_token
+      public: { hygraph_endpoint }
     } = useRuntimeConfig()
     const query = (query: string, variables: { slug: string }) => {
       return fetch(hygraph_endpoint, {

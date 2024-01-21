@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build-pr": "npx nuxi build",
-    "build-prod": "npx nuxi build",
+    "build-pr": "sst bind npx nuxi build",
+    "build-prod": "sst bind npx nuxi build",
     "dev": "export LOCAL_ENV=local && sst bind npx nuxi dev --dotenv .env.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

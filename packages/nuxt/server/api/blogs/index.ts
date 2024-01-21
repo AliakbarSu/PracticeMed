@@ -1,5 +1,6 @@
 import { gql } from 'graphql-request'
 import { blog } from '../../queries'
+import { Config } from 'sst/node/config'
 
 export const listBlogsQuery = gql`
   query GetBlogs {
@@ -10,13 +11,11 @@ export const listBlogsQuery = gql`
 `
 
 export default defineEventHandler(async (event) => {
-  const secret = process.env.SST_Secret_value_HYGRAPH_TOKEN
+  const hygraph_token = (Config as any).HYGRAPH_TOKEN
   try {
     const {
-      public: { hygraph_endpoint },
-      hygraph_token: tkn
+      public: { hygraph_endpoint }
     } = useRuntimeConfig()
-    const hygraph_token = tkn || secret
     const query = (query: string) => {
       return fetch(hygraph_endpoint, {
         method: 'POST',
