@@ -42,9 +42,10 @@
                   {{ post.title }}
                 </a>
               </h3>
-              <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                {{ post.body.text }}
-              </p>
+              <div
+                class="line-clamp-3 text-sm leading-6 text-gray-600"
+                v-html="post.body.html"
+              ></div>
             </div>
             <div class="hidden relative mt-8 items-center gap-x-4">
               <!-- <img

@@ -12,7 +12,7 @@
       >
         {{ data.title }}
       </h1>
-      <div v-html="data.body.html"></div>
+      <div class="blog-content" v-html="data.body.html"></div>
       <figure class="hidden mt-16">
         <img
           class="aspect-video rounded-xl bg-gray-50 object-cover"
@@ -37,3 +37,14 @@ const { data, pending, error, refresh } = await useFetch(
   `/api/blogs/${route.params.slug}`
 )
 </script>
+
+<style>
+.blog-content ul {
+  list-style: circle;
+  width: 94%;
+  margin: auto;
+}
+.blog-content ul li {
+  padding-top: 18px;
+}
+</style>
