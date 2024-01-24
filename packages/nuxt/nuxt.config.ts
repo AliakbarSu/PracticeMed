@@ -12,6 +12,10 @@ const alias =
       }
 
 export default defineNuxtConfig({
+  routeRules: {
+    "/resources": { redirect: "/resources/blogs" },
+    "/resources/**": { prerender: true }
+  },
   app: {
     head: {
       script: [

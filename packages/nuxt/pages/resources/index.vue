@@ -9,7 +9,7 @@
           Learn how to pass your medical licensing exam with our great
           resources.
         </p>
-        <div
+        <!-- <div
           class="mt-10 space-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16"
         >
           <article
@@ -58,12 +58,8 @@
               </div>
             </div>
           </article>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-await navigateTo('/resources/blogs')
-</script>
