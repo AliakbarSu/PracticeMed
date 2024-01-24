@@ -7,7 +7,7 @@ const alias =
     : {
         'vue/server-renderer': path.resolve(
           __dirname,
-          '../../node_modules/vue/server-renderer'
+          './node_modules/vue/server-renderer'
         )
       }
 
@@ -51,7 +51,6 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    hygraph_token: '',
     public: {
       api_endpoint: '',
       hygraph_endpoint: '',

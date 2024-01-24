@@ -13,7 +13,7 @@
           class="mt-10 space-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16"
         >
           <article
-            v-for="post in posts"
+            v-for="post in [] as any"
             :key="post.id"
             class="flex max-w-xl flex-col items-start justify-between"
           >
@@ -65,66 +65,5 @@
 </template>
 
 <script lang="ts" setup>
-const posts = [
-  {
-    id: 1,
-    title: 'Mastering the AMC MCQ Exam: Your Ultimate Preparation Guide',
-    href: '/resources/amc/prepare',
-    description:
-      'The Australian Medical Council (AMC) MCQ (Multiple Choice Question) Exam is a crucial step in the journey to becoming a medical professional. To excel in this challenging exam, a well-rounded and comprehensive preparation strategy is essential.',
-    date: '8 May, 2023',
-    datetime: '2023-05-08',
-    category: { title: 'AMC', href: '/landing/amc-mcq' },
-    author: {
-      name: 'Michael Foster',
-      role: 'Co-Founder / CTO',
-      href: '#',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-    }
-  },
-  {
-    id: 2,
-    title:
-      'Securing Employment in Australia After Successfully Passing the AMC MCQ Exam',
-    href: '/resources/amc/find-job',
-    description:
-      'Passing the Australian Medical Council (AMC) MCQ (Multiple Choice Question) Exam is a significant accomplishment on your journey to practicing medicine in Australia...',
-    date: '19 May, 2023',
-    datetime: '2023-05-19',
-    category: { title: 'AMC', href: '/landing/amc-mcq' },
-    author: {
-      name: 'Michael Foster',
-      role: 'Co-Founder / CTO',
-      href: '#',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-    }
-  },
-  {
-    id: 3,
-    title:
-      'A Comprehensive Guide to Prepare for the AMC Multiple Choice Question (MCQ) Exam from Scratch',
-    href: '/resources/amc/prepare-from-scratch',
-    description:
-      'Are you ready to take on the challenge of the (AMC) Multiple Choice Question (MCQ) exam?',
-    date: '16 Aug, 2023',
-    datetime: '2023-08-16',
-    category: { title: 'AMC', href: '/landing/amc-mcq' },
-    author: {
-      name: 'Michael Foster',
-      role: 'Co-Founder / CTO',
-      href: '#',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-    }
-  }
-]
-
-useSeoMeta({
-  title:
-    'Resource about how to prepare and pass your AMC MCQ exam | Practice Med',
-  description:
-    'Resrouces to prepare for your medical licensing exam including AMC MCQ'
-})
+await navigateTo('/resources/blogs')
 </script>

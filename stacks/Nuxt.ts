@@ -72,7 +72,7 @@ export function NuxtStack({ stack }: StackContext) {
         }
       },
       nodejs: {
-        install: ['tslib']
+        install: ['tslib', 'uuid']
       },
       environment: {
         NUXT_APP_CDN_URL: publicAsset.url || '',

@@ -10,7 +10,7 @@ export const getSingleBlog = gql`
   }
 `
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: any) => {
   const slug = getRouterParam(event, 'slug') || ''
   const hygraph_token = (Config as any).HYGRAPH_TOKEN
   try {

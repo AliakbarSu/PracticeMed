@@ -21,7 +21,13 @@
     "typescript": "^5.0.3",
     "@tsconfig/node16": "^1.0.3"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/nuxt",
+      "**/nuxt/**"
+    ]
+  }
 }

@@ -10,7 +10,7 @@ export const listBlogsQuery = gql`
   }
 `
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: any) => {
   const hygraph_token = (Config as any).HYGRAPH_TOKEN
   try {
     const {

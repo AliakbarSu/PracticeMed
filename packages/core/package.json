@@ -18,6 +18,7 @@
     "@sendgrid/mail": "^7.7.0",
     "auth0": "^3.3.0",
     "chatgpt": "^5.2.5",
+    "graphql-request": "^6.1.0",
     "moment": "^2.29.4",
     "mongodb": "^6.3.0",
     "node-fetch": "^3.3.1",
