@@ -3,12 +3,12 @@
   <div class="bg-white mx-auto w-full px-6 pt-24 sm:pt-32 lg:px-8">
     <div class="mx-auto max-w-2xl lg:text-center">
       <h2 class="text-base font-semibold leading-7 text-indigo-600">
-        Mock Your Success
+        Mock your success
       </h2>
       <p
         class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
       >
-        Ace Your Medical Tests with Confidence
+        Ace your medical tests with confidence
       </p>
       <p class="mt-6 text-lg leading-8 text-gray-600">
         Prepare for success with our mock medical exams! Our service provides a
@@ -58,25 +58,25 @@ import {
 } from '@heroicons/vue/20/solid'
 const features = [
   {
-    name: 'Comprehensive Test Coverage',
+    name: 'Comprehensive test coverage',
     description:
       'Our service offers a range of mock medical exams to help students prepare for their medical exams. Our tests cover all essential topics and subtopics, so students can gain a complete understanding of the material.',
     icon: ChartPieIcon
   },
   {
-    name: 'Realistic Exam Experience',
+    name: 'Realistic exam experience',
     description:
       'All the tests are designed to simulate the actual medical exam experience, including timing, format, and difficulty level. This allows students to become comfortable with the testing environment and be better prepared on exam day.',
     icon: ClipboardDocumentIcon
   },
   {
-    name: 'Feedback and Analysis',
+    name: 'Feedback and analysis',
     description:
       'Practice Med offers in-depth evaluations and insights on student performance in practice tests. By pinpointing their strong and weak points, learners can devise a tailored study strategy that focuses on enhancing their areas in need of growth.',
     icon: ClipboardDocumentListIcon
   },
   {
-    name: 'Affordable and Convenient',
+    name: 'Affordable and convenient',
     description:
       'Practice Med is affordable and can be accessed online from anywhere, anytime. This makes it easy for students to fit test preparation into their busy schedules, and ensure they are fully prepared for their medical exams.',
     icon: CurrencyDollarIcon

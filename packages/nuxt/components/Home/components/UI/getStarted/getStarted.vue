@@ -49,25 +49,25 @@ import {
 } from '@heroicons/vue/20/solid'
 const perks = [
   {
-    name: 'Choose Your Test',
+    name: 'Select your test',
     icon: ClipboardDocumentListIcon,
     description:
       'Select the mock medical exam that matches your needs, such as AMC MCQ.'
   },
   {
-    name: 'Take the Test',
+    name: 'Take the test',
     icon: ClipboardDocumentListIcon,
     description:
       'Experience a realistic testing environment as you take the mock exam, which simulates the actual exam experience including timing, format, and difficulty level.'
   },
   {
-    name: 'Receive Feedback',
+    name: 'Receive feedback',
     icon: ClipboardDocumentListIcon,
     description:
       'Get detailed feedback and analysis of your performance, including strengths and weaknesses. Use this information to develop a targeted study plan that addresses areas of improvement.'
   },
   {
-    name: 'Improve Your Scores',
+    name: 'Improve your scores',
     icon: ClipboardDocumentListIcon,
     description:
       "With meaningful feedbacks provided by our service, you'll be fully prepared to boost your scores and achieve success on your medical exams!"

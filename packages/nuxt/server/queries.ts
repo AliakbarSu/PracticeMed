@@ -14,4 +14,8 @@ export const blog = `
     html
     text
     }
+    thumbnail {
+        handle
+        url
+      }
 `

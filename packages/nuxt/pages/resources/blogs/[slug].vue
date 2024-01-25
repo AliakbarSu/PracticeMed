@@ -1,5 +1,10 @@
 <template>
   <div class="bg-white px-6 py-32 lg:px-8">
+    <Head>
+      <Title>{{ data.title }}</Title>
+      <Meta property="og:image" :content="data.thumbnail[0]?.url" />
+      <Meta property="og:description" :content="data.title" />
+    </Head>
     <div
       v-if="!pending"
       class="mx-auto max-w-3xl text-base leading-7 text-gray-700"
@@ -12,6 +17,9 @@
       >
         {{ data.title }}
       </h1>
+      <div class="py-10" v-if="data.thumbnail?.length">
+        <img :src="data.thumbnail[0].url" />
+      </div>
       <div class="blog-content" v-html="data.body.html"></div>
       <figure class="hidden mt-16">
         <img
@@ -31,11 +39,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const route = useRoute()
-const { data, pending, error, refresh } = await useFetch(
+const { data, pending, error, refresh } = (await useFetch(
   `/api/blogs/${route.params.slug}`
-)
+)) as any
+
+useSeoMeta({
+  title: () =>
+    'Resource about how to prepare and pass your AMC MCQ exam | Practice Med',
+  description: () =>
+    'Resrouces to prepare for your medical licensing exam including AMC MCQ'
+})
 </script>
 
 <style>

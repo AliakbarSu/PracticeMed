@@ -46,7 +46,7 @@
                   <DialogTitle
                     as="h3"
                     class="text-base font-semibold leading-6 text-gray-900"
-                    >Create an Account to Continue</DialogTitle
+                    >Create an account to continue</DialogTitle
                   >
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
