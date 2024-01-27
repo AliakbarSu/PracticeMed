@@ -159,25 +159,26 @@
           >
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-              <dt
-                class="text-base font-normal text-gray-900"
-                v-if="!state.loading"
-              >
+              <dt class="text-base font-normal text-gray-900">
                 Overall Time Performance
                 <p class="max-w-4xl text-sm text-gray-500">
                   average time taken to answer during test
                 </p>
               </dt>
               <dd
-                class="mt-1 flex h-full items-center justify-center md:block lg:flex"
+                class="mt-1 flex h-full w-full items-center justify-center md:block lg:flex"
               >
                 <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ResultsComponentsLine
+                <ChartsLineChart
+                  v-if="!state.loading"
+                  :data="amLineChartData"
+                />
+                <!-- <ResultsComponentsLine
                   v-if="!state.loading"
                   title="Answer In (avg s)"
                   :data="speedOverTime.datasets"
                   :labels="speedOverTime.labels"
-                />
+                /> -->
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
@@ -213,21 +214,25 @@
                 class="text-base font-normal text-gray-900"
                 v-if="!state.loading"
               >
-                Incorrect Response Count
+                Incorrect Responses
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of incorrect responses per subject
                 </p>
               </dt>
               <dd
-                class="mt-1 flex h-full items-center justify-center md:block lg:flex"
+                class="mt-1 flex h-full w-full items-center justify-center md:block lg:flex"
               >
                 <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ResultsComponentsPie
+                <ChartsBarChart
+                  v-if="!state.loading"
+                  :data="amchartIncorrectResponses"
+                />
+                <!-- <ResultsComponentsPie
                   v-if="!state.loading"
                   :data="incorrectResponseCountPerSubject.datasets"
                   :labels="incorrectResponseCountPerSubject.labels"
                   :options="correctResponseCountPerSubject.options"
-                />
+                /> -->
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
@@ -236,7 +241,7 @@
                 class="text-base font-normal text-gray-900"
                 v-if="!state.loading"
               >
-                Correct Response Count
+                Correct Responses
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of correct responses per subject
                 </p>
@@ -245,12 +250,16 @@
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
                 <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ResultsComponentsPie
+                <ChartsBarChart
+                  v-if="!state.loading"
+                  :data="amchartCorrectResponses"
+                />
+                <!-- <ResultsComponentsPie
                   v-if="!state.loading"
                   :data="correctResponseCountPerSubject.datasets"
                   :labels="correctResponseCountPerSubject.labels"
                   :options="correctResponseCountPerSubject.options"
-                />
+                /> -->
               </dd>
             </div>
           </dl>
@@ -493,6 +502,33 @@ const accuracyOverTime = computed(() => {
     labels,
     datasets: values
   }
+})
+
+const amLineChartData = computed(() => {
+  return Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
+    (key) => ({
+      score: Number(state.testHistory.stats.speedByMinuteInterval[key]),
+      value: Number(key)
+    })
+  )
+})
+
+const amchartIncorrectResponses = computed(() => {
+  return Object.keys(
+    state.testHistory.stats.incorrectResponseCountPerField
+  ).map((key) => ({
+    category: key,
+    score: state.testHistory.stats.incorrectResponseCountPerField[key]
+  }))
+})
+
+const amchartCorrectResponses = computed(() => {
+  return Object.keys(state.testHistory.stats.correctResponseCountPerField).map(
+    (key) => ({
+      category: key,
+      score: state.testHistory.stats.correctResponseCountPerField[key]
+    })
+  )
 })
 
 const navigateToDashboard = () => {
