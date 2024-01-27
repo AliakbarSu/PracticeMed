@@ -16,8 +16,8 @@
       </header>
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ResultsComponentsUISampleBadge v-if="demoMode" />
-          <div v-if="demoMode">
+          <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+          <div v-if="state.demoMode">
             <dl
               class="flex justify-center mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
             >
@@ -57,9 +57,11 @@
                 <dt class="text-base font-normal text-gray-900">
                   {{ item.name }}
                 </dt>
-                <ResultsComponentsUILoadingContentSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingContentSkeleton
+                  v-if="state.loading"
+                />
                 <dd
-                  v-if="!loading"
+                  v-if="!state.loading"
                   class="mt-1 flex items-baseline justify-between md:block lg:flex"
                 >
                   <div
@@ -107,8 +109,11 @@
             class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900" v-if="!loading">
+              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <dt
+                class="text-base font-normal text-gray-900"
+                v-if="!state.loading"
+              >
                 Subject-wise Percentage
                 <p class="max-w-4xl text-sm text-gray-500">
                   percentage of correct responses per subject
@@ -117,17 +122,20 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
                 <ResultsComponentsPie
-                  v-if="!loading"
+                  v-if="!state.loading"
                   :data="correctResponseRatePerField.datasets"
                   :labels="correctResponseRatePerField.labels"
                 />
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900" v-if="!loading">
+              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <dt
+                class="text-base font-normal text-gray-900"
+                v-if="!state.loading"
+              >
                 Overall Question Accuracy
                 <p class="max-w-4xl text-sm text-gray-500">
                   number of correct questions over time intervals
@@ -136,9 +144,9 @@
               <dd
                 class="mt-1 h-full items-center flex justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
                 <ResultsComponentsLine
-                  v-if="!loading"
+                  v-if="!state.loading"
                   title="Correct Answers"
                   :data="accuracyOverTime.datasets"
                   :labels="accuracyOverTime.labels"
@@ -150,8 +158,11 @@
             class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900" v-if="!loading">
+              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <dt
+                class="text-base font-normal text-gray-900"
+                v-if="!state.loading"
+              >
                 Overall Time Performance
                 <p class="max-w-4xl text-sm text-gray-500">
                   average time taken to answer during test
@@ -160,9 +171,9 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
                 <ResultsComponentsLine
-                  v-if="!loading"
+                  v-if="!state.loading"
                   title="Answer In (avg s)"
                   :data="speedOverTime.datasets"
                   :labels="speedOverTime.labels"
@@ -170,8 +181,11 @@
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900" v-if="!loading">
+              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <dt
+                class="text-base font-normal text-gray-900"
+                v-if="!state.loading"
+              >
                 Mean Subject Time
                 <p class="max-w-4xl text-sm text-gray-500">
                   total time taken per subject
@@ -180,9 +194,9 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
                 <ResultsComponentsPie
-                  v-if="!loading"
+                  v-if="!state.loading"
                   :data="averageCategoryTiming.datasets"
                   :labels="averageCategoryTiming.labels"
                   :options="averageCategoryTiming.options"
@@ -194,8 +208,11 @@
             class="mt-5 pb-16 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900" v-if="!loading">
+              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <dt
+                class="text-base font-normal text-gray-900"
+                v-if="!state.loading"
+              >
                 Incorrect Response Count
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of incorrect responses per subject
@@ -204,9 +221,9 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
                 <ResultsComponentsPie
-                  v-if="!loading"
+                  v-if="!state.loading"
                   :data="incorrectResponseCountPerSubject.datasets"
                   :labels="incorrectResponseCountPerSubject.labels"
                   :options="correctResponseCountPerSubject.options"
@@ -214,8 +231,11 @@
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="demoMode" />
-              <dt class="text-base font-normal text-gray-900" v-if="!loading">
+              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <dt
+                class="text-base font-normal text-gray-900"
+                v-if="!state.loading"
+              >
                 Correct Response Count
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of correct responses per subject
@@ -224,9 +244,9 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
                 <ResultsComponentsPie
-                  v-if="!loading"
+                  v-if="!state.loading"
                   :data="correctResponseCountPerSubject.datasets"
                   :labels="correctResponseCountPerSubject.labels"
                   :options="correctResponseCountPerSubject.options"
@@ -235,14 +255,14 @@
             </div>
           </dl>
           <div
-            v-if="demoMode"
+            v-if="state.demoMode"
             class="mt-5 pb-16 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
           >
             <ResultsComponentsFeedback />
           </div>
         </div>
       </main>
-      <div class="my-4" v-if="demoMode">
+      <div class="my-4" v-if="state.demoMode">
         <TestComponentsUICTAUpgradeCTA
           heading="Take a Mock Test to See Your Results"
           description="This is just a sample data. Sign up to a paid plan to take a mock test and see your results."
@@ -253,8 +273,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/20/solid'
 import axios from 'axios'
 import type { UserAppMetadata } from '@/types/user'
@@ -263,249 +282,239 @@ import { useUIStore } from '../../src/store/UI'
 import { useAuthStore } from '../../src/store/auth'
 import { demoResultsData } from '../../src/data/demoResultsData'
 
-export default defineComponent({
-  setup() {
-    const UIStore = useUIStore()
-    const authStore = useAuthStore()
-    return { UIStore, authStore }
-  },
-  created() {
-    this.fetchTestHistory()
-  },
-  data: () => {
-    return {
-      loading: false,
-      demoMode: false,
-      testHistory: {} as UserAppMetadata['test_history'][0],
-      previous_tests: [] as UserAppMetadata['test_history'],
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    }
-  },
-  components: {
-    ArrowDownIcon,
-    ArrowUpIcon
-  },
-  methods: {
-    navigateToDashboard() {
-      this.$router.push('/dashboard')
-    },
-    printResults() {
-      window.print()
-    },
-    async fetchTestHistory() {
-      const {
-        public: { api_endpoint }
-      } = useRuntimeConfig()
-      this.loading = true
-      const resultId = this.$route.params.id || ''
+const UIStore = useUIStore()
+const authStore = useAuthStore()
 
-      // display demo data
-      if (resultId === 'demo_test') {
-        this.demoMode = true
-        setTimeout(() => {
-          this.previous_tests = [
-            demoResultsData
-          ] as UserAppMetadata['test_history']
-          this.testHistory =
-            demoResultsData as UserAppMetadata['test_history'][0]
-          // this.loading = false
-        }, 1000)
-        return
-      }
-      try {
-        const response = await axios.get(`${api_endpoint}/tests/history`, {
-          headers: {
-            Authorization: `Bearer ${this.authStore.token}`
+const router = useRouter()
+const route = useRoute()
+
+const state = reactive({
+  loading: false,
+  demoMode: false,
+  testHistory: {} as UserAppMetadata['test_history'][0],
+  previous_tests: [] as UserAppMetadata['test_history'],
+  options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true
           }
-        })
-        const testHistoryArray = response.data
-          .body as unknown as UserAppMetadata['test_history']
-        this.previous_tests = testHistoryArray
-        const matchingTestHistory = testHistoryArray.find(
-          ({ id }: any) => id === resultId
-        ) as UserAppMetadata['test_history'][0]
-        if (!matchingTestHistory) {
-          this.UIStore.error = new Error(
-            'Failed to find a matching test result'
-          )
-          return
-        }
-        this.testHistory = matchingTestHistory
-
-        this.loading = false
-      } catch (err) {
-        this.UIStore.error = new Error(err as string)
-      } finally {
-        this.loading = false
-      }
-    },
-    calculateChangeRate(key: keyof Stats) {
-      const sortedTestHistory = this.previous_tests.sort(
-        (a, b) => Number(a.timestamp) - Number(b.timestamp)
-      )
-      const currentHistoryIndex = sortedTestHistory.findIndex(
-        ({ test_id }) => test_id === this.testHistory.test_id
-      )
-      const previousTest = sortedTestHistory[currentHistoryIndex + 1]
-      if (!previousTest) return 0
-      return (
-        Number(this.testHistory.stats[key]) - Number(previousTest.stats[key])
-      )
-    },
-    calculateChangeType(key: keyof Stats) {
-      // if (this.calculateChangeRate(key) === 0) return 'same'
-      return this.calculateChangeRate(key) > 0 ? 'increase' : 'decrease'
-    }
-  },
-  computed: {
-    pass() {
-      return this.testHistory.result === 'pass'
-    },
-    testStats() {
-      if (this.loading) {
-        return [
-          { name: 'Total Points' },
-          { name: 'Average Time' },
-          { name: 'Subjects Average Time' }
-        ] as any[]
-      }
-      if (!this.testHistory?.stats) return []
-      return [
-        {
-          name: 'Total Points',
-          stat: this.testHistory.stats.totalPoints,
-          previousStat: this.testHistory.stats.testScore,
-          change: this.calculateChangeRate('totalPoints'),
-          changeType: this.calculateChangeType('totalPoints')
-        },
-        {
-          name: 'Average Time (minutes)',
-          stat: this.testHistory.stats.averageTimeTaken.toFixed(2),
-          previousStat: this.testHistory.stats.averageTimeTaken.toFixed(2),
-          change: this.calculateChangeRate('averageTimeTaken').toFixed(2),
-          changeType: this.calculateChangeType('averageTimeTaken')
-        },
-        {
-          name: 'Subjects Average Time (minutes)',
-          stat: this.testHistory.stats.fieldsAverageTime.toFixed(2),
-          previousStat: this.testHistory.stats.fieldsAverageTime.toFixed(2),
-          change: this.calculateChangeRate('fieldsAverageTime').toFixed(2),
-          changeType: this.calculateChangeType('fieldsAverageTime')
         }
       ]
+    }
+  }
+})
+
+const fetchTestHistory = async () => {
+  const {
+    public: { api_endpoint }
+  } = useRuntimeConfig()
+  state.loading = true
+  const resultId = route.params.id || ''
+
+  // display demo data
+  if (resultId === 'demo_test') {
+    state.demoMode = true
+    setTimeout(() => {
+      state.previous_tests = [
+        demoResultsData
+      ] as UserAppMetadata['test_history']
+      state.testHistory = demoResultsData as UserAppMetadata['test_history'][0]
+      // this.loading = false
+    }, 1000)
+    return
+  }
+  try {
+    const response = await axios.get(`${api_endpoint}/tests/history`, {
+      headers: {
+        Authorization: `Bearer ${authStore.token}`
+      }
+    })
+    const testHistoryArray = response.data
+      .body as unknown as UserAppMetadata['test_history']
+    state.previous_tests = testHistoryArray
+    const matchingTestHistory = testHistoryArray.find(
+      ({ id }: any) => id === resultId
+    ) as UserAppMetadata['test_history'][0]
+    if (!matchingTestHistory) {
+      UIStore.error = new Error('Failed to find a matching test result')
+      return
+    }
+    state.testHistory = matchingTestHistory
+
+    state.loading = false
+  } catch (err) {
+    UIStore.error = new Error(err as string)
+  } finally {
+    state.loading = false
+  }
+}
+
+await fetchTestHistory()
+
+const pass = computed(() => state.testHistory.result === 'pass')
+
+const testStats = computed(() => {
+  if (state.loading) {
+    return [
+      { name: 'Total Points' },
+      { name: 'Average Time' },
+      { name: 'Subjects Average Time' }
+    ] as any[]
+  }
+  if (!state.testHistory?.stats) return []
+  return [
+    {
+      name: 'Total Points',
+      stat: state.testHistory.stats.totalPoints,
+      previousStat: state.testHistory.stats.testScore,
+      change: calculateChangeRate('totalPoints'),
+      changeType: calculateChangeType('totalPoints')
     },
-    correctResponseCountPerSubject() {
-      const labels = Object.keys(
-        this.testHistory.stats.correctResponseCountPerField
-      )
-      const values = labels.map(
-        (key) => this.testHistory.stats.correctResponseCountPerField[key]
-      )
-      return {
-        labels: labels,
-        datasets: values,
-        options: {
-          dataLabels: {
-            formatter: function (val: any, opts: any) {
-              return opts.w.config.series[opts.seriesIndex]
-            }
-          }
+    {
+      name: 'Average Time (minutes)',
+      stat: state.testHistory.stats.averageTimeTaken.toFixed(2),
+      previousStat: state.testHistory.stats.averageTimeTaken.toFixed(2),
+      change: calculateChangeRate('averageTimeTaken').toFixed(2),
+      changeType: calculateChangeType('averageTimeTaken')
+    },
+    {
+      name: 'Subjects Average Time (minutes)',
+      stat: state.testHistory.stats.fieldsAverageTime.toFixed(2),
+      previousStat: state.testHistory.stats.fieldsAverageTime.toFixed(2),
+      change: calculateChangeRate('fieldsAverageTime').toFixed(2),
+      changeType: calculateChangeType('fieldsAverageTime')
+    }
+  ]
+})
+
+const correctResponseCountPerSubject = computed(() => {
+  const labels = Object.keys(
+    state.testHistory.stats.correctResponseCountPerField
+  )
+  const values = labels.map(
+    (key) => state.testHistory.stats.correctResponseCountPerField[key]
+  )
+  return {
+    labels: labels,
+    datasets: values,
+    options: {
+      dataLabels: {
+        formatter: function (val: any, opts: any) {
+          return opts.w.config.series[opts.seriesIndex]
         }
-      }
-    },
-    correctResponseRatePerSubject() {
-      const labels = Object.keys(
-        this.testHistory.stats.correctResponseRatePerField
-      )
-      return {
-        labels,
-        datasets: labels.map(
-          (key) => this.testHistory.stats.correctResponseRatePerField[key]
-        )
-      }
-    },
-    incorrectResponseCountPerSubject() {
-      const labels = Object.keys(
-        this.testHistory.stats.incorrectResponseCountPerField
-      )
-      return {
-        labels,
-        datasets: labels.map(
-          (key) => this.testHistory.stats.incorrectResponseCountPerField[key]
-        )
-      }
-    },
-    averageCategoryTiming() {
-      const labels = Object.keys(
-        this.testHistory.stats.averageTimeTakenPerField
-      )
-      return {
-        labels,
-        datasets: labels.map(
-          (key) => this.testHistory.stats.averageTimeTakenPerField[key]
-        ),
-        options: {
-          dataLabels: {
-            formatter: function (val: any, opts: any) {
-              return opts.w.config.series[opts.seriesIndex] + ' m'
-            }
-          }
-        }
-      }
-    },
-    accuracyOverTime() {
-      const labels = Object.keys(
-        this.testHistory.stats.correctAnswersByMinuteInterval
-      ).map((key) => {
-        return Number(key).toFixed(2) + ' m'
-      })
-      const values = Object.keys(
-        this.testHistory.stats.correctAnswersByMinuteInterval
-      ).map((key) => {
-        return this.testHistory.stats.correctAnswersByMinuteInterval[key]
-      })
-      return {
-        labels,
-        datasets: values
-      }
-    },
-    speedOverTime() {
-      const labels = Object.keys(
-        this.testHistory.stats.speedByMinuteInterval
-      ).map((key) => {
-        return Number(key).toFixed(2) + ' m'
-      })
-      return {
-        labels,
-        datasets: Object.keys(this.testHistory.stats.speedByMinuteInterval).map(
-          (key) =>
-            Number(this.testHistory.stats.speedByMinuteInterval[key]).toFixed(
-              2
-            ) + ' s'
-        )
-      }
-    },
-    correctResponseRatePerField() {
-      const labels = Object.keys(
-        this.testHistory.stats.correctResponseRatePerField
-      )
-      return {
-        labels,
-        datasets: labels.map(
-          (key) => this.testHistory.stats.correctResponseRatePerField[key]
-        )
       }
     }
   }
 })
+
+const correctResponseRatePerSubject = computed(() => {
+  const labels = Object.keys(
+    state.testHistory.stats.correctResponseRatePerField
+  )
+  return {
+    labels,
+    datasets: labels.map(
+      (key) => state.testHistory.stats.correctResponseRatePerField[key]
+    )
+  }
+})
+
+const incorrectResponseCountPerSubject = computed(() => {
+  const labels = Object.keys(
+    state.testHistory.stats.incorrectResponseCountPerField
+  )
+  return {
+    labels,
+    datasets: labels.map(
+      (key) => state.testHistory.stats.incorrectResponseCountPerField[key]
+    )
+  }
+})
+
+const averageCategoryTiming = computed(() => {
+  const labels = Object.keys(state.testHistory.stats.averageTimeTakenPerField)
+  return {
+    labels,
+    datasets: labels.map(
+      (key) => state.testHistory.stats.averageTimeTakenPerField[key]
+    ),
+    options: {
+      dataLabels: {
+        formatter: function (val: any, opts: any) {
+          return opts.w.config.series[opts.seriesIndex] + ' m'
+        }
+      }
+    }
+  }
+})
+
+const correctResponseRatePerField = computed(() => {
+  const labels = Object.keys(
+    state.testHistory.stats.correctResponseRatePerField
+  )
+  return {
+    labels,
+    datasets: labels.map(
+      (key) => state.testHistory.stats.correctResponseRatePerField[key]
+    )
+  }
+})
+
+const speedOverTime = computed(() => {
+  const labels = Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
+    (key) => {
+      return Number(key).toFixed(2) + ' m'
+    }
+  )
+  return {
+    labels,
+    datasets: Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
+      (key) =>
+        Number(state.testHistory.stats.speedByMinuteInterval[key]).toFixed(2) +
+        ' s'
+    )
+  }
+})
+
+const accuracyOverTime = computed(() => {
+  const labels = Object.keys(
+    state.testHistory.stats.correctAnswersByMinuteInterval
+  ).map((key) => {
+    return Number(key).toFixed(2) + ' m'
+  })
+  const values = Object.keys(
+    state.testHistory.stats.correctAnswersByMinuteInterval
+  ).map((key) => {
+    return state.testHistory.stats.correctAnswersByMinuteInterval[key]
+  })
+  return {
+    labels,
+    datasets: values
+  }
+})
+
+const navigateToDashboard = () => {
+  router.push('/dashboard')
+}
+const printResults = () => {
+  window.print()
+}
+
+const calculateChangeRate = (key: keyof Stats) => {
+  const sortedTestHistory = state.previous_tests.sort(
+    (a, b) => Number(a.timestamp) - Number(b.timestamp)
+  )
+  const currentHistoryIndex = sortedTestHistory.findIndex(
+    ({ test_id }) => test_id === state.testHistory.test_id
+  )
+  const previousTest = sortedTestHistory[currentHistoryIndex + 1]
+  if (!previousTest) return 0
+  return Number(state.testHistory.stats[key]) - Number(previousTest.stats[key])
+}
+const calculateChangeType = (key: keyof Stats) => {
+  // if (this.calculateChangeRate(key) === 0) return 'same'
+  return calculateChangeRate(key) > 0 ? 'increase' : 'decrease'
+}
 </script>
