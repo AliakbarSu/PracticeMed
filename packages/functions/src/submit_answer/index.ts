@@ -5,7 +5,7 @@ import AWS from 'aws-sdk'
 const sqs = new AWS.SQS()
 
 type authEvent = ApiGatewayAuth
-export const handler = ApiHandler(async (event) => {
+export const post_answer = ApiHandler(async (event) => {
   const userId = (event as unknown as authEvent).requestContext.authorizer.jwt
     .claims.sub
   try {
@@ -16,7 +16,7 @@ export const handler = ApiHandler(async (event) => {
     const messageBody = {
       userId,
       testId: event.pathParameters?.id,
-      result
+      answer: result
     }
     const params = {
       MessageBody: JSON.stringify(messageBody),

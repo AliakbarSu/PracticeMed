@@ -14,7 +14,7 @@ import { User } from '@mpt-types/User'
 import { ApiGatewayAuth } from '@mpt-types/System'
 import { endpoints } from '../../../../resources/endpoints'
 
-export const subscribe = ApiHandler(async (_evt) => {
+export const get_checkout_url = ApiHandler(async (_evt) => {
   const endpoint =
     process.env.stage == 'dev'
       ? `${endpoints.frontend.dev}`
@@ -93,7 +93,7 @@ export const subscribeToFreeTrial = ApiHandler(async (_evt) => {
 
 // Creates a subscription from a token
 // Note: This is not used in the app, but is here for reference
-export const handler = ApiHandler(async (_evt) => {
+export const subscribe = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
     .jwt.claims.sub
   const planId = _evt.pathParameters?.id || ''

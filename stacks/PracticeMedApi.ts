@@ -125,11 +125,11 @@ export function API(context: StackContext) {
       'POST /api/webhooks/stripe': functions.post_stripe_webhook,
       'POST /api/add-user-to-mongodb': functions.post_add_user,
       // New Letter
-      'POST /api/newsletter/signup': functions.post_newsletter_signup,
+      'POST /api/newsletter/signup': functions.post_newsletter_subscribe,
       'POST /api/newsletter/unsubscribe': functions.post_newsletter_unsubscribe,
       // CONTACTS
       'POST /api/contact/message': functions.post_contact_form,
-      'POST /api/auth/welcome': functions.post_welcome_message,
+      'POST /api/auth/welcome': functions.post_welcome_email,
       'GET /api/tests/{id}/personalised-tips': {
         authorizer: 'auth0Authorizer',
         function: functions.get_tips

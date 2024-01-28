@@ -1,7 +1,7 @@
 import { ApiHandler } from 'sst/node/api'
 import { sendWelcomeEmail } from '@mpt-sst/core/welcomeEmail/index'
 
-export const message = ApiHandler(async (_evt) => {
+export const post_welcome_email = ApiHandler(async (_evt) => {
   const data = JSON.parse(_evt.body || '') as {
     email: string
     code: string

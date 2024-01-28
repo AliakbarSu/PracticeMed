@@ -4,7 +4,7 @@ import {
   unsubscribeFromNewsletter
 } from '@mpt-sst/core/newsletter/index'
 
-export const signup = ApiHandler(async (_evt) => {
+export const subscribe = ApiHandler(async (_evt) => {
   const email = (JSON.parse(_evt.body || '') as unknown as { email: string })
     .email
   if (email.length) {

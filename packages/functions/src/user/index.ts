@@ -7,6 +7,7 @@ import { ApiGatewayAuth } from '@mpt-types/System'
 import { ApiHandler } from 'sst/node/api'
 import { getUser } from '@mpt-sst/core/model/users'
 import { User } from '@mpt-types/User'
+import { addUser } from '@mpt-sst/core/model/users'
 
 export const profile = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
@@ -51,5 +52,16 @@ export const billingLink = ApiHandler(async (_evt) => {
 
   return {
     body: portalLink?.url
+  }
+})
+
+export const add_user = ApiHandler(async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false
+  const { user } = JSON.parse(event.body || '') as {
+    user: any
+  }
+  await addUser(user.user_id, user.email)
+  return {
+    body: `User was saved to MongoDB successfully!`
   }
 })
