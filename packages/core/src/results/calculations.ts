@@ -9,13 +9,12 @@ export const isCorrectOption = (
   if (!question) {
     return false
   }
-  const { alpha } = question.options.filter(({ correct }) => correct)[0]
-  return option_id.toUpperCase() === alpha.toUpperCase()
+  return option_id.toLowerCase() == question.correct_option.alpha.toLowerCase()
 }
 
 export const calculateTimeTaken = (answer: SubmittedAnswer) => {
-  const startTime = moment.unix(Number(answer.start_at))
-  const endTime = moment.unix(Number(answer.end_at))
+  const startTime = moment(+answer.start_at)
+  const endTime = moment(+answer.end_at)
   const timeTaken = moment.duration(endTime.diff(startTime)).asMinutes()
   return { ...answer, timeTaken }
 }
@@ -227,8 +226,8 @@ const getMinuteIntervals = (
   interval: number = 2,
   defaultValue: any = 0
 ) => {
-  const testStartTime = moment.unix(Number(startAt))
-  const testEndTime = moment.unix(Number(endAt))
+  const testStartTime = moment(+startAt)
+  const testEndTime = moment(+endAt)
   const testDuration = moment.duration(testEndTime.diff(testStartTime))
   const result: {
     [key: string]: number
@@ -245,8 +244,8 @@ export const calculateCorrectAnswersByMinuteInterval = (
   endAt: string,
   answersArray: AnalyzedAnswer[]
 ): { [key: string]: number } => {
-  const testStartTime = moment.unix(Number(startAt))
-  const testEndTime = moment.unix(Number(endAt))
+  const testStartTime = moment(+startAt)
+  const testEndTime = moment(+endAt)
   const chunkSize = 2
   const testDuration = moment.duration(testEndTime.diff(testStartTime))
   const result: {
@@ -255,7 +254,7 @@ export const calculateCorrectAnswersByMinuteInterval = (
 
   answersArray.forEach((answer) => {
     const timeElapsed = moment.duration(
-      moment.unix(Number(answer.end_at)).diff(testStartTime)
+      moment(+answer.end_at).diff(testStartTime)
     )
     const intervals = Object.keys(result)
     for (let i = 0; i < intervals.length; i++) {
@@ -279,8 +278,8 @@ export const calculateSpeedByMinuteIntervals = (
   endAt: string,
   answersArray: AnalyzedAnswer[]
 ) => {
-  const testStartTime = moment.unix(Number(startAt))
-  const testEndTime = moment.unix(Number(endAt))
+  const testStartTime = moment(+startAt)
+  const testEndTime = moment(+endAt)
   const chunkSize = 2
   const testDuration = moment.duration(testEndTime.diff(testStartTime))
   const result: {
@@ -297,7 +296,7 @@ export const calculateSpeedByMinuteIntervals = (
     const answers = answersArray
       .filter((answer) => {
         const timeElapsed = moment.duration(
-          moment.unix(Number(answer.end_at)).diff(testStartTime)
+          moment(+answer.end_at).diff(testStartTime)
         )
         return (
           timeElapsed.asMinutes() >= interval &&
@@ -306,11 +305,7 @@ export const calculateSpeedByMinuteIntervals = (
       })
       .map((answer) => {
         const answerDuration = moment
-          .duration(
-            moment
-              .unix(Number(answer.end_at))
-              .diff(moment.unix(Number(answer.start_at)))
-          )
+          .duration(moment(+answer.end_at).diff(moment(+answer.start_at)))
           .asSeconds()
         return answerDuration
       })

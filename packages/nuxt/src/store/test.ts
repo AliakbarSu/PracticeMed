@@ -187,7 +187,7 @@ export const useTestStore = defineStore('test', () => {
   const next = () => {
     if (!selectedOption.value) return
     const submittedAnswer: Answer = {
-      question_id: question.value.id,
+      question_id: question.value._id,
       option_id: selectedOption.value.alpha,
       start_at: openedAt.value,
       end_at: new Date().getTime()
@@ -248,10 +248,10 @@ export const useTestStore = defineStore('test', () => {
 
   const submit = async () => {
     if (!test.value) return
-    if (previewMode.value) {
-      testEnded.value = true
-      return
-    }
+    // if (previewMode.value) {
+    //   testEnded.value = true
+    //   return
+    // }
     const payload: SubmittedAnswer = {
       test_id: test.value.id,
       answers: submittedAnswers.value,

@@ -4,17 +4,19 @@
     "text": "questionOne",
     "options": [
       {
+        "id": "clgodqsus3bh1",
         "text": "option one",
         "alpha": "a",
-        "correct": true,
+        "is_correct": true,
         "explanation": "explanation one"
       }
     ],
     "field": "A",
     "correct_option": {
+      "id": "clgodqsus3bh1",
       "text": "option one",
       "alpha": "a",
-      "correct": true,
+      "is_correct": true,
       "explanation": "explanation one"
     }
   }

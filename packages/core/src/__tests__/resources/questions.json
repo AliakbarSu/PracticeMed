@@ -4,9 +4,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -14,9 +18,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -24,9 +32,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -34,9 +46,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -44,9 +60,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -54,9 +74,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -64,9 +88,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -74,9 +102,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -84,9 +116,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -94,9 +130,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -104,9 +144,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -114,9 +158,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -124,9 +172,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -134,9 +186,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -144,9 +200,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -154,13 +214,17 @@
     "options": [
       {
         "alpha": "a",
-        "correct": false
+        "is_correct": false
       },
       {
         "alpha": "b",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "b",
+      "is_correct": true
+    },
     "field": "C"
   },
   {
@@ -168,9 +232,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -178,9 +246,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "C"
   },
   {
@@ -188,9 +260,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -198,9 +274,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "C"
   },
   {
@@ -208,9 +288,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -218,9 +302,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "C"
   },
   {
@@ -228,9 +316,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -238,9 +330,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "B"
   },
   {
@@ -248,9 +344,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -258,9 +358,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "B"
   },
   {
@@ -268,9 +372,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -278,9 +386,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "B"
   },
   {
@@ -288,9 +400,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "A"
   },
   {
@@ -298,9 +414,13 @@
     "options": [
       {
         "alpha": "a",
-        "correct": true
+        "is_correct": true
       }
     ],
+    "correct_option": {
+      "alpha": "a",
+      "is_correct": true
+    },
     "field": "B"
   }
 ]

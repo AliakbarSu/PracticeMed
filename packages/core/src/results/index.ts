@@ -39,7 +39,9 @@ const analyzeAnswer = (
   const result = data.map((answer) => {
     const { question_id } = answer
     const timeTaken = calculateTimeTaken(answer).timeTaken
-    const question = questions.find(({ id }) => id === question_id) as Question
+    const question = questions.find(
+      ({ _id }) => _id === question_id
+    ) as Question
     const correct = isCorrectOption(answer, question)
     return {
       ...answer,

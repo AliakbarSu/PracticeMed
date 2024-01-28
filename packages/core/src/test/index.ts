@@ -28,18 +28,9 @@ export const getTest = async (id: string, trial: boolean = false) => {
   const updatedQuestions: Question[] = questions.map((question) => {
     return {
       ...question,
-      id: question._id,
+      _id: question._id.toString(),
       point: 1,
-      difficulty_level: 2,
-      correct_option_explanation: question.correct_option.explanation,
-      correct_option_id: question.correct_option.id,
-      options: question.options.map((option) => {
-        return {
-          ...option,
-          alpha: option.alpha.toUpperCase(),
-          correct: option.is_correct
-        }
-      })
+      difficulty_level: 2
     }
   })
   return {

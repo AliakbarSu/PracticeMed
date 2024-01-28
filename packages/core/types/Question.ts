@@ -5,15 +5,9 @@ export interface Option {
   correct: boolean
 }
 
-export interface Question {
-  id: string
-  text: string
-  field: string
+export interface Question extends QuestionObject {
   difficulty_level: number // 1 to 10
-  options: Option[]
   point: number
-  correct_option_id: string
-  correct_option_explanation: string
 }
 
 export interface QuestionOption {
