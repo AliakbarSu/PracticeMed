@@ -65,11 +65,11 @@ export function API(context: StackContext) {
       // User
       'GET /api/user/profile': {
         authorizer: 'auth0Authorizer',
-        function: functions.profile
+        function: functions.get_profile
       },
       'GET /api/user/reset-password': {
         authorizer: 'auth0Authorizer',
-        function: functions.reset_password
+        function: functions.get_reset_password_link
       },
       // PLANS
       'GET /api/plans': functions.get_plans,
@@ -88,7 +88,7 @@ export function API(context: StackContext) {
       },
       'POST /api/plans/{id}/subscribe': {
         authorizer: 'auth0Authorizer',
-        function: functions.subscribe
+        function: functions.post_subscribe
       },
       // TESTS
       'GET /api/tests': {
@@ -99,13 +99,13 @@ export function API(context: StackContext) {
         authorizer: 'auth0Authorizer',
         function: functions.get_test_history
       },
-      'GET /api/tests/{id}': functions.get_single_test,
+      'GET /api/tests/{id}': functions.get_test,
       'GET /api/tests/{id}/load': {
         authorizer: 'auth0Authorizer',
-        function: functions.load_test
+        function: functions.get_load_test
       },
       'GET /api/tests/demo': {
-        function: functions.get_demo_test
+        function: functions.get_load_demo_test
       },
       'POST /api/test/{id}/result': {
         authorizer: 'auth0Authorizer',
@@ -114,7 +114,7 @@ export function API(context: StackContext) {
       'POST /api/test/{id}/submit': {
         authorizer: 'auth0Authorizer',
         function: {
-          handler: functions.submit_answer,
+          handler: functions.post_answer,
           environment: {
             queue_url: submit_answer_queue.queueUrl
           },
@@ -122,14 +122,14 @@ export function API(context: StackContext) {
         }
       },
       // WEBHOOKS
-      'POST /api/webhooks/stripe': functions.stripe_webhook,
-      'POST /api/add-user-to-mongodb': functions.add_user_to_mongodb,
+      'POST /api/webhooks/stripe': functions.post_stripe_webhook,
+      'POST /api/add-user-to-mongodb': functions.post_add_user,
       // New Letter
-      'POST /api/newsletter/signup': functions.newsletter_signup,
-      'POST /api/newsletter/unsubscribe': functions.newsletter_unsubscribe,
+      'POST /api/newsletter/signup': functions.post_newsletter_signup,
+      'POST /api/newsletter/unsubscribe': functions.post_newsletter_unsubscribe,
       // CONTACTS
-      'POST /api/contact/message': functions.contact_form,
-      'POST /api/auth/welcome': functions.send_welcome_message,
+      'POST /api/contact/message': functions.post_contact_form,
+      'POST /api/auth/welcome': functions.post_welcome_message,
       'GET /api/tests/{id}/personalised-tips': {
         authorizer: 'auth0Authorizer',
         function: functions.get_tips
@@ -150,8 +150,8 @@ export function API(context: StackContext) {
         },
         handler:
           stage == dev
-            ? functions.send_daily_recalls
-            : functions.send_daily_recalls
+            ? functions.post_daily_recalls
+            : functions.post_daily_recalls
       }
     }
   })
