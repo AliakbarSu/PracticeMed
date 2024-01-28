@@ -37,34 +37,44 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
-  const fetchTestsHistory = async () => {
+  const fetchTestsHistory = async (data?: UserAppMetadata['test_history']) => {
     try {
       UIStore.startLoadingTestsHistory()
+      loading.value = true
+      if (data) {
+        testsHistory.value = data
+        return
+      }
       testsHistory.value = await loadTestHistory()
-      UIStore.testsHistoryLoaded()
     } catch (err) {
       error.value = err as Error
     } finally {
+      loading.value = false
+      UIStore.testsHistoryLoaded()
       UIStore.stopLoadingTestsHistory()
     }
   }
 
   const fetchTests = async () => {
     try {
+      loading.value = true
       UIStore.startLoadingTests()
       tests.value = await loadTests()
       UIStore.testsLoaded()
     } catch (err) {
       error.value = err as Error
     } finally {
+      loading.value = false
       UIStore.stopLoadingTests()
     }
   }
 
   const fetchPortalLink = async () => {
     try {
+      loading.value = true
       portalLink.value = await loadPortalLink()
     } finally {
+      loading.value = false
     }
   }
 

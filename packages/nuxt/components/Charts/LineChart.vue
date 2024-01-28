@@ -9,6 +9,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const rootRef = ref<am5.Root | null>(null)
 const chartRef = ref(null)
+const seriesRef = ref<am5.Series | null>(null)
 
 const props = defineProps<{ data: { score: number; value: number }[] }>()
 
@@ -55,7 +56,7 @@ onMounted(() => {
     fontWeight: '500'
   })
 
-  const series = chart.series.push(
+  seriesRef.value = chart.series.push(
     am5xy.LineSeries.new(root, {
       name: 'Series',
       xAxis: xAxis,
@@ -67,8 +68,13 @@ onMounted(() => {
       })
     })
   )
-  series.data.setAll(props.data)
   rootRef.value = root
+})
+
+watch([() => props.data, () => seriesRef.value], ([data]) => {
+  if (seriesRef.value) {
+    seriesRef.value.data.setAll(data)
+  }
 })
 
 onUnmounted(() => {

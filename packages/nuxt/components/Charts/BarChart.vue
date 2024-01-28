@@ -8,7 +8,9 @@ import * as am5xy from '@amcharts/amcharts5/xy'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const rootRef = ref<am5.Root | null>(null)
-const chartRef = ref(null)
+const chartRef = ref<HTMLDivElement | null>(null)
+const seriesRef = ref<am5.Series | null>(null)
+const xAxisRef = ref<am5xy.CategoryAxis<any> | null>(null)
 
 const props = defineProps<{
   data: {
@@ -92,12 +94,20 @@ onMounted(() => {
   series.columns.template.adapters.add('stroke', (stroke, target) => {
     return chart.get('colors')?.getIndex(series.columns.indexOf(target))
   })
-
-  xAxis.data.setAll(props.data)
-  series.data.setAll(props.data)
-
+  xAxisRef.value = xAxis
+  seriesRef.value = series
   rootRef.value = root
 })
+
+watch(
+  [() => props.data, () => seriesRef.value, () => xAxisRef.value],
+  ([data]) => {
+    if (seriesRef.value && xAxisRef.value) {
+      xAxisRef.value.data.setAll(data)
+      seriesRef.value.data.setAll(data)
+    }
+  }
+)
 
 onUnmounted(() => {
   if (rootRef.value) {
@@ -110,6 +120,6 @@ onUnmounted(() => {
 .mpt-bar-chart {
   width: 100%;
   margin: auto;
-  height: 200px;
+  height: 400px;
 }
 </style>

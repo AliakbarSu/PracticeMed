@@ -8,7 +8,8 @@ import * as am5percent from '@amcharts/amcharts5/percent'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const rootRef = ref<am5.Root | null>(null)
-const chartRef = ref(null)
+const chartRef = ref<HTMLDivElement | null>(null)
+const seriesRef = ref<am5.Series | null>(null)
 
 const props = defineProps<{
   data: {
@@ -52,8 +53,6 @@ onMounted(() => {
     fontSize: 10
   })
 
-  series.data.setAll(props.data)
-
   // const legend = chart.children.push(
   //   am5.Legend.new(root, {
   //     centerX: am5.percent(50),
@@ -64,7 +63,14 @@ onMounted(() => {
   // )
 
   // legend.data.setAll(series.dataItems)
+  seriesRef.value = series
   rootRef.value = root
+})
+
+watch([() => props.data, () => seriesRef.value], ([data]) => {
+  if (seriesRef.value) {
+    seriesRef.value.data.setAll(data)
+  }
 })
 
 onUnmounted(() => {

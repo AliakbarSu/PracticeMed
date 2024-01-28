@@ -17,13 +17,13 @@
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div
-            v-if="state.demoMode"
+            v-if="demoMode"
             class="mt-1 pb-2 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
           >
             <ResultsComponentsFeedback />
           </div>
 
-          <div class="mb-3" v-if="state.demoMode">
+          <div class="mb-3" v-if="demoMode">
             <dl
               class="flex justify-center mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
             >
@@ -49,7 +49,7 @@
             </dl>
           </div>
           <div>
-            <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+            <ResultsComponentsUISampleBadge v-if="demoMode" />
             <!-- <h3 class="text-base font-semibold leading-6 text-gray-900">
               Last 30 days
             </h3> -->
@@ -64,11 +64,9 @@
                 <dt class="text-base font-normal text-gray-900">
                   {{ item.name }}
                 </dt>
-                <ResultsComponentsUILoadingContentSkeleton
-                  v-if="state.loading"
-                />
+                <ResultsComponentsUILoadingContentSkeleton v-if="loading" />
                 <dd
-                  v-if="!state.loading"
+                  v-if="!loading"
                   class="mt-1 flex items-baseline justify-between md:block lg:flex"
                 >
                   <div
@@ -116,11 +114,8 @@
             class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-              <dt
-                class="text-base font-normal text-gray-900"
-                v-if="!state.loading"
-              >
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Subject-wise Percentage
                 <p class="max-w-4xl text-sm text-gray-500">
                   percentage of correct responses per subject
@@ -129,20 +124,17 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsPieChart
                   tooltip-unit="%"
-                  v-if="!state.loading"
+                  v-if="!loading"
                   :data="amchartCorrectResponseRatePerField"
                 />
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-              <dt
-                class="text-base font-normal text-gray-900"
-                v-if="!state.loading"
-              >
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Overall Question Accuracy
                 <p class="max-w-4xl text-sm text-gray-500">
                   number of correct questions over time intervals
@@ -151,9 +143,9 @@
               <dd
                 class="mt-1 h-full items-center flex justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsLineChart
-                  v-if="!state.loading"
+                  v-if="!loading"
                   :data="amchartAccuracyOverTime"
                 />
               </dd>
@@ -163,7 +155,7 @@
             class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900">
                 Overall Time Performance
                 <p class="max-w-4xl text-sm text-gray-500">
@@ -173,19 +165,13 @@
               <dd
                 class="mt-1 flex h-full w-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ChartsLineChart
-                  v-if="!state.loading"
-                  :data="amLineChartData"
-                />
+                <ResultsComponentsUILoadingSkeleton v-if="loading" />
+                <ChartsLineChart v-if="!loading" :data="amLineChartData" />
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-              <dt
-                class="text-base font-normal text-gray-900"
-                v-if="!state.loading"
-              >
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Mean Subject Time
                 <p class="max-w-4xl text-sm text-gray-500">
                   total time taken per subject
@@ -194,10 +180,10 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsPieChart
                   tooltip-unit="minutes"
-                  v-if="!state.loading"
+                  v-if="!loading"
                   :data="amchartAverageCategoryTiming"
                 />
               </dd>
@@ -207,11 +193,8 @@
             class="mt-5 pb-16 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
           >
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-              <dt
-                class="text-base font-normal text-gray-900"
-                v-if="!state.loading"
-              >
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Incorrect Responses
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of incorrect responses per subject
@@ -220,19 +203,16 @@
               <dd
                 class="mt-1 flex h-full w-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsBarChart
-                  v-if="!state.loading"
+                  v-if="!loading"
                   :data="amchartIncorrectResponses"
                 />
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
-              <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-              <dt
-                class="text-base font-normal text-gray-900"
-                v-if="!state.loading"
-              >
+              <ResultsComponentsUISampleBadge v-if="demoMode" />
+              <dt class="text-base font-normal text-gray-900" v-if="!loading">
                 Correct Responses
                 <p class="max-w-4xl text-sm text-gray-500">
                   total number of correct responses per subject
@@ -241,9 +221,9 @@
               <dd
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
-                <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
+                <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsBarChart
-                  v-if="!state.loading"
+                  v-if="!loading"
                   :data="amchartCorrectResponses"
                 />
               </dd>
@@ -251,7 +231,7 @@
           </dl>
         </div>
       </main>
-      <div class="my-4" v-if="state.demoMode">
+      <div class="my-4" v-if="demoMode">
         <TestComponentsUICTAUpgradeCTA
           heading="Take a Mock Test to See Your Results"
           description="This is just a sample data. Sign up to a paid plan to take a mock test and see your results."
@@ -268,67 +248,29 @@ import type { UserAppMetadata } from '@/types/user'
 import type { Stats } from '../../src/types/test'
 import { useUIStore } from '../../src/store/UI'
 import { useAuthStore } from '../../src/store/auth'
+import { useAppStore } from '../../src/store/main'
 import { demoResultsData } from '../../src/data/demoResultsData'
 
 const UIStore = useUIStore()
 const authStore = useAuthStore()
+const appStore = useAppStore()
 
 const router = useRouter()
 const route = useRoute()
-
-const previous_tests = ref<UserAppMetadata['test_history']>([])
-
-const state = reactive<{
-  loading: boolean
-  demoMode: boolean
-}>({
-  loading: false,
-  demoMode: false
-})
+const resultId = computed(() => route.params.id || '')
+const previous_tests = computed(() => appStore.testsHistory)
+const loading = computed(() => appStore.loading)
+const demoMode = ref<boolean>(false)
 
 const fetchTestHistory = async () => {
-  const {
-    public: { api_endpoint }
-  } = useRuntimeConfig()
-  state.loading = true
-  const resultId = route.params.id || ''
-
   // display demo data
-  if (resultId === 'demo_test') {
-    state.demoMode = true
-    setTimeout(() => {
-      previous_tests.value = [
-        demoResultsData
-      ] as UserAppMetadata['test_history']
-      state.loading = false
-    }, 1000)
-    return
-  }
-  try {
-    console.log('fetcing tests')
-    const { data, status, error } = await useFetch<{ body: string }>(
-      `${api_endpoint}/tests/history?id=${resultId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`
-        }
-      }
-    )
-    if (data.value?.body) {
-      previous_tests.value = data.value
-        .body as any as UserAppMetadata['test_history']
-    }
-    state.loading = false
-  } catch (err) {
-    UIStore.error = new Error(err as string)
-  } finally {
-    state.loading = false
+  if (resultId.value === 'demo_test') {
+    demoMode.value = true
+    appStore.fetchTestsHistory([demoResultsData as any])
+  } else {
+    appStore.fetchTestsHistory()
   }
 }
-
-await fetchTestHistory()
-
-await fetchTestHistory()
 
 const pass = computed(() => testHistory.value?.result === 'pass')
 
@@ -342,7 +284,7 @@ const testHistory = computed<UserAppMetadata['test_history'][0] | undefined>(
 )
 
 const testStats = computed(() => {
-  if (state.loading) {
+  if (loading.value) {
     return [
       { name: 'Total Points' },
       { name: 'Average Time' },
@@ -387,37 +329,41 @@ const amLineChartData = computed(() => {
 const amchartIncorrectResponses = computed(() => {
   return Object.keys(
     testHistory.value?.stats.incorrectResponseCountPerField || {}
-  ).map((key) => ({
-    category: key,
-    score: testHistory.value?.stats.incorrectResponseCountPerField[key] || 0
-  }))
+  )
+    .map((key) => ({
+      category: key,
+      score: testHistory.value?.stats.incorrectResponseCountPerField[key] || 0
+    }))
+    .filter((item) => item.score > 0)
 })
 
 const amchartCorrectResponses = computed(() => {
   return Object.keys(
     testHistory.value?.stats.correctResponseCountPerField || {}
-  ).map((key) => ({
-    category: key,
-    score: testHistory.value?.stats.correctResponseCountPerField[key] || 0
-  }))
+  )
+    .map((key) => ({
+      category: key,
+      score: testHistory.value?.stats.correctResponseCountPerField[key] || 0
+    }))
+    .filter((item) => item.score > 0)
 })
 
 const amchartCorrectResponseRatePerField = computed(() => {
-  return Object.keys(
-    testHistory.value?.stats.correctResponseRatePerField || {}
-  ).map((key) => ({
-    category: key,
-    value: testHistory.value?.stats.correctResponseRatePerField[key] || 0
-  }))
+  return Object.keys(testHistory.value?.stats.correctResponseRatePerField || {})
+    .map((key) => ({
+      category: key,
+      value: testHistory.value?.stats.correctResponseRatePerField[key] || 0
+    }))
+    .filter((item) => item.value > 0)
 })
 
 const amchartAverageCategoryTiming = computed(() => {
-  return Object.keys(
-    testHistory.value?.stats.averageTimeTakenPerField || {}
-  ).map((key) => ({
-    category: key,
-    value: testHistory.value?.stats.averageTimeTakenPerField[key] || 0
-  }))
+  return Object.keys(testHistory.value?.stats.averageTimeTakenPerField || {})
+    .map((key) => ({
+      category: key,
+      value: testHistory.value?.stats.averageTimeTakenPerField[key] || 0
+    }))
+    .filter((item) => item.value > 0)
 })
 
 const amchartAccuracyOverTime = computed(() => {
@@ -450,4 +396,14 @@ const calculateChangeRate = (key: keyof Stats) => {
 const calculateChangeType = (key: keyof Stats) => {
   return calculateChangeRate(key) > 0 ? 'increase' : 'decrease'
 }
+
+watch(
+  () => authStore.isAuthenticated,
+  (isAuth) => {
+    if (isAuth) {
+      fetchTestHistory()
+    }
+  },
+  { immediate: true }
+)
 </script>
