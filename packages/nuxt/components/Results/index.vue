@@ -123,10 +123,10 @@
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
                 <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ResultsComponentsPie
+                <ChartsPieChart
+                  tooltip-unit="%"
                   v-if="!state.loading"
-                  :data="correctResponseRatePerField.datasets"
-                  :labels="correctResponseRatePerField.labels"
+                  :data="amchartCorrectResponseRatePerField"
                 />
               </dd>
             </div>
@@ -145,11 +145,9 @@
                 class="mt-1 h-full items-center flex justify-center md:block lg:flex"
               >
                 <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ResultsComponentsLine
+                <ChartsLineChart
                   v-if="!state.loading"
-                  title="Correct Answers"
-                  :data="accuracyOverTime.datasets"
-                  :labels="accuracyOverTime.labels"
+                  :data="amchartAccuracyOverTime"
                 />
               </dd>
             </div>
@@ -173,12 +171,6 @@
                   v-if="!state.loading"
                   :data="amLineChartData"
                 />
-                <!-- <ResultsComponentsLine
-                  v-if="!state.loading"
-                  title="Answer In (avg s)"
-                  :data="speedOverTime.datasets"
-                  :labels="speedOverTime.labels"
-                /> -->
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
@@ -196,11 +188,10 @@
                 class="mt-1 flex h-full items-center justify-center md:block lg:flex"
               >
                 <ResultsComponentsUILoadingSkeleton v-if="state.loading" />
-                <ResultsComponentsPie
+                <ChartsPieChart
+                  tooltip-unit="minutes"
                   v-if="!state.loading"
-                  :data="averageCategoryTiming.datasets"
-                  :labels="averageCategoryTiming.labels"
-                  :options="averageCategoryTiming.options"
+                  :data="amchartAverageCategoryTiming"
                 />
               </dd>
             </div>
@@ -227,12 +218,6 @@
                   v-if="!state.loading"
                   :data="amchartIncorrectResponses"
                 />
-                <!-- <ResultsComponentsPie
-                  v-if="!state.loading"
-                  :data="incorrectResponseCountPerSubject.datasets"
-                  :labels="incorrectResponseCountPerSubject.labels"
-                  :options="correctResponseCountPerSubject.options"
-                /> -->
               </dd>
             </div>
             <div class="px-4 py-5 sm:p-6">
@@ -254,12 +239,6 @@
                   v-if="!state.loading"
                   :data="amchartCorrectResponses"
                 />
-                <!-- <ResultsComponentsPie
-                  v-if="!state.loading"
-                  :data="correctResponseCountPerSubject.datasets"
-                  :labels="correctResponseCountPerSubject.labels"
-                  :options="correctResponseCountPerSubject.options"
-                /> -->
               </dd>
             </div>
           </dl>
@@ -398,112 +377,6 @@ const testStats = computed(() => {
   ]
 })
 
-const correctResponseCountPerSubject = computed(() => {
-  const labels = Object.keys(
-    state.testHistory.stats.correctResponseCountPerField
-  )
-  const values = labels.map(
-    (key) => state.testHistory.stats.correctResponseCountPerField[key]
-  )
-  return {
-    labels: labels,
-    datasets: values,
-    options: {
-      dataLabels: {
-        formatter: function (val: any, opts: any) {
-          return opts.w.config.series[opts.seriesIndex]
-        }
-      }
-    }
-  }
-})
-
-const correctResponseRatePerSubject = computed(() => {
-  const labels = Object.keys(
-    state.testHistory.stats.correctResponseRatePerField
-  )
-  return {
-    labels,
-    datasets: labels.map(
-      (key) => state.testHistory.stats.correctResponseRatePerField[key]
-    )
-  }
-})
-
-const incorrectResponseCountPerSubject = computed(() => {
-  const labels = Object.keys(
-    state.testHistory.stats.incorrectResponseCountPerField
-  )
-  return {
-    labels,
-    datasets: labels.map(
-      (key) => state.testHistory.stats.incorrectResponseCountPerField[key]
-    )
-  }
-})
-
-const averageCategoryTiming = computed(() => {
-  const labels = Object.keys(state.testHistory.stats.averageTimeTakenPerField)
-  return {
-    labels,
-    datasets: labels.map(
-      (key) => state.testHistory.stats.averageTimeTakenPerField[key]
-    ),
-    options: {
-      dataLabels: {
-        formatter: function (val: any, opts: any) {
-          return opts.w.config.series[opts.seriesIndex] + ' m'
-        }
-      }
-    }
-  }
-})
-
-const correctResponseRatePerField = computed(() => {
-  const labels = Object.keys(
-    state.testHistory.stats.correctResponseRatePerField
-  )
-  return {
-    labels,
-    datasets: labels.map(
-      (key) => state.testHistory.stats.correctResponseRatePerField[key]
-    )
-  }
-})
-
-const speedOverTime = computed(() => {
-  const labels = Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
-    (key) => {
-      return Number(key).toFixed(2) + ' m'
-    }
-  )
-  return {
-    labels,
-    datasets: Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
-      (key) =>
-        Number(state.testHistory.stats.speedByMinuteInterval[key]).toFixed(2) +
-        ' s'
-    )
-  }
-})
-
-const accuracyOverTime = computed(() => {
-  const labels = Object.keys(
-    state.testHistory.stats.correctAnswersByMinuteInterval
-  ).map((key) => {
-    return Number(key).toFixed(2) + ' m'
-  })
-  const values = Object.keys(
-    state.testHistory.stats.correctAnswersByMinuteInterval
-  ).map((key) => {
-    return state.testHistory.stats.correctAnswersByMinuteInterval[key]
-  })
-  return {
-    labels,
-    datasets: values
-  }
-})
-
 const amLineChartData = computed(() => {
   return Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
     (key) => ({
@@ -529,6 +402,33 @@ const amchartCorrectResponses = computed(() => {
       score: state.testHistory.stats.correctResponseCountPerField[key]
     })
   )
+})
+
+const amchartCorrectResponseRatePerField = computed(() => {
+  return Object.keys(state.testHistory.stats.correctResponseRatePerField).map(
+    (key) => ({
+      category: key,
+      value: state.testHistory.stats.correctResponseRatePerField[key]
+    })
+  )
+})
+
+const amchartAverageCategoryTiming = computed(() => {
+  return Object.keys(state.testHistory.stats.averageTimeTakenPerField).map(
+    (key) => ({
+      category: key,
+      value: state.testHistory.stats.averageTimeTakenPerField[key]
+    })
+  )
+})
+
+const amchartAccuracyOverTime = computed(() => {
+  return Object.keys(
+    state.testHistory.stats.correctAnswersByMinuteInterval
+  ).map((key) => ({
+    score: state.testHistory.stats.correctAnswersByMinuteInterval[key],
+    value: Number(key)
+  }))
 })
 
 const navigateToDashboard = () => {
