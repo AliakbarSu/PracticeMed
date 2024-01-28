@@ -49,13 +49,21 @@ export const getTest = async (id: string, trial: boolean = false) => {
 }
 
 export const listTests = async (): Promise<UserTest[]> => {
-  const response = await query(listTestsQuery, { trial: false })
+  const response = await query(listTestsQuery, {
+    trial: false,
+    demo: false,
+    available: true
+  })
   const parsed = await response.json()
   return (parsed as { data: { tests: UserTest[] } }).data.tests
 }
 
 export const listTrialTests = async (): Promise<UserTest[]> => {
-  const response = await query(listTestsQuery, { trial: true })
+  const response = await query(listTestsQuery, {
+    trial: true,
+    demo: false,
+    available: true
+  })
   const parsed = await response.json()
   return (parsed as { data: { tests: UserTest[] } }).data.tests
 }

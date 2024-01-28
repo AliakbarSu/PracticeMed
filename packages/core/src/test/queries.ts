@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request'
 
 export const listTestsQuery = gql`
-  query GetTests($trial: Boolean!) {
-    tests(where: { trial: $trial }) {
+  query GetTests($trial: Boolean!, $demo: Boolean!, $available: Boolean!) {
+    tests(where: { trial: $trial, demo: $demo, available: $available }) {
       available
       id
       name
@@ -36,6 +36,7 @@ export const getTestQuery = gql`
       points
       passingPoint
       questionsNumber
+      demo
     }
   }
 `

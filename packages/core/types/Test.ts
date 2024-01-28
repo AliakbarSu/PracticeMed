@@ -14,6 +14,7 @@ export interface UserTest extends Test {
     [key: string]: string
   }
   trial: boolean
+  demo: boolean
 }
 
 export interface Test {

@@ -4,7 +4,7 @@ import { LoadedTest } from '@mpt-types/Test'
 import { ApiGatewayAuth } from '@mpt-types/System'
 import { Converter } from 'showdown'
 
-const mockTestId = 'clh14ynv50l7m0b1jsrl59nvy'
+const mockTestId = 'clrwugaeydnsc0b1hbv8kbx0v'
 
 const getTest = async (testId: string, userId: string) => {
   const converter = new Converter()
@@ -22,7 +22,8 @@ const getTest = async (testId: string, userId: string) => {
     thumbnail: result.thumbnail,
     timeLimit: result.timeLimit,
     breaks: result.breaks,
-    instructions: converter.makeHtml(result.instructions)
+    instructions: converter.makeHtml(result.instructions),
+    demo: true
   }
   return test
 }
