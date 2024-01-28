@@ -16,8 +16,14 @@
       </header>
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ResultsComponentsUISampleBadge v-if="state.demoMode" />
-          <div v-if="state.demoMode">
+          <div
+            v-if="state.demoMode"
+            class="mt-1 pb-2 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
+          >
+            <ResultsComponentsFeedback />
+          </div>
+
+          <div class="mb-3" v-if="state.demoMode">
             <dl
               class="flex justify-center mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
             >
@@ -43,6 +49,7 @@
             </dl>
           </div>
           <div>
+            <ResultsComponentsUISampleBadge v-if="state.demoMode" />
             <!-- <h3 class="text-base font-semibold leading-6 text-gray-900">
               Last 30 days
             </h3> -->
@@ -242,12 +249,6 @@
               </dd>
             </div>
           </dl>
-          <div
-            v-if="state.demoMode"
-            class="mt-5 pb-16 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
-          >
-            <ResultsComponentsFeedback />
-          </div>
         </div>
       </main>
       <div class="my-4" v-if="state.demoMode">
@@ -309,7 +310,7 @@ const fetchTestHistory = async () => {
         demoResultsData
       ] as UserAppMetadata['test_history']
       state.testHistory = demoResultsData as UserAppMetadata['test_history'][0]
-      // this.loading = false
+      state.loading = false
     }, 1000)
     return
   }
