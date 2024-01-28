@@ -16,7 +16,7 @@
       <div class="space-y-1 p-2">
         <DisclosureButton as="div">
           <RouterLink
-            v-if="!hideTrialButton"
+            v-if="showTrialButton"
             as="button"
             to="/plans"
             class="w-full relative inline-flex justify-center items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 mr-6 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
@@ -106,6 +106,7 @@ const authStore = useAuthStore()
 const route = useRoute()
 const isAuth = computed(() => authStore.isAuthenticated)
 const user = computed(() => authStore.user)
+const showTrialButton = ref(true)
 
 const goTo = (link: string) => {
   router.push(link)
@@ -122,11 +123,16 @@ const signup = async () => {
   await signupWithRedirect()
 }
 
-const hideTrialButton = computed(
-  () => plansStore.hasActivePlan == true || route.fullPath == '/plans'
-)
+const isActive = (path: string) => router.currentRoute.value.path === path
 
-const isActive = (path: string) => {
-  return router.currentRoute.value.path === path
-}
+watch(
+  [() => plansStore.userHasActivePlan, () => route.fullPath],
+  ([hasActivePlan, fullPath]) => {
+    if (!hasActivePlan || (!hasActivePlan && fullPath === '/plans')) {
+      showTrialButton.value = true
+    } else {
+      showTrialButton.value = false
+    }
+  }
+)
 </script>
