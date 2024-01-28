@@ -9,11 +9,13 @@
 import { useUIStore } from './src/store/UI'
 import { useAuthStore } from './src/store/auth'
 import { useAppStore } from './src/store/main'
+import { usePlansStore } from './src/store/plans'
 import { buildAuthClient, getAuthToken } from './src/auth/index'
 
 const UIStore = useUIStore()
 const store = useAppStore()
 const authStore = useAuthStore()
+const plansStore = usePlansStore()
 
 const {
   public: { cdn_url }
@@ -124,6 +126,7 @@ watch(
     if (isAuth) {
       store.fetchProfileData()
       store.fetchPortalLink()
+      plansStore.fetchPlans()
     }
   }
 )

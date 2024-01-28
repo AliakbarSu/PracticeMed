@@ -57,7 +57,7 @@
           <div class="hidden md:flex items-center">
             <div class="flex-shrink-0">
               <NuxtLink
-                v-if="!hideTrialButton"
+                v-if="showTrialButton"
                 as="button"
                 to="/plans"
                 class="hidden relative sm:inline-flex items-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 mr-6 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
@@ -132,12 +132,9 @@ const authStore = useAuthStore()
 
 const router = useRouter()
 const route = useRoute()
+const showTrialButton = ref(false)
 
 const isAuth = computed(() => authStore.isAuthenticated)
-
-const hideTrialButton = computed(
-  () => plansStore.hasActivePlan == true || route.fullPath == '/plans'
-)
 
 const login = async () => {
   await loginWithRedirect()
@@ -150,4 +147,14 @@ const signup = async () => {
 const goTo = (link: string) => {
   router.push(link)
 }
+watch(
+  [() => plansStore.userHasActivePlan, () => route.fullPath],
+  ([hasActivePlan, fullPath]) => {
+    if (!hasActivePlan || (!hasActivePlan && fullPath === '/plans')) {
+      showTrialButton.value = true
+    } else {
+      showTrialButton.value = false
+    }
+  }
+)
 </script>
