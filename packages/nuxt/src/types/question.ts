@@ -5,7 +5,7 @@ export interface Option {
 }
 
 export interface Question {
-  id: string
+  _id: string
   text: string
   field: string
   options: Option[]

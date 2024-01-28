@@ -264,7 +264,6 @@
 
 <script lang="ts" setup>
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/20/solid'
-import axios from 'axios'
 import type { UserAppMetadata } from '@/types/user'
 import type { Stats } from '../../src/types/test'
 import { useUIStore } from '../../src/store/UI'
@@ -277,22 +276,14 @@ const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
-const state = reactive({
+const previous_tests = ref<UserAppMetadata['test_history']>([])
+
+const state = reactive<{
+  loading: boolean
+  demoMode: boolean
+}>({
   loading: false,
-  demoMode: false,
-  testHistory: {} as UserAppMetadata['test_history'][0],
-  previous_tests: [] as UserAppMetadata['test_history'],
-  options: {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true
-          }
-        }
-      ]
-    }
-  }
+  demoMode: false
 })
 
 const fetchTestHistory = async () => {
@@ -306,32 +297,27 @@ const fetchTestHistory = async () => {
   if (resultId === 'demo_test') {
     state.demoMode = true
     setTimeout(() => {
-      state.previous_tests = [
+      previous_tests.value = [
         demoResultsData
       ] as UserAppMetadata['test_history']
-      state.testHistory = demoResultsData as UserAppMetadata['test_history'][0]
       state.loading = false
     }, 1000)
     return
   }
   try {
-    const response = await axios.get(`${api_endpoint}/tests/history`, {
-      headers: {
-        Authorization: `Bearer ${authStore.token}`
+    console.log('fetcing tests')
+    const { data, status, error } = await useFetch<{ body: string }>(
+      `${api_endpoint}/tests/history?id=${resultId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authStore.token}`
+        }
       }
-    })
-    const testHistoryArray = response.data
-      .body as unknown as UserAppMetadata['test_history']
-    state.previous_tests = testHistoryArray
-    const matchingTestHistory = testHistoryArray.find(
-      ({ id }: any) => id === resultId
-    ) as UserAppMetadata['test_history'][0]
-    if (!matchingTestHistory) {
-      UIStore.error = new Error('Failed to find a matching test result')
-      return
+    )
+    if (data.value?.body) {
+      previous_tests.value = data.value
+        .body as any as UserAppMetadata['test_history']
     }
-    state.testHistory = matchingTestHistory
-
     state.loading = false
   } catch (err) {
     UIStore.error = new Error(err as string)
@@ -342,7 +328,18 @@ const fetchTestHistory = async () => {
 
 await fetchTestHistory()
 
-const pass = computed(() => state.testHistory.result === 'pass')
+await fetchTestHistory()
+
+const pass = computed(() => testHistory.value?.result === 'pass')
+
+const testHistory = computed<UserAppMetadata['test_history'][0] | undefined>(
+  () => {
+    const test = previous_tests.value.find(
+      ({ id, test_id }) => id === route.params.id || test_id === route.params.id
+    )
+    return test
+  }
+)
 
 const testStats = computed(() => {
   if (state.loading) {
@@ -352,26 +349,26 @@ const testStats = computed(() => {
       { name: 'Subjects Average Time' }
     ] as any[]
   }
-  if (!state.testHistory?.stats) return []
+  if (!testHistory.value?.stats) return []
   return [
     {
       name: 'Total Points',
-      stat: state.testHistory.stats.totalPoints,
-      previousStat: state.testHistory.stats.testScore,
+      stat: testHistory.value?.stats.totalPoints,
+      previousStat: testHistory.value?.stats.testScore,
       change: calculateChangeRate('totalPoints'),
       changeType: calculateChangeType('totalPoints')
     },
     {
       name: 'Average Time (minutes)',
-      stat: state.testHistory.stats.averageTimeTaken.toFixed(2),
-      previousStat: state.testHistory.stats.averageTimeTaken.toFixed(2),
+      stat: testHistory.value.stats.averageTimeTaken.toFixed(2),
+      previousStat: testHistory.value.stats.averageTimeTaken.toFixed(2),
       change: calculateChangeRate('averageTimeTaken').toFixed(2),
       changeType: calculateChangeType('averageTimeTaken')
     },
     {
       name: 'Subjects Average Time (minutes)',
-      stat: state.testHistory.stats.fieldsAverageTime.toFixed(2),
-      previousStat: state.testHistory.stats.fieldsAverageTime.toFixed(2),
+      stat: testHistory.value.stats.fieldsAverageTime.toFixed(2),
+      previousStat: testHistory.value.stats.fieldsAverageTime.toFixed(2),
       change: calculateChangeRate('fieldsAverageTime').toFixed(2),
       changeType: calculateChangeType('fieldsAverageTime')
     }
@@ -379,9 +376,9 @@ const testStats = computed(() => {
 })
 
 const amLineChartData = computed(() => {
-  return Object.keys(state.testHistory.stats.speedByMinuteInterval).map(
+  return Object.keys(testHistory.value?.stats.speedByMinuteInterval || {}).map(
     (key) => ({
-      score: Number(state.testHistory.stats.speedByMinuteInterval[key]),
+      score: Number(testHistory.value?.stats.speedByMinuteInterval[key]) || 0,
       value: Number(key)
     })
   )
@@ -389,45 +386,45 @@ const amLineChartData = computed(() => {
 
 const amchartIncorrectResponses = computed(() => {
   return Object.keys(
-    state.testHistory.stats.incorrectResponseCountPerField
+    testHistory.value?.stats.incorrectResponseCountPerField || {}
   ).map((key) => ({
     category: key,
-    score: state.testHistory.stats.incorrectResponseCountPerField[key]
+    score: testHistory.value?.stats.incorrectResponseCountPerField[key] || 0
   }))
 })
 
 const amchartCorrectResponses = computed(() => {
-  return Object.keys(state.testHistory.stats.correctResponseCountPerField).map(
-    (key) => ({
-      category: key,
-      score: state.testHistory.stats.correctResponseCountPerField[key]
-    })
-  )
+  return Object.keys(
+    testHistory.value?.stats.correctResponseCountPerField || {}
+  ).map((key) => ({
+    category: key,
+    score: testHistory.value?.stats.correctResponseCountPerField[key] || 0
+  }))
 })
 
 const amchartCorrectResponseRatePerField = computed(() => {
-  return Object.keys(state.testHistory.stats.correctResponseRatePerField).map(
-    (key) => ({
-      category: key,
-      value: state.testHistory.stats.correctResponseRatePerField[key]
-    })
-  )
+  return Object.keys(
+    testHistory.value?.stats.correctResponseRatePerField || {}
+  ).map((key) => ({
+    category: key,
+    value: testHistory.value?.stats.correctResponseRatePerField[key] || 0
+  }))
 })
 
 const amchartAverageCategoryTiming = computed(() => {
-  return Object.keys(state.testHistory.stats.averageTimeTakenPerField).map(
-    (key) => ({
-      category: key,
-      value: state.testHistory.stats.averageTimeTakenPerField[key]
-    })
-  )
+  return Object.keys(
+    testHistory.value?.stats.averageTimeTakenPerField || {}
+  ).map((key) => ({
+    category: key,
+    value: testHistory.value?.stats.averageTimeTakenPerField[key] || 0
+  }))
 })
 
 const amchartAccuracyOverTime = computed(() => {
   return Object.keys(
-    state.testHistory.stats.correctAnswersByMinuteInterval
+    testHistory.value?.stats.correctAnswersByMinuteInterval || {}
   ).map((key) => ({
-    score: state.testHistory.stats.correctAnswersByMinuteInterval[key],
+    score: testHistory.value?.stats.correctAnswersByMinuteInterval[key] || 0,
     value: Number(key)
   }))
 })
@@ -440,18 +437,17 @@ const printResults = () => {
 }
 
 const calculateChangeRate = (key: keyof Stats) => {
-  const sortedTestHistory = state.previous_tests.sort(
+  const sortedTestHistory = previous_tests.value.sort(
     (a, b) => Number(a.timestamp) - Number(b.timestamp)
   )
   const currentHistoryIndex = sortedTestHistory.findIndex(
-    ({ test_id }) => test_id === state.testHistory.test_id
+    ({ test_id }) => test_id === testHistory.value?.test_id
   )
   const previousTest = sortedTestHistory[currentHistoryIndex + 1]
   if (!previousTest) return 0
-  return Number(state.testHistory.stats[key]) - Number(previousTest.stats[key])
+  return Number(testHistory.value?.stats[key]) - Number(previousTest.stats[key])
 }
 const calculateChangeType = (key: keyof Stats) => {
-  // if (this.calculateChangeRate(key) === 0) return 'same'
   return calculateChangeRate(key) > 0 ? 'increase' : 'decrease'
 }
 </script>

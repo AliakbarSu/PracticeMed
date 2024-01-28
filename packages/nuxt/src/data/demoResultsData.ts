@@ -1,6 +1,6 @@
 export const demoResultsData = {
-  id: 'd49a075d-a1cb-4595-a3ef-0f6de0e527a5',
-  test_id: 'clh14ynv50l7m0b1jsrl59nvy',
+  id: 'demo_test',
+  test_id: 'demo_test',
   stats: {
     testScore: 500,
     totalPoints: 220,

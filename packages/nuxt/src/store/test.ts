@@ -207,8 +207,6 @@ export const useTestStore = defineStore('test', () => {
         skippedQuestions.value = []
       } else {
         submit()
-        testEnded.value = true
-        completed.value = true
       }
     } else {
       currentQuestionIndex.value += 1
@@ -264,6 +262,8 @@ export const useTestStore = defineStore('test', () => {
     } catch (err) {
       UIStore.error = new Error(err as string)
     } finally {
+      testEnded.value = true
+      completed.value = true
       submitting.value = false
     }
   }

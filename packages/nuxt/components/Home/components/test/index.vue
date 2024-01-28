@@ -136,7 +136,7 @@ watch([testStore, appStore], () => {
     testStore.completed &&
     authStore.isAuthenticated
   ) {
-    viewResults()
+    router.push(`/results/${testStore.resultId}`)
   }
   if (
     testStore.testEnded &&
