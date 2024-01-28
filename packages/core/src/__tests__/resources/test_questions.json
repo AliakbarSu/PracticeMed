@@ -6,9 +6,16 @@
       {
         "text": "option one",
         "alpha": "a",
-        "correct": true
+        "correct": true,
+        "explanation": "explanation one"
       }
     ],
-    "field": "A"
+    "field": "A",
+    "correct_option": {
+      "text": "option one",
+      "alpha": "a",
+      "correct": true,
+      "explanation": "explanation one"
+    }
   }
 ]
