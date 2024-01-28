@@ -126,6 +126,8 @@ watch(
     if (isAuth) {
       store.fetchProfileData()
       store.fetchPortalLink()
+      store.fetchTests()
+      store.fetchTestsHistory()
       plansStore.fetchPlans()
     }
   }

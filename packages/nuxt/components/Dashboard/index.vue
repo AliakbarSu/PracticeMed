@@ -155,14 +155,18 @@ const loading = computed(() => {
 })
 
 watch(
-  [authStore, appStore],
-  () => {
-    if (authStore.isAuthenticated) {
-      if (!UIStore.tests.loaded) {
-        appStore.fetchTests()
-      } else if (!UIStore.testsHistory.loaded) {
-        appStore.fetchTestsHistory()
-      }
+  [
+    () => authStore.isAuthenticated,
+    () => appStore.tests,
+    () => appStore.testsHistory,
+    () => appStore.loading
+  ],
+  ([isAuth, tests, previousTests, loading]) => {
+    if (isAuth && tests.length <= 0 && !loading) {
+      appStore.fetchTests()
+    }
+    if (isAuth && previousTests.length <= 0 && !loading) {
+      appStore.fetchTestsHistory()
     }
   },
   { immediate: true }
