@@ -256,8 +256,8 @@ export const useTestStore = defineStore('test', () => {
       start_at: test.value.start_at,
       end_at: new Date().getTime()
     }
-    submitting.value = true
     try {
+      submitting.value = true
       resultId.value = (await submitTestApi(test.value.id, payload)) as string
     } catch (err) {
       UIStore.error = new Error(err as string)

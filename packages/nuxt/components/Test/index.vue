@@ -53,6 +53,7 @@
         </div>
         <TestComponentsUIQuestionControls
           :canEnd="true"
+          :submitting="testStore.submitting"
           :canSkip="!question.skipped"
           @next="next"
           @skip="testStore.skip"
