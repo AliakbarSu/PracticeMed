@@ -1,6 +1,6 @@
 import { ApiHandler } from 'sst/node/api'
 import { listTests, listTrialTests } from '@mpt-sst/core/src/test/index'
-import { Test } from '@mpt-types/Test'
+import { Examination } from '@mpt-types/Test'
 import { ApiGatewayAuth } from '@mpt-types/System'
 import { getUser } from '@mpt-sst/core/src/model/users'
 
@@ -15,7 +15,10 @@ export const handler = ApiHandler(async (_evt) => {
   } else {
     result = await listTests()
   }
-  const tests: Test[] = result.map((test) => ({
+  const tests: Pick<
+    Examination,
+    'id' | 'name' | 'description' | 'type' | 'thumbnail' | 'instructions'
+  >[] = result.map((test) => ({
     id: test.id,
     name: test.name,
     description: test.description,

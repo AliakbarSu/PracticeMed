@@ -1,9 +1,9 @@
 import { Config } from 'sst/node/config'
 import fetch from 'node-fetch'
 import { getTestQuery, listTestsQuery } from './queries'
-import { UserTest } from '../../types/Test'
+import { Examination } from '../../types/Test'
 import { getQuestions } from '../model/question'
-import { Question, QuestionObject } from '../../types/Question'
+import { Question } from '../../types/Question'
 
 const query = (query: string, variables: any) => {
   return fetch(Config.HYGRAPH_ENDPOINT, {
@@ -22,7 +22,7 @@ const query = (query: string, variables: any) => {
 export const getTest = async (id: string, trial: boolean = false) => {
   const response = await query(getTestQuery, { id })
   const parsed = await response.json()
-  const loadedTest = (parsed as { data: { test: UserTest } }).data.test
+  const loadedTest = (parsed as { data: { test: Examination } }).data.test
   const questionLimit = trial ? 30 : loadedTest.questionsNumber
   const questions = await getQuestions(loadedTest.type, questionLimit)
   const updatedQuestions: Question[] = questions.map((question) => {
@@ -48,22 +48,22 @@ export const getTest = async (id: string, trial: boolean = false) => {
   }
 }
 
-export const listTests = async (): Promise<UserTest[]> => {
+export const listTests = async (): Promise<Examination[]> => {
   const response = await query(listTestsQuery, {
     trial: false,
     demo: false,
     available: true
   })
   const parsed = await response.json()
-  return (parsed as { data: { tests: UserTest[] } }).data.tests
+  return (parsed as { data: { tests: Examination[] } }).data.tests
 }
 
-export const listTrialTests = async (): Promise<UserTest[]> => {
+export const listTrialTests = async (): Promise<Examination[]> => {
   const response = await query(listTestsQuery, {
     trial: true,
     demo: false,
     available: true
   })
   const parsed = await response.json()
-  return (parsed as { data: { tests: UserTest[] } }).data.tests
+  return (parsed as { data: { tests: Examination[] } }).data.tests
 }

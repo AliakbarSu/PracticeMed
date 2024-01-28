@@ -2,7 +2,7 @@ import { getUser, updateUser } from '../model/users'
 import { getTest } from '../test'
 import { QuestionObject } from '../../types/Question'
 import { addTest } from '../model/test'
-import { MongoDBTest, TestStatus } from '../../types/Test'
+import { TestObject, TestStatus } from '../../types/Test'
 
 const hasUserRemainingTests = async (userId: string): Promise<boolean> => {
   const user = await getUser(userId)
@@ -54,7 +54,7 @@ export const loadTest = async ({
 
   const { questions, questionsNumber, ...rest } = await getTest(testId)
 
-  const loadedTest: MongoDBTest = {
+  const loadedTest: TestObject = {
     user_id: userId,
     test_id: testId,
     status: TestStatus.IN_PROGRESS,

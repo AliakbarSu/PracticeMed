@@ -1,30 +1,21 @@
 import { Question } from './Question'
 import { SubmittedAnswer } from './Result'
 
-export interface LoadedTest
-  extends Omit<UserTest, 'passingPoint' | 'trial' | 'points'> {}
-
-export interface UserTest extends Test {
-  text: string
-  questions: Question[]
-  points: number
-  passingPoint: number
-  timeLimit: number
-  breaks: {
-    [key: string]: string
-  }
-  trial: boolean
-  demo: boolean
-}
-
-export interface Test {
+export interface Examination {
   id: string
   name: string
   type: string
   description: string
   thumbnail: { url: string }[]
+  questions: Question[]
+  points: number
+  passingPoint: number
+  breaks: string
+  timeLimit: number
   instructions: string
-  questionsNumber?: number
+  questionsNumber: number
+  trial: boolean
+  demo: boolean
 }
 
 export enum TestStatus {
@@ -32,7 +23,7 @@ export enum TestStatus {
   'COMPLETED' = 'COMPLETED'
 }
 
-export interface MongoDBTest {
+export interface TestObject {
   _id?: string
   test_id: string
   user_id: string

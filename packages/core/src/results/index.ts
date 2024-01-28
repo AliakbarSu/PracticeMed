@@ -6,7 +6,7 @@ import {
   TestPerformanceResult,
   UserSubmittedResult
 } from '../../types/Result'
-import { UserTest } from '../../types/Test'
+import { Examination } from '../../types/Test'
 import { User } from '../../types/User'
 import { getUser, updateUser } from '../model/users'
 import { getTest } from '../test'
@@ -33,7 +33,7 @@ import {
 
 const analyzeAnswer = (
   data: SubmittedAnswer[],
-  test: UserTest
+  test: Examination
 ): AnalyzedAnswer[] => {
   const questions = test.questions
   const result = data.map((answer) => {
