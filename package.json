@@ -12,7 +12,8 @@
     "console": "sst console",
     "typecheck": "tsc --noEmit",
     "migration-up": "bun ./packages/core/src/migrations/run.ts up",
-    "migration-down": "bun ./packages/core/src/migrations/run.ts down"
+    "migration-down": "bun ./packages/core/src/migrations/run.ts down",
+    "test": "npm run test --prefix ./packages/core"
   },
   "devDependencies": {
     "sst": "2.38.7",
