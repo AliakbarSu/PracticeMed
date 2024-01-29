@@ -5,14 +5,12 @@
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Resources
         </h2>
-        <p class="mt-2 text-lg leading-8 text-gray-600">
+        <p class="mt-2 text-lg leading-8 text-gray-600 mb-6">
           Learn how to pass your medical licensing exam with our great
           resources.
         </p>
-        <div
-          v-if="!pending"
-          class="mt-10 space-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16"
-        >
+        <ResourcesTabs :tabs="tabs" @switchTab="setActiveTab" />
+        <div v-if="!pending" class="mt-10 space-y-16 sm:mt-16">
           <article
             v-for="post in data"
             :key="post.id"
@@ -70,7 +68,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const { data, pending, error, refresh } = await useFetch(`/api/blogs`)
 
 useSeoMeta({
@@ -79,4 +77,22 @@ useSeoMeta({
   description:
     'Resrouces to prepare for your medical licensing exam including AMC MCQ'
 })
+
+const tabs = ref([
+  {
+    name: 'Blogs',
+    current: true
+  },
+  {
+    name: 'Videos',
+    current: false
+  }
+])
+
+const setActiveTab = (tab: string) => {
+  tabs.value = tabs.value.map((t) => ({
+    ...t,
+    current: t.name === tab
+  }))
+}
 </script>
