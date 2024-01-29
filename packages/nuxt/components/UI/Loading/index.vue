@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="loading"
-    class="fixed left-0 top-0 h-1.5 w-full z-50 bg-green-500"
-  />
+  <div v-if="loading" class="fixed left-0 top-0 h-2 w-full z-50 bg-green-500" />
 </template>
 
 <script setup lang="ts">
