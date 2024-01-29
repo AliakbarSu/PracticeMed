@@ -67,6 +67,7 @@ import {
   UserCircleIcon
 } from '@heroicons/vue/24/outline'
 import { useAppStore } from '../../src/store/main'
+import { useAuthStore } from '../../src/store/auth'
 import { storeToRefs } from 'pinia'
 const secondaryNavigation = [
   { name: 'General', href: '#', icon: UserCircleIcon, current: true },
@@ -76,6 +77,7 @@ const secondaryNavigation = [
 ]
 
 const store = useAppStore()
+const authStore = useAuthStore()
 
 const currentItem = ref('General')
 const { loading, profile } = storeToRefs(store)
@@ -87,4 +89,13 @@ const setItem = (item: string) => {
 const isActive = (item: string) => {
   return currentItem.value == item
 }
+
+watch(
+  [() => authStore.isAuthenticated, () => store.portalLink],
+  ([isAuth, portalLink]) => {
+    if (isAuth && !portalLink) {
+      store.fetchPortalLink()
+    }
+  }
+)
 </script>

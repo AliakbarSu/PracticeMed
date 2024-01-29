@@ -15,6 +15,7 @@ export const useAppStore = defineStore('app', () => {
   const error = ref<Error | null>(null)
   const profile = ref<Profile | null>(null)
   const portalLink = ref<string | null>(null)
+  const portalLinkExpiresIn = ref<number | null>(null)
   const testsHistory = ref<UserAppMetadata['test_history']>([])
   const tests = ref<Test[]>([])
   const UIStore = useUIStore()
@@ -73,16 +74,24 @@ export const useAppStore = defineStore('app', () => {
     try {
       loading.value = true
       portalLink.value = await loadPortalLink()
+      portalLinkExpiresIn.value = Date.now() + 1000 * 60 * 30
     } finally {
       loading.value = false
     }
   }
+
+  watch(portalLinkExpiresIn, (expiresIn) => {
+    if (expiresIn && Date.now() > expiresIn) {
+      fetchPortalLink()
+    }
+  })
 
   return {
     fetchProfileData,
     fetchTestsHistory,
     fetchTests,
     fetchPortalLink,
+    portalLinkExpiresIn,
     tests,
     testsHistory,
     profile,

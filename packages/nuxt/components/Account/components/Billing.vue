@@ -31,25 +31,28 @@ import SubscribeCTA from './UI/CTA/Subscribe.vue'
 import { useAppStore } from '../../../src/store/main'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { watch, onMounted } from 'vue'
+import { watch } from 'vue'
 
 const store = useAppStore()
-
 const { portalLink } = storeToRefs(store)
+const subscribed = computed(() => portalLink.value)
 
-const subscribed = computed(() => portalLink.value !== null)
-
-watch(portalLink, () => {
-  navigate()
-})
-
-const navigate = () => {
-  if (subscribed.value && portalLink.value) {
-    window.location.replace(portalLink.value)
-  }
+const navigate = (link: string) => {
+  window.location.replace(link)
 }
 
-onMounted(() => {
-  navigate()
+onBeforeRouteLeave((to, from, next) => {
+  portalLink.value = null
+  next()
 })
+
+watch(
+  portalLink,
+  (link) => {
+    if (link) {
+      navigate(link)
+    }
+  },
+  { immediate: true }
+)
 </script>
