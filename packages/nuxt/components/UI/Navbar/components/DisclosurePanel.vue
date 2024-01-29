@@ -11,7 +11,7 @@
         }"
         class="cursor-pointer block bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
         @click="goTo('/dashboard')"
-        >Dashboard</DisclosureButton
+        >Tests</DisclosureButton
       >
       <div class="space-y-1 p-2">
         <DisclosureButton as="div">
