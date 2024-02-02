@@ -36,7 +36,7 @@ const analyzeAnswer = (
   test: Examination
 ): AnalyzedAnswer[] => {
   const questions = test.questions
-  const result = data.map((answer) => {
+  return data.map((answer) => {
     const { question_id } = answer
     const timeTaken = calculateTimeTaken(answer).timeTaken
     const question = questions.find(
@@ -48,14 +48,6 @@ const analyzeAnswer = (
       ...question,
       timeTaken,
       correct
-    }
-  })
-
-  return result.map((question) => {
-    const point = question.correct ? test.points / test.questionsNumber : 0
-    return {
-      ...question,
-      point: Math.round(point)
     }
   })
 }

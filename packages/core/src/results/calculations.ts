@@ -45,7 +45,7 @@ export const calculateAverageTimeTaken = (data: AnalyzedAnswer[]) => {
 }
 
 export const calculateTotalPoint = (data: AnalyzedAnswer[]) => {
-  return data.reduce((acc, cur) => acc + cur.point, 0)
+  return data.reduce((acc, cur) => (cur.correct ? acc + cur.point : acc), 0)
 }
 
 export const calculateTotalPointPerCategory = (data: AnalyzedAnswer[]) => {
