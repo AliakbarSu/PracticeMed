@@ -245,20 +245,17 @@ export const useTestStore = defineStore('test', () => {
   }
 
   const submit = async () => {
-    if (!test.value) return
-    // if (previewMode.value) {
-    //   testEnded.value = true
-    //   return
-    // }
-    const payload: SubmittedAnswer = {
-      test_id: test.value.id,
-      answers: submittedAnswers.value,
-      start_at: test.value.start_at,
-      end_at: new Date().getTime()
-    }
     try {
       submitting.value = true
-      resultId.value = (await submitTestApi(test.value.id, payload)) as string
+      if (test.value && !demoMode.value) {
+        const payload: SubmittedAnswer = {
+          test_id: test.value.id,
+          answers: submittedAnswers.value,
+          start_at: test.value.start_at,
+          end_at: new Date().getTime()
+        }
+        resultId.value = (await submitTestApi(test.value.id, payload)) as string
+      }
     } catch (err) {
       UIStore.error = new Error(err as string)
     } finally {

@@ -27,6 +27,10 @@ export const useAppStore = defineStore('app', () => {
     portalLink.value = null
   }
 
+  const canTryMockTest = computed(
+    () => !testsHistory.value.some((test) => test.demo)
+  )
+
   const fetchProfileData = async () => {
     try {
       loading.value = true
@@ -98,6 +102,7 @@ export const useAppStore = defineStore('app', () => {
     loading,
     error,
     $reset,
-    portalLink
+    portalLink,
+    canTryMockTest
   }
 })
