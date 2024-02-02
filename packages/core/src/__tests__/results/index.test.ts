@@ -9,7 +9,10 @@ import { TestPerformanceResult } from '../../../types/Result'
 vi.mock('../../test/index', () => {
   return {
     getTest: () => ({
-      questions: questions as Question[],
+      questions: questions.map((q: any) => ({
+        ...q,
+        point: 1
+      })),
       questionsNumber: 30,
       points: 180,
       passingPoint: 70

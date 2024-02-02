@@ -25,7 +25,8 @@ vi.mock('node-fetch', async (importOriginal) => {
 
 vi.mock('../../model/question', () => {
   return {
-    getQuestions: () => questions
+    getQuestions: () =>
+      questions.map((q: any) => ({ ...q, _id: { toString: () => q._id } }))
   }
 })
 
@@ -34,5 +35,5 @@ it('should return a test object', async () => {
   expect(loadedTest.id).eq('test')
   expect(loadedTest.questions.length).eq(1)
   expect(loadedTest.questions[0].text).deep.eq(questions[0].text)
-  expect(loadedTest.questions[0]._id).eq(questions[0]._id)
+  expect(loadedTest.questions[0]._id.toString()).eq(questions[0]._id)
 })

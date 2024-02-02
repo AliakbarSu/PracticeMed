@@ -4,14 +4,27 @@ import { it, expect } from 'vitest'
 
 it('should return correct option', () => {
   const question: Question = {
-    options: [{ alpha: 'a', id: 'test', text: 'test', correct: true }],
+    _id: { toString: () => 'test' } as string,
+    options: [
+      {
+        alpha: 'a',
+        id: 'test',
+        text: 'test',
+        is_correct: true,
+        explanation: ''
+      }
+    ],
+    correct_option: {
+      alpha: 'a',
+      id: 'test',
+      text: 'test',
+      is_correct: true,
+      explanation: ''
+    },
     text: 'test',
-    correct_option_explanation: '',
     difficulty_level: 1,
     field: 'sa',
-    id: 'test',
-    point: 22,
-    correct_option_id: 'a'
+    point: 22
   }
   expect(isCorrectOption({ option_id: 'a' } as any, question as any)).eq(true)
 })

@@ -3,11 +3,11 @@
   "test_id": "clgodqsus3bh40b1gaqxmm0wd",
   "stats": {
     "testScore": 180,
-    "totalPoints": 168,
+    "totalPoints": 28,
     "averageTimeTaken": 1,
     "averageTimeTakenPerField": { "A": 22, "C": 4, "B": 4 },
     "fieldsAverageTime": 10,
-    "totalPointsPerField": { "A": 126, "C": 18, "B": 24 },
+    "totalPointsPerField": { "A": 22, "C": 4, "B": 4 },
     "correctResponseRate": 93.33,
     "incorrectResponseRate": 6.67,
     "correctResponseCount": 28,

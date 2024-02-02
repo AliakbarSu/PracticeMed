@@ -22,16 +22,14 @@ export const calculateTimeTaken = (answer: SubmittedAnswer) => {
 export const calculateTimeTakenPerCategory = (data: AnalyzedAnswer[]) => {
   const categoryTimes: any = {}
 
-  data.forEach((answer) => {
+  for (const field in data) {
+    const answer = data[field]
     const { timeTaken } = calculateTimeTaken(answer)
     if (answer.field in categoryTimes) {
       categoryTimes[answer.field] += timeTaken
     } else {
       categoryTimes[answer.field] = timeTaken
     }
-  })
-  for (const key in categoryTimes) {
-    categoryTimes[key] = parseInt(categoryTimes[key].toFixed(2))
   }
   return categoryTimes
 }
@@ -60,12 +58,6 @@ export const calculateTotalPointPerCategory = (data: AnalyzedAnswer[]) => {
       }
     }
   })
-
-  const result = Object.entries(categoryPoints).map(
-    ([category, totalPoint]) => {
-      return `Total point for category ${category}: ${totalPoint}`
-    }
-  )
 
   return categoryPoints
 }
