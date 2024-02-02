@@ -19,8 +19,6 @@ nuxtApp.hook('page:start', () => {
   loading.value = true
 })
 nuxtApp.hook('page:finish', () => {
-  setTimeout(() => {
-    loading.value = false
-  }, 500)
+  loading.value = false
 })
 </script>
