@@ -17,8 +17,7 @@
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div
-            v-if="demoMode"
-            class="mt-1 pb-2 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
+            class="mt-5 pb-2 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
           >
             <ResultsComponentsFeedback />
           </div>

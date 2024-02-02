@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden bg-white py-24 sm:py-32">
+  <div class="overflow-hidden bg-white py-8">
     <div class="mx-auto px-6 lg:px-8">
       <div class="mx-auto lg:mx-0">
         <div class="x-auto lg:pl-4 lg:pt-4">
