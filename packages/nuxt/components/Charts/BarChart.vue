@@ -12,12 +12,16 @@ const chartRef = ref<HTMLDivElement | null>(null)
 const seriesRef = ref<am5.Series | null>(null)
 const xAxisRef = ref<am5xy.CategoryAxis<any> | null>(null)
 
-const props = defineProps<{
+const props = defineProps({
+  tooltipUnit: {
+    type: String,
+    default: 'points'
+  },
   data: {
-    category: string
-    score: number
-  }[]
-}>()
+    type: Array<{ category: string; score: number }>,
+    default: () => []
+  }
+})
 
 onMounted(() => {
   if (!chartRef.value) return
@@ -77,7 +81,10 @@ onMounted(() => {
       valueYField: 'score',
       sequencedInterpolation: true,
       categoryXField: 'category',
-      tooltip: am5.Tooltip.new(root, { dy: -25, labelText: '{valueY} points' })
+      tooltip: am5.Tooltip.new(root, {
+        dy: -25,
+        labelText: `{valueY} ${props.tooltipUnit}`
+      })
     })
   )
 

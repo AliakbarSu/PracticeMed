@@ -204,6 +204,7 @@
               >
                 <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsBarChart
+                  tooltipUnit="answer(s)"
                   v-if="!loading"
                   :data="amchartIncorrectResponses"
                 />
@@ -222,6 +223,7 @@
               >
                 <ResultsComponentsUILoadingSkeleton v-if="loading" />
                 <ChartsBarChart
+                  tooltipUnit="answer(s)"
                   v-if="!loading"
                   :data="amchartCorrectResponses"
                 />
