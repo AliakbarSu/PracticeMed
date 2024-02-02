@@ -5,13 +5,13 @@
         <div class="x-auto lg:pl-4 lg:pt-4">
           <div class="mx-auto">
             <h2 class="text-base font-semibold leading-7 text-indigo-600">
-              Suggestions
+              Personalized Tips
             </h2>
-            <p
+            <!-- <p
               class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
             >
-              Tips to Improve
-            </p>
+              Personalized Tips
+            </p> -->
             <p class="mt-6 text-lg leading-8 text-gray-600">
               Your overall score is great, but there are some things you can
               improve on.

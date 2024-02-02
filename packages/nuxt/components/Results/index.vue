@@ -53,7 +53,7 @@
               Last 30 days
             </h3> -->
             <dl
-              class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-3 md:divide-x md:divide-y-0"
+              class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-2 md:divide-x md:divide-y-0"
             >
               <div
                 v-for="item in testStats"
@@ -158,7 +158,7 @@
               <dt class="text-base font-normal text-gray-900">
                 Overall Time Performance
                 <p class="max-w-4xl text-sm text-gray-500">
-                  average time taken to answer during test
+                  average time taken to answer questions over time intervals
                 </p>
               </dt>
               <dd
@@ -171,9 +171,9 @@
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900" v-if="!loading">
-                Mean Subject Time
+                Time per Subject
                 <p class="max-w-4xl text-sm text-gray-500">
-                  total time taken per subject
+                  Average time taken to answer in each subject
                 </p>
               </dt>
               <dd
@@ -194,9 +194,9 @@
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900" v-if="!loading">
-                Incorrect Responses
+                Incorrect Answers
                 <p class="max-w-4xl text-sm text-gray-500">
-                  total number of incorrect responses per subject
+                  total number of incorrect answers per subject
                 </p>
               </dt>
               <dd
@@ -213,9 +213,9 @@
             <div class="px-4 py-5 sm:p-6">
               <ResultsComponentsUISampleBadge v-if="demoMode" />
               <dt class="text-base font-normal text-gray-900" v-if="!loading">
-                Correct Responses
+                Correct Answers
                 <p class="max-w-4xl text-sm text-gray-500">
-                  total number of correct responses per subject
+                  total number of correct answers per subject
                 </p>
               </dt>
               <dd
@@ -288,8 +288,9 @@ const testStats = computed(() => {
   if (loading.value) {
     return [
       { name: 'Total Points' },
-      { name: 'Average Time' },
-      { name: 'Subjects Average Time' }
+      { name: 'Average Time' }
+      // TODO: Can be used in future
+      // { name: 'Subjects Average Time' }
     ] as any[]
   }
   if (!testHistory.value?.stats) return []
@@ -307,14 +308,15 @@ const testStats = computed(() => {
       previousStat: testHistory.value.stats.averageTimeTaken.toFixed(2),
       change: calculateChangeRate('averageTimeTaken').toFixed(2),
       changeType: calculateChangeType('averageTimeTaken')
-    },
-    {
-      name: 'Subjects Average Time (minutes)',
-      stat: testHistory.value.stats.fieldsAverageTime.toFixed(2),
-      previousStat: testHistory.value.stats.fieldsAverageTime.toFixed(2),
-      change: calculateChangeRate('fieldsAverageTime').toFixed(2),
-      changeType: calculateChangeType('fieldsAverageTime')
     }
+    // TODO: Can be used in future
+    // {
+    //   name: 'Subjects Average Time (minutes)',
+    //   stat: testHistory.value.stats.fieldsAverageTime.toFixed(2),
+    //   previousStat: testHistory.value.stats.fieldsAverageTime.toFixed(2),
+    //   change: calculateChangeRate('fieldsAverageTime').toFixed(2),
+    //   changeType: calculateChangeType('fieldsAverageTime')
+    // }
   ]
 })
 
