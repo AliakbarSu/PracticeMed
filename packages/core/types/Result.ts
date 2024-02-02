@@ -44,6 +44,7 @@ export interface Stats {
 }
 
 export interface TestPerformanceResult {
+  demo: boolean
   id: string
   test_id: string
   stats: Stats

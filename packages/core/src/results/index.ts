@@ -99,6 +99,7 @@ export const analyze = async (
   return {
     id: uuidv4(),
     test_id,
+    demo: loadedTest.demo,
     stats: {
       testScore: loadedTest.points,
       totalPoints,
