@@ -78,11 +78,11 @@ const props = defineProps<{
 }>();
 
 const sortedUsers = computed(() =>
-  props.users.sort((a, b) => a.email.localeCompare(b.email)),
+  [...props.users].sort((a, b) => a.email.localeCompare(b.email)),
 );
 
 const emit = defineEmits<{
-  selectUser: (user: User) => void;
+  (event: "selectUser", user: User): void;
 }>();
 
 const selectUser = (user: User) => {
