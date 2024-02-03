@@ -48,21 +48,12 @@
   </main>
 </template>
 
-<script lang="ts">
-import type { Profile } from '../../../src/types/user'
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import SkeletonLoading from './UI/Loading/skeletonLoading.vue'
+<script lang="ts" setup>
+import SkeletonLoading from "./UI/Loading/skeletonLoading.vue";
+import { useAppStore } from "../../../src/store/main";
 
-export default defineComponent({
-  props: {
-    loading: Boolean,
-    profile: {
-      type: Object as PropType<Profile | null>
-    }
-  },
-  components: {
-    SkeletonLoading
-  }
-})
+const store = useAppStore();
+
+const profile = computed(() => store.profile);
+const loading = computed(() => store.loading);
 </script>

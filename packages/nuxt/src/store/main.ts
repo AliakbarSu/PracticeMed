@@ -1,102 +1,102 @@
-import type { Test } from '@/types/test'
+import type { Test } from "@/types/test";
 import {
-  type RolesEnum,
   type Profile,
-  type UserAppMetadata
-} from '@/types/user'
-import { defineStore } from 'pinia'
-import { useUIStore } from './UI'
-import { ref } from 'vue'
+  type RolesEnum,
+  type UserAppMetadata,
+} from "@/types/user";
+import { defineStore } from "pinia";
+import { useUIStore } from "./UI";
+import { ref } from "vue";
 import {
+  loadPortalLink,
   loadProfileData,
   loadTestHistory,
-  loadPortalLink,
-  loadTests
-} from '../api/profileApi'
+  loadTests,
+} from "../api/profileApi";
 
-export const useAppStore = defineStore('app', () => {
-  const loading = ref(false)
-  const error = ref<Error | null>(null)
-  const profile = ref<Profile | null>(null)
-  const portalLink = ref<string | null>(null)
-  const portalLinkExpiresIn = ref<number | null>(null)
-  const testsHistory = ref<UserAppMetadata['test_history']>([])
-  const tests = ref<Test[]>([])
-  const UIStore = useUIStore()
+export const useAppStore = defineStore("app", () => {
+  const loading = ref(false);
+  const error = ref<Error | null>(null);
+  const profile = ref<Profile | null>(null);
+  const portalLink = ref<string | null>(null);
+  const portalLinkExpiresIn = ref<number | null>(null);
+  const testsHistory = ref<UserAppMetadata["test_history"]>([]);
+  const tests = ref<Test[]>([]);
+  const UIStore = useUIStore();
 
   function $reset() {
-    profile.value = null
-    testsHistory.value = []
-    tests.value = []
-    portalLink.value = null
+    profile.value = null;
+    testsHistory.value = [];
+    tests.value = [];
+    portalLink.value = null;
   }
 
   const canTryMockTest = computed(
-    () => !testsHistory.value.some((test) => test.demo)
-  )
+    () => !testsHistory.value.some((test) => test.demo),
+  );
 
   const isAdmin = computed(() =>
-    profile.value?.roles.includes('admin' as RolesEnum)
-  )
+    profile.value?.roles.includes("admin" as RolesEnum),
+  );
 
   const fetchProfileData = async () => {
     try {
-      loading.value = true
-      profile.value = await loadProfileData()
+      loading.value = true;
+      profile.value = await loadProfileData();
     } catch (err) {
-      error.value = err as Error
+      error.value = err as Error;
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
-  const fetchTestsHistory = async (data?: UserAppMetadata['test_history']) => {
+  const fetchTestsHistory = async (data?: UserAppMetadata["test_history"]) => {
     try {
-      UIStore.startLoadingTestsHistory()
-      loading.value = true
+      UIStore.startLoadingTestsHistory();
+      loading.value = true;
       if (data) {
-        testsHistory.value = data
-        return
+        testsHistory.value = data;
+        return;
       }
-      testsHistory.value = await loadTestHistory()
+      testsHistory.value = await loadTestHistory();
     } catch (err) {
-      error.value = err as Error
+      error.value = err as Error;
     } finally {
-      loading.value = false
-      UIStore.testsHistoryLoaded()
-      UIStore.stopLoadingTestsHistory()
+      loading.value = false;
+      UIStore.testsHistoryLoaded();
+      UIStore.stopLoadingTestsHistory();
     }
-  }
+  };
 
   const fetchTests = async () => {
     try {
-      loading.value = true
-      UIStore.startLoadingTests()
-      tests.value = await loadTests()
-      UIStore.testsLoaded()
+      loading.value = true;
+      UIStore.startLoadingTests();
+      tests.value = await loadTests();
+      UIStore.testsLoaded();
     } catch (err) {
-      error.value = err as Error
+      error.value = err as Error;
     } finally {
-      loading.value = false
-      UIStore.stopLoadingTests()
+      loading.value = false;
+      UIStore.stopLoadingTests();
     }
-  }
+  };
 
   const fetchPortalLink = async () => {
     try {
-      loading.value = true
-      portalLink.value = await loadPortalLink()
-      portalLinkExpiresIn.value = Date.now() + 1000 * 60 * 30
+      loading.value = true;
+      portalLink.value = await loadPortalLink();
+      portalLinkExpiresIn.value = Date.now() + 1000 * 60 * 30;
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
-  watch(portalLinkExpiresIn, (expiresIn) => {
+  watch(portalLinkExpiresIn, async (expiresIn) => {
     if (expiresIn && Date.now() > expiresIn) {
-      fetchPortalLink()
+      await fetchPortalLink();
     }
-  })
+  });
 
   return {
     fetchProfileData,
@@ -112,6 +112,6 @@ export const useAppStore = defineStore('app', () => {
     $reset,
     portalLink,
     canTryMockTest,
-    isAdmin
-  }
-})
+    isAdmin,
+  };
+});
