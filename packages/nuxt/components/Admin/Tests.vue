@@ -114,8 +114,8 @@
                         <span
                           class="text-indigo-400 hover:text-indigo-300 cursor-pointer"
                           @click="viewResults(test)"
-                          >View Results<span class="sr-only"></span
-                        ></span>
+                          >View Results<span class="sr-only"
+                        /></span>
                       </td>
                     </tr>
                   </tbody>

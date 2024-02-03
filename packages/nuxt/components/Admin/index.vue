@@ -1,7 +1,9 @@
 <template>
-  <AdminUsers :users="users" @selectUser="selectUser" />
-  <div ref="testsPanelRef" class="px-5 mt-5">
-    <AdminTests :user="user" />
+  <div>
+    <AdminUsers :users="users" @selectUser="selectUser" />
+    <div ref="testsPanelRef" class="px-5 mt-5">
+      <AdminTests :user="user" />
+    </div>
   </div>
 </template>
 
