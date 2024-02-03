@@ -19,6 +19,11 @@ export const getUser = async (userId: string): Promise<User> => {
   return db.collection('users').findOne({ userId })
 }
 
+export const getAllUsers = async (): Promise<User[]> => {
+  const db = await connectToDatabase()
+  return db.collection('users').find({}).toArray()
+}
+
 export const updateUser = async (userId: string, data: User): Promise<User> => {
   const db = await connectToDatabase()
   return db.collection('users').updateOne({ userId }, { $set: data })
@@ -40,7 +45,8 @@ export const addUser = async (userId: string, email: string): Promise<User> => {
       used: 0
     },
     tests: [],
-    tests_history: []
+    tests_history: [],
+    roles: []
   }
   const db = await connectToDatabase()
   return db.collection('users').insertOne(user)

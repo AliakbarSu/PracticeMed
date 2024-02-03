@@ -17,4 +17,9 @@ export interface User {
   plan: UserPlan
   tests: TestPerformanceResult[]
   tests_history: any[]
+  roles: RolesEnum[]
+}
+
+export enum RolesEnum {
+  Admin = 'admin'
 }

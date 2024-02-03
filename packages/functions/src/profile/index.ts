@@ -1,7 +1,7 @@
 import { getProfile } from '@mpt-sst/core/user/index'
 import { ApiGatewayAuth } from '@mpt-types/System'
 import { ApiHandler } from 'sst/node/api'
-import { User } from '@mpt-types/User'
+import { RolesEnum, User } from '@mpt-types/User'
 
 export const get_profile = ApiHandler(async (_evt) => {
   const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
@@ -12,10 +12,12 @@ export const get_profile = ApiHandler(async (_evt) => {
     name: string
     email: string
     plan: User['plan']
+    roles: RolesEnum[]
   } = {
     ...user,
     id: user.userId,
-    name: user.email
+    name: user.email,
+    roles: user.roles
   }
   return {
     body: JSON.stringify(profile)
