@@ -25,6 +25,7 @@ export interface User extends Profile {
   userId: string;
   tests: TestPerformanceResult[];
   tests_history: SubmittedAnswer[];
+  created_at: string;
 }
 
 export enum RolesEnum {

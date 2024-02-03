@@ -37,9 +37,8 @@
             What is not measured, cannot be improved
           </h1>
           <p class="mt-6 text-lg leading-8 text-gray-600">
-            Experience Realistic Testing Conditions, Meaningful Feedback, and
-            Comprehensive Topics Coverage to Ace Your Medical Exams with
-            Confidence and Ease.
+            We help you identify knowledge gaps and elevate your test scores
+            through personalized feedback and guidance.
           </p>
           <div class="mt-10 flex items-center justify-center gap-x-6">
             <!-- <RouterLink

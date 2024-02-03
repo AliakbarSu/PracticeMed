@@ -29,6 +29,12 @@
                   Email
                 </th>
                 <th
+                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                  scope="col"
+                >
+                  Created At
+                </th>
+                <th
                   class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   scope="col"
                 >
@@ -49,6 +55,17 @@
                   class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                 >
                   {{ user.email }}
+                </td>
+                <td
+                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                >
+                  {{
+                    new Date(user.created_at).toLocaleDateString("en-AU", {
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    })
+                  }}
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ user.tests.length }}
@@ -77,7 +94,11 @@ const props = defineProps<{
 }>();
 
 const sortedUsers = computed(() =>
-  [...props.users].sort((a, b) => a.email.localeCompare(b.email)),
+  [...props.users].sort((a, b) => {
+    if (a.created_at < b.created_at) return -1;
+    if (a.created_at > b.created_at) return 1;
+    return 0;
+  }),
 );
 
 const totalUsers = computed(() => props.users.length);

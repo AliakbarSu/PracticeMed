@@ -78,13 +78,12 @@
                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-300"
                       >
                         {{
-                          new Date(test.timestamp).toLocaleDateString("en-CA", {
+                          new Date(test.timestamp).toLocaleDateString("en-AU", {
                             year: "numeric",
                             month: "numeric",
                             day: "numeric",
                             hour: "numeric",
                             minute: "numeric",
-                            second: "numeric",
                           })
                         }}
                       </td>

@@ -7,9 +7,5 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from '../src/store/main'
-const appStore = useAppStore()
-if (!appStore.isAdmin) {
-  navigateTo('/')
-}
+definePageMeta({ middleware: ["auth-client"] });
 </script>
