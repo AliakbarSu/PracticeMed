@@ -24,5 +24,6 @@ export const functions = {
   post_answer: `${fnPath}/submit_answer/index.post_answer`,
   submit_answer_queue: `${fnPath}/submit_answer_queue/index.handler`,
   submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`,
-  post_add_user: `${fnPath}/user/index.add_user`
+  post_add_user: `${fnPath}/user/index.add_user`,
+  admin_get_users: `${fnPath}/admin/index.get_users`
 }

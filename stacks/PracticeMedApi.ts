@@ -90,6 +90,11 @@ export function API(context: StackContext) {
         authorizer: 'auth0Authorizer',
         function: functions.post_subscribe
       },
+      // ADMIN
+      'GET /api/admin/users': {
+        authorizer: 'auth0Authorizer',
+        function: functions.admin_get_users
+      },
       // TESTS
       'GET /api/tests': {
         authorizer: 'auth0Authorizer',

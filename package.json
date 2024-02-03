@@ -16,11 +16,15 @@
     "test": "npm run test --prefix ./packages/core"
   },
   "devDependencies": {
-    "sst": "2.38.7",
+    "@tsconfig/node16": "^1.0.3",
+    "@typescript-eslint/parser": "^6.20.0",
     "aws-cdk-lib": "2.110.1",
     "constructs": "10.3.0",
-    "typescript": "^5.0.3",
-    "@tsconfig/node16": "^1.0.3"
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.21.1",
+    "prettier": "^3.2.4",
+    "sst": "2.38.7",
+    "typescript": "^5.0.3"
   },
   "workspaces": {
     "packages": [
