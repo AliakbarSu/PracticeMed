@@ -1,33 +1,34 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { local } from '../../resources/stages'
-import path from 'path'
+import { local } from "../../resources/stages";
+import path from "path";
+
 const alias =
   process.env.LOCAL_ENV == local
     ? {}
     : {
-        'vue/server-renderer': path.resolve(
+        "vue/server-renderer": path.resolve(
           __dirname,
-          './node_modules/vue/server-renderer'
-        )
-      }
+          "./node_modules/vue/server-renderer",
+        ),
+      };
 
 export default defineNuxtConfig({
   routeRules: {
-    '/resources': { redirect: '/resources/blogs' },
-    '/resources/amc/prepare-from-scratch': {
-      redirect: '/resources/blogs/how-to-prepare-for-the-amc-mcq-examination'
+    "/resources": { redirect: "/resources/blogs" },
+    "/resources/amc/prepare-from-scratch": {
+      redirect: "/resources/blogs/how-to-prepare-for-the-amc-mcq-examination",
     },
-    '/resources/amc/find-job': {
+    "/resources/amc/find-job": {
       redirect:
-        '/resources/blogs/securing-employment-in-australia-after-successfully-passing-the-amc-mcq-exam'
+        "/resources/blogs/securing-employment-in-australia-after-successfully-passing-the-amc-mcq-exam",
     },
-    '/resources/**': { prerender: true }
+    "/resources/**": { prerender: true },
   },
   app: {
     head: {
       script: [
         {
-          id: 'gtmHead',
+          id: "gtmHead",
           innerHTML: `
           (function (w, d, s, l, i) {
             w[l] = w[l] || []
@@ -38,71 +39,71 @@ export default defineNuxtConfig({
             j.async = true
             j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
             f.parentNode.insertBefore(j, f)
-          })(window, document, 'script', 'dataLayer', 'GTM-K9LRZTF');`
-        }
+          })(window, document, 'script', 'dataLayer', 'GTM-K9LRZTF');`,
+        },
       ],
       htmlAttrs: {
-        class: 'h-full',
-        lang: 'en'
+        class: "h-full",
+        lang: "en",
       },
       bodyAttrs: {
-        class: 'h-full'
+        class: "h-full",
       },
       link: [
         {
-          href: 'https://rsms.me/inter/inter.css',
-          rel: 'stylesheet'
-        }
+          href: "https://rsms.me/inter/inter.css",
+          rel: "stylesheet",
+        },
       ],
       meta: [
-        { charset: 'UTF-8' },
-        { name: 'theme-color', content: '#ffffff' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-      ]
-    }
+        { charset: "UTF-8" },
+        { name: "theme-color", content: "#ffffff" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
+    },
   },
   runtimeConfig: {
     public: {
-      api_endpoint: '',
-      hygraph_endpoint: '',
-      domain_name: '',
-      cdn_url: ''
-    }
+      api_endpoint: "",
+      hygraph_endpoint: "",
+      domain_name: "",
+      cdn_url: "",
+    },
   },
-  modules: ['@pinia/nuxt', '@nuxt/devtools'],
+  modules: ["@pinia/nuxt", "@nuxt/devtools"],
 
   alias: {
-    '@store': './src/store',
-    '@plugins': './src/plugins',
-    '@custom-auth': './src/auth',
-    '@types': './src/types',
-    '@gtag': './src/gtag',
-    'mpt-types': '../core/types',
-    ...alias
+    "@store": "./src/store",
+    "@plugins": "./src/plugins",
+    "@custom-auth": "./src/auth",
+    "@types": "./src/types",
+    "@gtag": "./src/gtag",
+    "mpt-types": "../core/types",
+    ...alias,
   },
 
-  css: ['~/assets/css/main.css'],
+  css: ["~/assets/css/main.css"],
   postcss: {
     plugins: {
       tailwindcss: {},
-      autoprefixer: {}
-    }
+      autoprefixer: {},
+    },
   },
   vite: {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@use "~/assets/css/main.css" as *;'
-        }
-      }
-    }
+          additionalData: '@use "~/assets/css/main.css" as *;',
+        },
+      },
+    },
   },
 
   devtools: {
     enabled: true,
-    vscode: {}
+    vscode: {},
   },
   nitro: {
-    preset: 'aws-lambda'
-  }
-})
+    preset: "aws-lambda",
+  },
+});

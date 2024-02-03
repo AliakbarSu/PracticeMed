@@ -12,7 +12,8 @@ module.exports = {
   rules: {
     // 'prettier/prettier': 'error',
     'vue/multi-word-component-names': 'off',
-    '@typescript-eslint/no-explicit-any': 0
+    '@typescript-eslint/no-explicit-any': 0,
+    'vue/no-multiple-template-root': 'off'
     // not needed for vue 3
     // 'vue/no-multiple-template-root': 'off'
 

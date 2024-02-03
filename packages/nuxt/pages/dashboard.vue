@@ -4,6 +4,6 @@
 
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ['fetch-plans']
-})
+  middleware: ["auth-client", "fetch-plans"] as unknown as any,
+});
 </script>
