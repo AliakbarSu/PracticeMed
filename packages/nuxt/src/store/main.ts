@@ -1,5 +1,9 @@
 import type { Test } from '@/types/test'
-import type { Profile, UserAppMetadata } from '@/types/user'
+import {
+  type RolesEnum,
+  type Profile,
+  type UserAppMetadata
+} from '@/types/user'
 import { defineStore } from 'pinia'
 import { useUIStore } from './UI'
 import { ref } from 'vue'
@@ -29,6 +33,10 @@ export const useAppStore = defineStore('app', () => {
 
   const canTryMockTest = computed(
     () => !testsHistory.value.some((test) => test.demo)
+  )
+
+  const isAdmin = computed(() =>
+    profile.value?.roles.includes('admin' as RolesEnum)
   )
 
   const fetchProfileData = async () => {
@@ -103,6 +111,7 @@ export const useAppStore = defineStore('app', () => {
     error,
     $reset,
     portalLink,
-    canTryMockTest
+    canTryMockTest,
+    isAdmin
   }
 })

@@ -8,6 +8,7 @@
         <span class="sr-only">Open user menu</span>
         <img
           class="h-8 w-8 rounded-full"
+          :class="{ 'border-2 border-red-500': isAdmin }"
           :src="(user as any)?.picture"
           alt=""
         />
@@ -46,6 +47,17 @@
             >Sign out</a
           >
         </MenuItem>
+        <MenuItem v-if="isAdmin" v-slot="{ active }">
+          <a
+            href="#"
+            @click="goTo('/admin')"
+            :class="[
+              active ? 'bg-gray-100' : '',
+              'block px-4 py-2 text-sm text-gray-700'
+            ]"
+            >Admin Panel</a
+          >
+        </MenuItem>
       </MenuItems>
     </transition>
   </Menu>
@@ -55,12 +67,15 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../../../src/store/auth'
+import { useAppStore } from '../../../../src/store/main'
 import { logout } from '../../../../src/auth/index'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const appStore = useAppStore()
 
 const user = computed(() => authStore.user)
+const isAdmin = computed(() => appStore.isAdmin)
 
 const logoutFromApp = async () => {
   await logout()

@@ -21,4 +21,9 @@ export interface Profile {
   name: string
   email: string
   plan: UserPlan
+  roles: RolesEnum[]
+}
+
+export enum RolesEnum {
+  Admin = 'admin'
 }
