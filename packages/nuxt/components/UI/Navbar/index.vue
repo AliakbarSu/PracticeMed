@@ -5,7 +5,9 @@
         <div class="flex w-full md:w-auto">
           <div class="-ml-2 mr-2 flex items-center md:hidden">
             <!-- Mobile menu button -->
-            <UINavbarComponentsMobileButton :open="open" />
+            <ClientOnly>
+              <UINavbarComponentsMobileButton :open="open" />
+            </ClientOnly>
           </div>
           <div
             class="cursor-pointer flex flex-shrink-0 items-center order-1"
@@ -35,28 +37,29 @@
                 to="/dashboard"
                 >Tests
               </NuxtLink>
+
+              <NuxtLink
+                active-class="border-indigo-500 border-b-2"
+                as="a"
+                class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                to="/plans"
+                >Plans
+              </NuxtLink>
+              <NuxtLink
+                active-class="border-indigo-500 border-b-2"
+                as="a"
+                class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                to="/resources"
+                >Resources
+              </NuxtLink>
+              <NuxtLink
+                active-class="border-indigo-500 border-b-2"
+                as="a"
+                class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
+                to="/landing/audio-mock"
+                >Audio MCQs
+              </NuxtLink>
             </ClientOnly>
-            <NuxtLink
-              active-class="border-indigo-500 border-b-2"
-              as="a"
-              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
-              to="/plans"
-              >Plans
-            </NuxtLink>
-            <NuxtLink
-              active-class="border-indigo-500 border-b-2"
-              as="a"
-              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
-              to="/resources"
-              >Resources
-            </NuxtLink>
-            <NuxtLink
-              active-class="border-indigo-500 border-b-2"
-              as="a"
-              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
-              to="/landing/audio-mock"
-              >Audio MCQs
-            </NuxtLink>
           </div>
         </div>
         <div class="hidden md:flex items-center">
@@ -68,25 +71,29 @@
             >
               Start Free Trial
             </button>
-            <button
-              v-if="!isAuth"
-              key="signup"
-              class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              type="button"
-              @click="signup"
-            >
-              Sign Up
-            </button>
+            <ClientOnly>
+              <button
+                v-if="!isAuth"
+                key="signup"
+                class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                type="button"
+                @click="signup"
+              >
+                Sign Up
+              </button>
+            </ClientOnly>
           </div>
-          <div v-if="!isAuth" class="flex-shrink-0">
-            <button
-              class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              type="button"
-              @click="login"
-            >
-              Log In
-            </button>
-          </div>
+          <ClientOnly>
+            <div v-if="!isAuth" class="flex-shrink-0">
+              <button
+                class="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 mr-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                type="button"
+                @click="login"
+              >
+                Log In
+              </button>
+            </div>
+          </ClientOnly>
           <!-- <div v-if="isAuth" class="flex-shrink-0">
           <button
             type="button"
