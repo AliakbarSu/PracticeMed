@@ -4,8 +4,12 @@
     "module": "esnext",
     "baseUrl": ".",
     "paths": {
-      "@mpt-sst/core/*": ["../core/src/*"],
-      "@mpt-types/*": ["../core/types/*"]
+      "@mpt-sst/core/*": [
+        "../core/src/*"
+      ],
+      "@mpt-types/*": [
+        "../core/types/*"
+      ]
     }
   }
 }
