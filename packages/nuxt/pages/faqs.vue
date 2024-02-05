@@ -7,11 +7,11 @@
         </h2>
         <dl class="mt-10 space-y-6 divide-y divide-gray-900/10">
           <Disclosure
-            as="div"
             v-for="faq in faqs"
             :key="faq.question"
-            class="pt-6"
             v-slot="{ open }"
+            as="div"
+            class="pt-6"
           >
             <dt>
               <DisclosureButton
@@ -23,10 +23,10 @@
                 <span class="ml-6 flex h-7 items-center">
                   <PlusSmallIcon
                     v-if="!open"
-                    class="h-6 w-6"
                     aria-hidden="true"
+                    class="h-6 w-6"
                   />
-                  <MinusSmallIcon v-else class="h-6 w-6" aria-hidden="true" />
+                  <MinusSmallIcon v-else aria-hidden="true" class="h-6 w-6" />
                 </span>
               </DisclosureButton>
             </dt>
@@ -41,42 +41,51 @@
 </template>
 
 <script lang="ts">
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/vue/24/outline'
-import { defineComponent } from 'vue'
-const config = useRuntimeConfig()
-const HYGRAPH_ENDPOINT = config.public.hygraph_endpoint as string
-import { request } from 'graphql-request'
-import { getFaqs } from '../components/FAQS/queries'
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
+import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/vue/24/outline";
+import { defineComponent } from "vue";
+import { request } from "graphql-request";
+import { getFaqs } from "../components/FAQS/queries";
+
+const config = useRuntimeConfig();
+const HYGRAPH_ENDPOINT = config.public.hygraph_endpoint as string;
 
 export default defineComponent<{
-  faqs: { question: string; answer: string }[]
+  faqs: { question: string; answer: string }[];
 }>({
-  name: 'Faqs',
+  name: "Faqs",
   data() {
     return {
-      faqs: []
-    }
+      faqs: [],
+    };
   },
   components: {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
     MinusSmallIcon,
-    PlusSmallIcon
+    PlusSmallIcon,
   },
   async created() {
     const getFAQs = async () => {
-      const data = request(HYGRAPH_ENDPOINT, getFaqs) as Promise<{ faqses: [] }>
-      return (await data).faqses
-    }
-    this.faqs = await getFAQs()
-  }
-})
+      const data = request(HYGRAPH_ENDPOINT, getFaqs) as Promise<{
+        faqses: [];
+      }>;
+      return (await data).faqses;
+    };
+    this.faqs = await getFAQs();
+  },
+});
 
 useSeoMeta({
-  title: 'FAQS | Practice Med',
+  title: "FAQS | Practice Med",
   description:
-    'Do you have any question regarding AMC MCQ mock test or our platform in general?'
-})
+    "Our FAQ page is designed to answer your common questions about our AMC MCQ mock tests.",
+  ogTitle: "PracticeMed - FAQS - AMC mock tests",
+  ogDescription: "Providing amc mcq mock tests with detailed feedback.",
+  ogImage:
+    "https://res.cloudinary.com/dxuf2ssx6/image/upload/c_scale,w_1200/v1682630656/practiceMed/Illustrations/hero_image.png",
+  ogUrl: "https://practicemed.org",
+  ogType: "website",
+});
 </script>

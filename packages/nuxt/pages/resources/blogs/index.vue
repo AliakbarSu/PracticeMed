@@ -17,19 +17,21 @@
             class="flex max-w-xl flex-col items-start justify-between"
           >
             <div class="flex items-center gap-x-4 text-xs">
-              <time :datetime="post.publishedOn" class="text-gray-500">{{
-                new Date(post.publishedOn).toLocaleDateString('en-CA', {
-                  month: 'long',
-                  year: 'numeric',
-                  day: 'numeric'
-                })
-              }}</time>
+              <time :datetime="post.publishedOn" class="text-gray-500"
+                >{{
+                  new Date(post.publishedOn).toLocaleDateString("en-CA", {
+                    month: "long",
+                    year: "numeric",
+                    day: "numeric",
+                  })
+                }}
+              </time>
               <NuxtLink
-                as="as"
                 :href="`/resources/blogs/${post.slug}`"
+                as="as"
                 class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
-                >{{ post.topic }}</NuxtLink
-              >
+                >{{ post.topic }}
+              </NuxtLink>
             </div>
             <div class="group relative">
               <h3
@@ -68,31 +70,37 @@
   </div>
 </template>
 
-<script setup lang="ts">
-const { data, pending, error, refresh } = await useFetch(`/api/blogs`)
+<script lang="ts" setup>
+const { data, pending } = await useFetch(`/api/blogs`);
 
 useSeoMeta({
   title:
-    'Resource about how to prepare and pass your AMC MCQ exam | Practice Med',
+    "Resource about how to prepare and pass your AMC MCQ exam | Practice Med",
   description:
-    'Resrouces to prepare for your medical licensing exam including AMC MCQ'
-})
+    "Resrouces to prepare for your medical licensing exam including AMC MCQ",
+  ogTitle: "PracticeMed - Blogs - Resources about AMC mcq exam",
+  ogDescription: "Providing amc mcq mock tests with detailed feedback.",
+  ogImage:
+    "https://res.cloudinary.com/dxuf2ssx6/image/upload/c_scale,w_1200/v1682630656/practiceMed/Illustrations/hero_image.png",
+  ogUrl: "https://practicemed.org",
+  ogType: "website",
+});
 
 const tabs = ref([
   {
-    name: 'Blogs',
-    current: true
+    name: "Blogs",
+    current: true,
   },
   {
-    name: 'Videos',
-    current: false
-  }
-])
+    name: "Videos",
+    current: false,
+  },
+]);
 
 const setActiveTab = (tab: string) => {
   tabs.value = tabs.value.map((t) => ({
     ...t,
-    current: t.name === tab
-  }))
-}
+    current: t.name === tab,
+  }));
+};
 </script>
