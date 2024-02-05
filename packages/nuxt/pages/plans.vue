@@ -3,9 +3,14 @@
 </template>
 
 <script lang="ts" setup>
+import { usePlansStore } from "../src/store/plans";
+
 definePageMeta({
-  middleware: ["fetch-plans"],
+  // middleware: ["fetch-plans"],
 });
+
+const plans = usePlansStore();
+await plans.fetchPlans();
 
 useSeoMeta({
   title: "AMC MCQ mock tests | Practice Med",

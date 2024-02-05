@@ -177,7 +177,9 @@ export const useTestStore = defineStore("test", () => {
     if (!test.value) return;
     test.value.questions = [
       ...test.value.questions,
-      ...(questions.value.slice(testStarted.value ? 11 : 0) as QuestionInProgress[]),
+      ...(questions.value.slice(
+        testStarted.value ? 12 : 0,
+      ) as QuestionInProgress[]),
     ];
   };
 

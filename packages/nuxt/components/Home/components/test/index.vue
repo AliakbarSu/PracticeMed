@@ -12,7 +12,9 @@
       </p>
     </div>
     <HomeComponentsTestViewResultsRedirect :test-id="testStore.resultId" />
-    <TestComponentsUILoadingSkeleton v-if="UIStore.test.loading" />
+    <TestComponentsUILoadingSkeleton
+      v-if="!neesToUpgrade && UIStore.test.loading"
+    />
     <HomeComponentsTestSignupMessage v-if="needToSignup" />
     <HomeComponentsTestSignupModal v-if="needToSignup" />
     <HomeComponentsTestUpgradeMessage v-if="neesToUpgrade" />
