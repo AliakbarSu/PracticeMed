@@ -6,7 +6,7 @@ export const useUIStore = defineStore("ui", () => {
   const test = reactive({ loading: false });
   const tests = reactive({ loading: false, loaded: false });
   const testsHistory = reactive({ loading: false, loaded: false });
-  const signupModal = ref(false);
+  const signupModal = ref(true);
   const $reset = () => {
     error.value = null;
     test.loading = false;

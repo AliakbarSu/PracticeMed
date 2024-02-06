@@ -176,14 +176,15 @@ export const useTestStore = defineStore("test", () => {
 
   const setDemoQuestions = () => {
     setQuestions(
-      (test?.value?.questions || []).slice(0, 11) as QuestionInProgress[],
+      (test?.value?.questions || []).slice(0, 10) as QuestionInProgress[],
     );
   };
 
   const setAllQuestions = () => {
+    const loadedQuestions = questions.value;
     setQuestions([
-      ...(test?.value?.questions || []),
-      ...(questions.value || []).slice(state.started ? 12 : 0),
+      ...loadedQuestions,
+      ...(test?.value?.questions || []).slice(loadedQuestions.length ? 10 : 0),
     ] as QuestionInProgress[]);
   };
 
@@ -281,6 +282,7 @@ export const useTestStore = defineStore("test", () => {
     selectedOption,
     test,
     question,
+    questions,
     instructions,
     hasTestsRemaning,
     loading,

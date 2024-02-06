@@ -16,7 +16,7 @@
       </p>
     </div>
     <HomeComponentsTestViewResultsRedirect :test-id="testStore.resultId" />
-    <div v-if="testStore.loading" class="w-full">
+    <div v-if="testStore.loading && !needToSignup" class="w-full">
       <TestComponentsUILoadingSkeleton />
     </div>
     <HomeComponentsTestSignupMessage v-if="needToSignup" />
@@ -134,21 +134,31 @@ onBeforeUnmount(() => {
   }
 });
 
-watchEffect(async () => {
-  if (authStore.isAuthenticated && testStore.test) {
-    testStore.setAllQuestions();
-    testStore.demoMode = false;
-  } else {
-    testStore.setDemoQuestions();
-  }
-  if (testStore.state.started) {
-    testStore.resume();
-  }
-});
+watch(
+  [() => authStore.isAuthenticated, () => testStore.test?.questions],
+  async ([isAuth, questions]) => {
+    if (isAuth && questions) {
+      testStore.setAllQuestions();
+      testStore.demoMode = false;
+    } else if (questions) {
+      testStore.setDemoQuestions();
+    }
+    if (testStore.state.started) {
+      testStore.resume();
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 
-watchEffect(() => {
-  if (needToSignup.value && testStore.state.started) {
-    testStore.pause();
-  }
-});
+watch(
+  [() => needToSignup.value, () => testStore.state.started],
+  ([signup, started]) => {
+    if (signup && started) {
+      testStore.pause();
+    }
+  },
+  { immediate: true },
+);
 </script>
