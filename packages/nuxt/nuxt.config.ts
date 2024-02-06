@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     "/resources/amc/prepare-from-scratch": {
       redirect: "/resources/blogs/how-to-prepare-for-the-amc-mcq-examination",
     },
+    "/resources/amc/prepare": {
+      redirect: "/resources/blogs/how-to-prepare-for-the-amc-mcq-examination",
+    },
     "/resources/amc/find-job": {
       redirect:
         "/resources/blogs/securing-employment-in-australia-after-successfully-passing-the-amc-mcq-exam",
