@@ -7,10 +7,10 @@
       >
         <span class="sr-only">Open user menu</span>
         <img
-          class="h-8 w-8 rounded-full"
           :class="{ 'border-2 border-red-500': isAdmin }"
           :src="(user as any)?.picture"
           alt=""
+          class="h-8 w-8 rounded-full"
         />
       </MenuButton>
     </div>
@@ -26,37 +26,36 @@
         class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       >
         <MenuItem v-slot="{ active }">
-          <a
-            href="#"
-            @click="goTo('/account')"
+          <NuxtLink
             :class="[
               active ? 'bg-gray-100' : '',
-              'block px-4 py-2 text-sm text-gray-700'
+              'block px-4 py-2 text-sm text-gray-700',
             ]"
-            >Settings</a
-          >
+            to="/account"
+            >Settings
+          </NuxtLink>
         </MenuItem>
         <MenuItem v-slot="{ active }">
           <a
-            href="#"
             :class="[
               active ? 'bg-gray-100' : '',
-              'block px-4 py-2 text-sm text-gray-700'
+              'block px-4 py-2 text-sm text-gray-700',
             ]"
+            href="#"
             @click="logoutFromApp"
             >Sign out</a
           >
         </MenuItem>
         <MenuItem v-if="isAdmin" v-slot="{ active }">
-          <a
-            href="#"
-            @click="goTo('/admin')"
+          <NuxtLink
             :class="[
               active ? 'bg-gray-100' : '',
-              'block px-4 py-2 text-sm text-gray-700'
+              'block px-4 py-2 text-sm text-gray-700',
             ]"
-            >Admin Panel</a
-          >
+            as="a"
+            to="/admin"
+            >Admin Panel
+          </NuxtLink>
         </MenuItem>
       </MenuItems>
     </transition>
@@ -64,23 +63,23 @@
 </template>
 
 <script lang="ts" setup>
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../../../../src/store/auth'
-import { useAppStore } from '../../../../src/store/main'
-import { logout } from '../../../../src/auth/index'
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../../../../src/store/auth";
+import { useAppStore } from "../../../../src/store/main";
+import { logout } from "../../../../src/auth/index";
 
-const router = useRouter()
-const authStore = useAuthStore()
-const appStore = useAppStore()
+const router = useRouter();
+const authStore = useAuthStore();
+const appStore = useAppStore();
 
-const user = computed(() => authStore.user)
-const isAdmin = computed(() => appStore.isAdmin)
+const user = computed(() => authStore.user);
+const isAdmin = computed(() => appStore.isAdmin);
 
 const logoutFromApp = async () => {
-  await logout()
-}
+  await logout();
+};
 const goTo = (link: string) => {
-  router.push(link)
-}
+  router.push(link);
+};
 </script>

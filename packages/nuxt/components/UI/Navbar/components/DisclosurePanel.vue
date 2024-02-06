@@ -73,12 +73,14 @@
         </button>
       </div>
       <div class="mt-3 space-y-1">
-        <DisclosureButton
-          as="a"
-          class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
-          href="#"
-          @click="goTo('/account')"
-          >Settings
+        <DisclosureButton as="div">
+          <NuxtLink
+            as="a"
+            class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
+            to="/account"
+          >
+            Settings
+          </NuxtLink>
         </DisclosureButton>
         <DisclosureButton
           as="a"
@@ -89,9 +91,9 @@
         </DisclosureButton>
         <DisclosureButton v-if="isAdmin" as="div">
           <NuxtLink
+            as="a"
             class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
             to="/admin"
-            type="a"
           >
             Admin Panel
           </NuxtLink>
