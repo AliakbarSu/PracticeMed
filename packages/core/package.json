@@ -15,7 +15,11 @@
     "vitest": "^0.29.8"
   },
   "dependencies": {
-    "@sendgrid/mail": "^7.7.0",
+    "@react-email/button": "^0.0.13",
+    "@react-email/components": "^0.0.14",
+    "@react-email/html": "^0.0.7",
+    "@react-email/render": "^0.0.12",
+    "@sendgrid/mail": "^8.1.0",
     "auth0": "^3.3.0",
     "chatgpt": "^5.2.5",
     "graphql-request": "^6.1.0",
