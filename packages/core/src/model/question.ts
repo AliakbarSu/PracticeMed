@@ -1,23 +1,28 @@
-import * as mongodb from 'mongodb'
-import { Config } from 'sst/node/config'
-import { QuestionObject } from '../../types/Question'
+import * as mongodb from "mongodb";
+import { Config } from "sst/node/config";
+import { QuestionObject } from "../../types/Question";
 
-const MongoClient = mongodb.MongoClient
-let cachedDb: any = null
+const MongoClient = mongodb.MongoClient;
+let cachedDb: any = null;
 
 async function connectToDatabase() {
   if (cachedDb) {
-    return cachedDb
+    return cachedDb;
   }
-  const client = await MongoClient.connect(Config.MONGODB_URI)
-  cachedDb = await client.db('Questions')
-  return cachedDb
+  const client = await MongoClient.connect(Config.MONGODB_URI);
+  cachedDb = await client.db("Questions");
+  return cachedDb;
 }
 
 export const getQuestions = async (
-  type = 'amc',
-  limit = 100
+  type = "amc",
+  limit = 100,
+  filters: any = {},
 ): Promise<QuestionObject[]> => {
-  const db = await connectToDatabase()
-  return db.collection('questions').find().limit(limit).toArray()
-}
+  const db = await connectToDatabase();
+  return db
+    .collection("questions")
+    .find({ type: type.toLowerCase(), available: true, ...filters })
+    .limit(limit)
+    .toArray();
+};
