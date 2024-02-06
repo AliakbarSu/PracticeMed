@@ -16,9 +16,9 @@
       </p>
     </div>
     <HomeComponentsTestViewResultsRedirect :test-id="testStore.resultId" />
-    <TestComponentsUILoadingSkeleton
-      v-if="!needsToUpgrade && UIStore.test.loading"
-    />
+    <div v-if="testStore.loading" class="w-full">
+      <TestComponentsUILoadingSkeleton />
+    </div>
     <HomeComponentsTestSignupMessage v-if="needToSignup" />
     <HomeComponentsTestSignupModal v-if="needToSignup" />
     <HomeComponentsTestUpgradeMessage v-if="needsToUpgrade" />
@@ -31,7 +31,10 @@
       v-if="flags.selectOption"
       @cancel="flags.selectOption = false"
     />
-    <div v-if="displayTestConsole && !needsToUpgrade" class="content max-w-7xl">
+    <div
+      v-if="displayTestConsole && !needsToUpgrade"
+      class="content max-w-7xl mt-3"
+    >
       <TestProgressBar :percent="testStore.timeElapsed" :value="remainedTime" />
       <div class="mt-6 overflow-hidden rounded-lg bg-white shadow">
         <div ref="questionRef" class="px-4 py-5 sm:p-6">
@@ -59,7 +62,6 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useTestStore } from "../../../../src/store/test";
 import { useAppStore } from "../../../../src/store/main";
 import { useAuthStore } from "../../../../src/store/auth";
-import { useUIStore } from "../../../../src/store/UI";
 import { usePlansStore } from "../../../../src/store/plans";
 
 export interface Flags {
@@ -82,7 +84,6 @@ const flags = reactive({
 const testStore = useTestStore();
 const appStore = useAppStore();
 const authStore = useAuthStore();
-const UIStore = useUIStore();
 const planStore = usePlansStore();
 
 onMounted(async () => {

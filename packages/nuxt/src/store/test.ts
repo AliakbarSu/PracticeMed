@@ -135,7 +135,6 @@ export const useTestStore = defineStore("test", () => {
 
   const fetchTest = async (api: () => Promise<Test | null>) => {
     try {
-      UIStore.startLoadingTest();
       loading.value = true;
       const result = await api();
       if (!result) {
@@ -153,7 +152,6 @@ export const useTestStore = defineStore("test", () => {
       }
     } finally {
       loading.value = false;
-      UIStore.stopLoadingTest();
     }
   };
 
