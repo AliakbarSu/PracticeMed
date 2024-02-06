@@ -183,7 +183,7 @@ export const useTestStore = defineStore("test", () => {
   const setAllQuestions = () => {
     setQuestions([
       ...(test?.value?.questions || []),
-      ...(questions.value || []).slice(state.started ? 12 : 0, 30),
+      ...(questions.value || []).slice(state.started ? 12 : 0),
     ] as QuestionInProgress[]);
   };
 

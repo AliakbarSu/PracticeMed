@@ -23,7 +23,7 @@ export const getTest = async (id: string, trial: boolean = false) => {
   const response = await query(getTestQuery, { id });
   const parsed = await response.json();
   const loadedTest = (parsed as { data: { test: Examination } }).data.test;
-  const questionLimit = trial ? 30 : loadedTest.questionsNumber;
+  const questionLimit = loadedTest.questionsNumber;
   const questions = await getQuestions(loadedTest.type, questionLimit, {
     demo: loadedTest.demo,
   });
