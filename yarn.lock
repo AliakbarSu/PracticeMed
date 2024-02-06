@@ -14631,6 +14631,11 @@ vue-template-compiler@^2.7.14:
     de-indent "^1.0.2"
     he "^1.2.0"
 
+vue-timer-hook@^1.0.84:
+  version "1.0.84"
+  resolved "https://registry.yarnpkg.com/vue-timer-hook/-/vue-timer-hook-1.0.84.tgz#96acd9a74297bd003ffb6983a5c660bc8260cee4"
+  integrity sha512-OcHWYO8WD/XcGHdEqMkBI1Vj8m+OnXONrcmZvLcL3Gc6Js5LEs3UJ0eg1akVjNB0cXHishEmrmrhK7PZ+iULww==
+
 vue-tsc@^1.2.0:
   version "1.8.27"
   resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-1.8.27.tgz#feb2bb1eef9be28017bb9e95e2bbd1ebdd48481c"

@@ -7,30 +7,30 @@
         <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8 rounded-l-md">
           <p class="mt-2 flex items-baseline gap-x-2">
             <span class="text-4xl font-semibold tracking-tight text-white">{{
-              time.h
+              time.hours
             }}</span>
             <span class="text-sm text-gray-400">{{
-              plural(time.h, 'Hour')
+              plural(time.hours, "Hour")
             }}</span>
           </p>
         </div>
         <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
           <p class="mt-2 flex items-baseline gap-x-2">
             <span class="text-4xl font-semibold tracking-tight text-white">{{
-              time.m
+              time.minutes
             }}</span>
             <span class="text-sm text-gray-400">{{
-              plural(time.m, 'Minute')
+              plural(time.minutes, "Minute")
             }}</span>
           </p>
         </div>
         <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8 rounded-r-md">
           <p class="mt-2 flex items-baseline gap-x-2">
             <span class="text-4xl font-semibold tracking-tight text-white">{{
-              time.s
+              time.seconds
             }}</span>
             <span class="text-sm text-gray-400">{{
-              plural(time.s, 'Second')
+              plural(time.seconds, "Second")
             }}</span>
           </p>
         </div>
@@ -39,19 +39,16 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  props: ['time'],
-  methods: {
-    plural(time: number, word: string) {
-      return time > 1 ? word + 's' : word
-    }
-  }
-}
-</script>
+<script lang="ts" setup>
+const { time } = defineProps<{
+  time: {
+    hours: number;
+    minutes: number;
+    seconds: number;
+  };
+}>();
 
-<style scoped>
-.time-display-container {
-  padding: 10px 0;
-}
-</style>
+const plural = (time: number, word: string) => {
+  return time > 1 ? word + "s" : word;
+};
+</script>

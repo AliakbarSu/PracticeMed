@@ -1,10 +1,10 @@
 <template>
   <div>
     <TestComponentsAlertsReadyToSubmit
-      @submit="testStore.submit"
       v-if="alerts.readyToSubmit"
+      :submitting="state.submitting"
       @cancel="cancelAlert('readyToSubmit')"
-      :submitting="submitting"
+      @submit="testStore.submit"
     />
     <TestComponentsAlertsSelectOption
       v-if="alerts.selectOption"
@@ -12,53 +12,53 @@
     />
     <TestComponentsAlertsTimeOver
       v-if="alerts.timeOver"
-      :submitting="submitting"
+      :submitting="state.submitting"
       @cancel="cancelAlert('timeOver')"
       @view="viewResults"
     />
     <div class="test mb-12 p-2">
       <TestComponentsUILoadingSkeleton v-if="loading" />
       <TestComponentsInstructions
-        v-if="!loading && hasTestsRemaning && !testStarted"
-        @start="start"
+        v-if="!loading && hasTestsRemaning && !state.started"
         :test="test"
+        @start="start"
       />
       <TestComponentsUICTAUpgradeCTA v-if="!hasTestsRemaning" />
       <TestComponentsUICTAUpgradeCTA
         v-if="alerts.upgrade"
-        :goBack="false"
-        heading="Unlock Unlimited Access with Our Premium Plan!"
+        :go-back="false"
         description="Congratulations on completing the preview test! To gain access to the full range of tests and elevate your learning experience, upgrade to our Premium Plan now."
+        heading="Unlock Unlimited Access with Our Premium Plan!"
       />
-      <div class="content" v-if="testStarted && !alerts.upgrade && !loading">
+      <div v-if="state.started && !alerts.upgrade && !loading" class="content">
         <div class="overflow-hidden rounded-lg bg-white shadow">
           <div class="px-4 py-5 sm:p-6">
-            <TestComponentsUITimeDisplay :time="timeRemained" />
-            <TestComponentsUITimeProgressBar :timeElapsed="timeElapsed" />
+            <TestComponentsUITimeDisplay :time="timer" />
+            <TestComponentsUITimeProgressBar :value="timeElapsed" />
           </div>
         </div>
 
         <div class="mt-6 overflow-hidden rounded-lg bg-white shadow">
-          <div class="px-4 py-5 sm:p-6" ref="questionRef">
+          <div ref="questionRef" class="px-4 py-5 sm:p-6">
             <TestComponentsUIQuestion :question="question" />
             <TestComponentsUIExplanation
               :text="question.correct_option_explanation"
             />
             <!-- <CircularTimer/> -->
             <TestComponentsUIOptions
-              @select="testStore.select"
               :options="question.options"
+              @select="testStore.select"
             />
           </div>
         </div>
         <TestComponentsUIQuestionControls
-          :canEnd="true"
-          :submitting="testStore.submitting"
-          :canSkip="!question.skipped"
+          :can-end="true"
+          :can-skip="!question.skipped"
+          :submitting="testStore.state.submitting"
+          class="mr-12"
+          @end="endTestAlert"
           @next="next"
           @skip="testStore.skip"
-          @end="endTestAlert"
-          class="mr-12"
         />
       </div>
     </div>
@@ -66,99 +66,95 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useTestStore } from '../../src/store/test'
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
+import { reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useTestStore } from "../../src/store/test";
+import { storeToRefs } from "pinia";
 
 export interface Alerts {
-  timeOver: boolean
-  selectOption: boolean
-  readyToSubmit: boolean
-  upgrade: boolean
+  timeOver: boolean;
+  selectOption: boolean;
+  readyToSubmit: boolean;
+  upgrade: boolean;
 }
-const questionRef = ref<HTMLButtonElement | null>(null)
-const router = useRouter()
-const route = useRoute()
 
-const testStore = useTestStore()
+const questionRef = ref<HTMLButtonElement | null>(null);
+const router = useRouter();
+const route = useRoute();
+
+const testStore = useTestStore();
 
 const {
   timeElapsed,
-  timeRemained,
-  submitting,
+  timer,
   loading,
   question,
   test,
-  testStarted,
   hasTestsRemaning,
   isTimeOver,
   previewMode,
-  testEnded,
   selectedOption,
-  resultId
-} = storeToRefs(testStore)
+  resultId,
+  state,
+} = storeToRefs(testStore);
 
 const alerts = reactive({
   timeOver: false,
   selectOption: false,
   readyToSubmit: false,
   endTest: false,
-  upgrade: false
-} as Alerts)
+  upgrade: false,
+} as Alerts);
 
-const testId = (route.params.id as string) || ''
-const preview = route.query.preview === 'true'
+const testId = (route.params.id as string) || "";
+const preview = route.query.preview === "true";
 if (preview) {
-  testStore.loadDemoTest()
+  testStore.loadDemoTest();
 } else {
-  testStore.loadTest(testId)
+  testStore.loadTest(testId);
 }
 
 const setAlert = (key: keyof Alerts) => {
-  alerts[key] = true
-}
+  alerts[key] = true;
+};
 const cancelAlert = (key: keyof Alerts) => {
-  alerts[key] = false
-}
+  alerts[key] = false;
+};
 const viewResults = () => {
-  router.push(`/results/${resultId.value}`)
-}
+  router.push(`/results/${resultId.value}`);
+};
 const endTestAlert = () => {
-  setAlert('readyToSubmit')
-}
+  setAlert("readyToSubmit");
+};
 
 const start = () => {
-  testStore.start()
-}
+  testStore.start();
+};
 
 const next = () => {
   if (selectedOption.value == null) {
-    setAlert('selectOption')
+    setAlert("selectOption");
   } else {
-    testStore.next()
-    questionRef.value?.scrollIntoView({ behavior: 'smooth' })
+    testStore.next();
+    questionRef.value?.scrollIntoView({ behavior: "smooth" });
   }
-}
+};
 
-watch(isTimeOver, () => {
-  if (isTimeOver && !previewMode.value) {
-    setAlert('timeOver')
-  } else if (isTimeOver && !previewMode.value) {
-    setAlert('upgrade')
+watchEffect(() => {
+  if (isTimeOver.value && !previewMode.value) {
+    setAlert("timeOver");
   }
-})
+});
 
-watch(testEnded, () => {
-  if (testEnded.value && previewMode.value) {
-    setAlert('upgrade')
+watchEffect(() => {
+  if (state.value.ended && previewMode.value) {
+    // setAlert("upgrade");
   }
-})
+});
 
-watch(resultId, () => {
+watchEffect(() => {
   if (resultId.value) {
-    viewResults()
+    viewResults();
   }
-})
+});
 </script>

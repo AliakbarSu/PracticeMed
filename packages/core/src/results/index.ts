@@ -149,7 +149,7 @@ export const saveOrUpdateTestResult = async ({
   );
 
   if (!updated_tests_history.find((test) => test.id == raw_result?.id)) {
-    updated_tests_history.push(result);
+    updated_tests_history.push(raw_result);
   }
 
   if (!updated_tests.find((test) => test.id == raw_result?.id)) {

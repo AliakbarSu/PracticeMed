@@ -1,6 +1,6 @@
 <template>
-  <!--  <TransitionRoot :show="open" as="template">-->
-  <!--    <Dialog as="div" class="relative z-10" @close="open = false">-->
+  <!--  <TransitionRoot :show="open && !UIStore.signupModal" as="template">-->
+  <!--    <Dialog as="div" class="relative z-10" @close="close">-->
   <!--      <TransitionChild-->
   <!--        as="template"-->
   <!--        enter="ease-out duration-300"-->
@@ -35,7 +35,7 @@
   <!--                <XCircleIcon-->
   <!--                  aria-hidden="true"-->
   <!--                  class="cursor-pointer h-5 w-5 text-grey"-->
-  <!--                  @click="open = false"-->
+  <!--                  @click="close"-->
   <!--                />-->
   <!--                <div-->
   <!--                  class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100"-->
@@ -79,20 +79,42 @@
   <!--  </TransitionRoot>-->
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { useUIStore } from "../../../../src/store/UI";
 import { signupWithPopup } from "../../../../src/auth";
+// import {
+//   Dialog,
+//   DialogPanel,
+//   DialogTitle,
+//   TransitionChild,
+//   TransitionRoot,
+// } from "@headlessui/vue";
+
+// import { UserIcon, XCircleIcon } from "@heroicons/vue/24/outline";
 
 // const open = ref(true);
+const UIStore = useUIStore();
 
-await signupWithPopup();
+// const close = () => {
+//   // open.value = false;
+//   UIStore.signupModal = true;
+// };
 
 // const signin = async () => {
-//   await loginWithPop();
-//   open.value = false;
+//   await loginWithRedirect();
+//   // open.value = false;
 // };
-//
+
+try {
+  if (UIStore.signupModal) {
+    await signupWithPopup();
+  }
+} finally {
+  UIStore.signupModal = false;
+}
+
 // const signup = async () => {
-//   await createAccount();
+//   await signupWithPopup
 //   open.value = false;
 // };
 </script>

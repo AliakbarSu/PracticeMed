@@ -14,6 +14,7 @@ export interface Test {
   type: string;
   instructions: string;
   timeLimit: number;
+  demo: false;
 }
 
 export interface TestHistory extends Test {

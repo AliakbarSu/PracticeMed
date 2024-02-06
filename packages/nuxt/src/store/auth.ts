@@ -8,10 +8,6 @@ export const useAuthStore = defineStore("auth", () => {
 
   const auth0 = process.client ? useAuth0() : undefined;
 
-  const isAuth = computed(() => {
-    return auth0?.isAuthenticated.value;
-  });
-
   const isAuthenticated = computed(() => token.value !== null);
 
   const $reset = () => {
@@ -27,20 +23,16 @@ export const useAuthStore = defineStore("auth", () => {
     user.value = usr;
   };
 
-  watch(
-    () => isAuth.value,
-    async (isAuth) => {
-      if (isAuth) {
-        const token = await auth0?.getAccessTokenSilently();
-        const user = auth0?.user.value;
-        setToken(token);
-        setUser(user);
-      } else {
-        $reset();
-      }
-    },
-    { immediate: true },
-  );
+  watchEffect(async () => {
+    if (auth0?.isAuthenticated.value) {
+      const token = await auth0?.getAccessTokenSilently();
+      const user = auth0?.user.value;
+      setToken(token);
+      setUser(user);
+    } else {
+      $reset();
+    }
+  });
 
   return {
     isAuthenticated,

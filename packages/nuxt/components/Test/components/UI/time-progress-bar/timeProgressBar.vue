@@ -9,12 +9,12 @@
 <template>
   <div>
     <h4 class="sr-only">Status</h4>
-    <div class="mt-6" aria-hidden="true">
+    <div aria-hidden="true" class="mt-6">
       <div class="overflow-hidden rounded-full bg-gray-200">
         <div
-          class="h-2 rounded-full"
           :class="[barColor]"
-          :style="{ width: `${time}%` }"
+          :style="{ width: `${value}%` }"
+          class="h-2 rounded-full"
         />
       </div>
       <div
@@ -29,22 +29,16 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  props: ['timeElapsed'],
-  computed: {
-    time() {
-      return this.timeElapsed
-    },
-    barColor() {
-      if (this.timeElapsed > 50) {
-        return 'bg-green-600'
-      } else if (this.timeElapsed > 30) {
-        return 'bg-amber-600'
-      } else {
-        return 'bg-red-600'
-      }
-    }
+<script lang="ts" setup>
+const { value } = defineProps<{ value: number }>();
+
+const barColor = computed(() => {
+  if (value > 50) {
+    return "bg-green-600";
+  } else if (value > 30) {
+    return "bg-amber-600";
+  } else {
+    return "bg-red-600";
   }
-}
+});
 </script>
