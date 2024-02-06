@@ -12,10 +12,10 @@
         >
           <a href="https://www.facebook.com/100092378290520" target="_blank"
             ><img
-              src="https://seeklogo.com/images/F/facebook-icon-circle-logo-09F32F61FF-seeklogo.com.png"
               alt="Facebook"
-              width="100"
               height="100"
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_10/v1707201491/practiceMed/logos/facebook-icon-circle-logo-09F32F61FF-seeklogo.com.png"
+              width="100"
           /></a>
         </div>
         <div
@@ -23,10 +23,10 @@
         >
           <a href="https://t.me/+gyl8HWgKBZs2MWJh" target="_blank"
             ><img
-              src="https://www.freepnglogos.com/uploads/telegram-png/telegram-software-wikipedia-2.png"
               alt="Telegram"
-              width="100"
               height="100"
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_10/v1707201492/practiceMed/logos/telegram-software-wikipedia-2.png"
+              width="100"
           /></a>
         </div>
         <div
@@ -34,10 +34,10 @@
         >
           <a href="https://www.youtube.com/@practicemed" target="_blank"
             ><img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/YouTube_social_red_circle_%282017%29.svg/2048px-YouTube_social_red_circle_%282017%29.svg.png"
               alt="Youtube"
-              width="100"
               height="100"
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/q_10/v1707201492/practiceMed/logos/YouTube_social_red_circle__2017_.svg.png"
+              width="100"
           /></a>
         </div>
       </div>
