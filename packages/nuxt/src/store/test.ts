@@ -44,6 +44,7 @@ export const useTestStore = defineStore("test", () => {
   const hasTestsRemaning = ref(true);
   const test = ref<Test | null>(null);
   const questions = ref<Question[]>([]);
+  const questionNumber = ref(0);
   const resultId = ref<string | null>(null);
   const skippedQuestions = ref<QuestionInProgress[]>([]);
   const state = reactive<{
@@ -97,7 +98,6 @@ export const useTestStore = defineStore("test", () => {
     loading.value = false;
   };
 
-  const questionNumber = computed(() => questionIndexes.current + 1);
   const isLastQuestion = computed(
     () => questionIndexes.last == questionIndexes.current,
   );
@@ -208,6 +208,7 @@ export const useTestStore = defineStore("test", () => {
     };
     submittedAnswers.value = [...submittedAnswers.value, submittedAnswer];
     openedAt.value = new Date().getTime();
+    questionNumber.value += 1;
     nextQuestion();
   };
 
@@ -216,8 +217,9 @@ export const useTestStore = defineStore("test", () => {
     selectedOption.value = null;
     if (isLastQuestion.value) {
       if (skippedQuestions.value.length > 0) {
-        questionIndexes.current = 0;
         questions.value = [...skippedQuestions.value];
+        questionIndexes.last = skippedQuestions.value.length - 1;
+        questionIndexes.current = 0;
         skippedQuestions.value = [];
       } else {
         submit();
