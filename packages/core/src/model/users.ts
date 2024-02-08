@@ -45,6 +45,7 @@ export const addUser = async (userId: string, email: string): Promise<User> => {
       used: 0,
     },
     tests: [],
+    results: [],
     tests_history: [],
     roles: [],
   };
