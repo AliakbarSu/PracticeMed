@@ -23,7 +23,7 @@ export const useAppStore = defineStore("app", () => {
   }
 
   const canTryMockTest = computed(
-    () => !profile?.value?.results?.some((test) => test.id == "jj"),
+    () => !profile?.value?.results?.some((test) => test.demo),
   );
 
   const isAdmin = computed(() =>
