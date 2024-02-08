@@ -1,18 +1,10 @@
 import type { Test } from "@/types/test";
-import {
-  type Profile,
-  type RolesEnum,
-  type UserAppMetadata,
-} from "@/types/user";
+import type { Results } from "@/types/results";
+import { type Profile, type RolesEnum } from "@/types/user";
 import { defineStore } from "pinia";
 import { useUIStore } from "./UI";
 import { ref } from "vue";
-import {
-  loadPortalLink,
-  loadProfileData,
-  loadTestHistory,
-  loadTests,
-} from "../api/profileApi";
+import { loadPortalLink, loadProfileData, loadTests } from "../api/profileApi";
 
 export const useAppStore = defineStore("app", () => {
   const loading = ref(false);
@@ -20,19 +12,18 @@ export const useAppStore = defineStore("app", () => {
   const profile = ref<Profile | null>(null);
   const portalLink = ref<string | null>(null);
   const portalLinkExpiresIn = ref<number | null>(null);
-  const testsHistory = ref<UserAppMetadata["test_history"]>([]);
+  const results = ref<Results[]>([]);
   const tests = ref<Test[]>([]);
   const UIStore = useUIStore();
 
   function $reset() {
     profile.value = null;
-    testsHistory.value = [];
-    tests.value = [];
+    results.value = [];
     portalLink.value = null;
   }
 
   const canTryMockTest = computed(
-    () => !testsHistory.value.some((test) => test.demo),
+    () => !profile?.value?.results?.some((test) => test.id == "jj"),
   );
 
   const isAdmin = computed(() =>
@@ -42,29 +33,15 @@ export const useAppStore = defineStore("app", () => {
   const fetchProfileData = async () => {
     try {
       loading.value = true;
-      profile.value = await loadProfileData();
+      const result = await loadProfileData();
+      profile.value = {
+        ...result,
+        results: [...(profile?.value?.results || []), ...result.results],
+      };
     } catch (err) {
       error.value = err as Error;
     } finally {
       loading.value = false;
-    }
-  };
-
-  const fetchTestsHistory = async (data?: UserAppMetadata["test_history"]) => {
-    try {
-      UIStore.startLoadingTestsHistory();
-      loading.value = true;
-      if (data) {
-        testsHistory.value = data;
-        return;
-      }
-      testsHistory.value = await loadTestHistory();
-    } catch (err) {
-      error.value = err as Error;
-    } finally {
-      loading.value = false;
-      UIStore.testsHistoryLoaded();
-      UIStore.stopLoadingTestsHistory();
     }
   };
 
@@ -100,12 +77,10 @@ export const useAppStore = defineStore("app", () => {
 
   return {
     fetchProfileData,
-    fetchTestsHistory,
     fetchTests,
     fetchPortalLink,
     portalLinkExpiresIn,
     tests,
-    testsHistory,
     profile,
     loading,
     error,

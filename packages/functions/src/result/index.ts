@@ -28,13 +28,13 @@ export const get_test_result = ApiHandler(async _evt => {
       }
     }
 
-    await saveOrUpdateTestResult({
+    const updated_results = await saveOrUpdateTestResult({
       result: analyzedResult,
-      user_id: result.user_id ? result.user_id : userId,
+      user_id: result.user_id || userId,
       raw_result: result,
     })
     return {
-      body: analyzedResult as unknown as string,
+      body: updated_results as unknown as string,
     }
   } catch (err) {
     console.log(err)

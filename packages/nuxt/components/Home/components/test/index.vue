@@ -47,6 +47,7 @@
       </div>
       <TestComponentsUIQuestionControls
         :can-skip="!testStore.question.skipped"
+        :disabled="testStore.state.completed"
         :submitting="testStore.state.submitting"
         class="mr-12"
         @end="testStore.submit"
@@ -101,7 +102,7 @@ const needToSignup = computed(
     testStore.state.started,
 );
 const displayTestConsole = computed(
-  () => !testStore.loading && !needToSignup.value,
+  () => !testStore.loading && !needToSignup.value && testStore.question,
 );
 
 const displayMockTest = computed(

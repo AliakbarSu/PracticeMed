@@ -5,15 +5,12 @@ export const useUIStore = defineStore("ui", () => {
   const error = ref<Error | null>(null);
   const test = reactive({ loading: false });
   const tests = reactive({ loading: false, loaded: false });
-  const testsHistory = reactive({ loading: false, loaded: false });
   const signupModal = ref(true);
   const $reset = () => {
     error.value = null;
     test.loading = false;
     tests.loading = false;
     tests.loaded = false;
-    testsHistory.loading = false;
-    testsHistory.loaded = false;
   };
 
   const startLoadingTest = () => {
@@ -32,21 +29,8 @@ export const useUIStore = defineStore("ui", () => {
     tests.loading = false;
   };
 
-  const startLoadingTestsHistory = () => {
-    testsHistory.loading = true;
-    testsHistory.loaded = false;
-  };
-
-  const stopLoadingTestsHistory = () => {
-    testsHistory.loading = false;
-  };
-
   const testsLoaded = () => {
     tests.loaded = true;
-  };
-
-  const testsHistoryLoaded = () => {
-    testsHistory.loaded = true;
   };
 
   return {
@@ -58,10 +42,6 @@ export const useUIStore = defineStore("ui", () => {
     startLoadingTests,
     stopLoadingTests,
     testsLoaded,
-    testsHistoryLoaded,
-    testsHistory,
-    startLoadingTestsHistory,
-    stopLoadingTestsHistory,
     $reset,
     signupModal,
   };

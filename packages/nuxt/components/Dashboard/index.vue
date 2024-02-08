@@ -14,27 +14,27 @@
             v-model="enabled"
             :class="[
               enabled ? 'bg-indigo-600' : 'bg-gray-200',
-              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
             ]"
           >
             <span class="sr-only">Use setting</span>
             <span
-              aria-hidden="true"
               :class="[
                 enabled ? 'translate-x-5' : 'translate-x-0',
-                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
               ]"
+              aria-hidden="true"
             />
           </Switch>
         </p>
       </div>
-      <div class="w-full flex justify-center py-5" v-if="loading">
+      <div v-if="loading" class="w-full flex justify-center py-5">
         <div role="status">
           <svg
             aria-hidden="true"
             class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-            viewBox="0 0 100 101"
             fill="none"
+            viewBox="0 0 100 101"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -51,141 +51,137 @@
       </div>
       <div
         v-if="!loading"
-        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
         :class="{
           'lg:grid-cols-1':
             (previousTests as TestType[]).length <= 0 &&
-            state.currentView === 'history'
+            state.currentView === 'history',
         }"
+        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
       >
-        <DashboardComponentsTest
-          v-if="state.currentView === 'tests'"
-          v-for="test in tests"
-          :key="test.id"
-          :test="test"
-        />
+        <div v-if="state.currentView === 'tests'">
+          <DashboardComponentsTest
+            v-for="test in tests"
+            :key="test.id"
+            :test="test"
+          />
+        </div>
         <DashboardComponentsUICTANoTestHistory
           v-if="
             (previousTests as TestType[]).length <= 0 &&
             state.currentView === 'history'
           "
         />
-        <DashboardComponentsTestHistory
-          v-if="state.currentView === 'history'"
-          v-for="test in previousTests"
-          :key="(test as TestType).id"
-          :test="test"
-        />
+        <div v-if="state.currentView === 'history'">
+          <DashboardComponentsTestHistory
+            v-for="test in previousTests"
+            :key="(test as TestType).id"
+            :test="test"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
-import type { Test as TestType } from '../../src/types/test'
-import { useAppStore } from '../../src/store/main'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
-import { reactive } from 'vue'
-import { useRoute } from 'vue-router'
-import * as Gtag from '../../src/gtag/index'
-import { usePlansStore } from '../../src/store/plans'
-import { useAuthStore } from '../../src/store/auth'
-import { useUIStore } from '../../src/store/UI'
-import { watch } from 'vue'
-import { Switch } from '@headlessui/vue'
+// import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+// import { EllipsisVerticalIcon } from '@heroicons/vue/24/outline'
+import type { Test as TestType } from "../../src/types/test";
+import { useAppStore } from "../../src/store/main";
+import { storeToRefs } from "pinia";
+import { computed, reactive, watch } from "vue";
+import { useRoute } from "vue-router";
+import * as Gtag from "../../src/gtag/index";
+import { usePlansStore } from "../../src/store/plans";
+import { useAuthStore } from "../../src/store/auth";
+import { useUIStore } from "../../src/store/UI";
+import { Switch } from "@headlessui/vue";
 
-const route = useRoute()
-const appStore = useAppStore()
-const plansStore = usePlansStore()
-const authStore = useAuthStore()
-const UIStore = useUIStore()
+const route = useRoute();
+const appStore = useAppStore();
+const plansStore = usePlansStore();
+const authStore = useAuthStore();
+const UIStore = useUIStore();
 
-const { plans } = storeToRefs(plansStore)
+const { plans } = storeToRefs(plansStore);
 
-const { tests, testsHistory } = storeToRefs(appStore)
+const { tests } = storeToRefs(appStore);
 
-const state = reactive<{ currentView: 'tests' | 'history' }>({
-  currentView: 'tests'
-})
+const state = reactive<{ currentView: "tests" | "history" }>({
+  currentView: "tests",
+});
 
-const enabled = ref(false)
+const enabled = ref(false);
 
-const setCurrentView = (view: 'tests' | 'history') => {
-  state.currentView = view
-}
+const setCurrentView = (view: "tests" | "history") => {
+  state.currentView = view;
+};
+
+const testsHistory = computed(() => appStore.profile?.results);
 
 watch(enabled, () => {
   if (enabled.value) {
-    setCurrentView('history')
+    setCurrentView("history");
   } else {
-    setCurrentView('tests')
+    setCurrentView("tests");
   }
-})
+});
 
-const previousTests = computed(() => {
-  return testsHistory.value
-    .map((testHistory) => {
-      const test = tests.value.find(({ id }) => testHistory.test_id === id)
+const previousTests = computed(() =>
+  testsHistory.value
+    ?.map((testHistory) => {
+      const test = tests.value.find(({ id }) => testHistory.test_id == id);
       return test
         ? {
             ...test,
             ...testHistory,
-            id: testHistory.id
+            id: testHistory.id,
           }
-        : null
+        : null;
     })
-    .filter((test) => test) as unknown
-})
+    .filter((test) => test),
+);
 
 watch(plans, () => {
-  const success = !!route.query.success || false
-  const planId = route.query.id || null
-  const freeTrial = route.query.free_trial || false
+  const success = !!route.query.success || false;
+  const planId = route.query.id || null;
+  const freeTrial = route.query.free_trial || false;
   if (success && planId) {
-    const plan = plans.value.find(({ id }) => id === planId)
-    if (!plan) return
+    const plan = plans.value.find(({ id }) => id === planId);
+    if (!plan) return;
     if (freeTrial) {
-      Gtag.purchase(plan, true)
+      Gtag.purchase(plan, true);
     } else {
-      Gtag.purchase(plan)
+      Gtag.purchase(plan);
     }
   }
-})
+});
 
-const loading = computed(() => {
-  return UIStore.tests.loading || UIStore.testsHistory.loading
-})
+const loading = computed(() => UIStore.tests.loading);
 
 watch(
   [
     () => authStore.isAuthenticated,
     () => appStore.tests,
-    () => appStore.testsHistory,
-    () => appStore.loading
+    () => appStore.loading,
   ],
-  ([isAuth, tests, previousTests, loading]) => {
+  ([isAuth, tests, loading]) => {
     if (isAuth && tests.length <= 0 && !loading) {
-      appStore.fetchTests()
-    }
-    if (isAuth && previousTests.length <= 0 && !loading) {
-      appStore.fetchTestsHistory()
+      appStore.fetchTests();
     }
   },
-  { immediate: true }
-)
+  { immediate: true },
+);
 
 useSeoMeta({
-  title: 'Dashboard',
+  title: "Dashboard",
   description:
-    'Track your progress by reviewing previous tests or take a new one.'
-})
+    "Track your progress by reviewing previous tests or take a new one.",
+});
 </script>
 
 <style scoped>
-div[id^='headlessui-menu-items'] {
+div[id^="headlessui-menu-items"] {
   left: 0 !important;
 }
 </style>

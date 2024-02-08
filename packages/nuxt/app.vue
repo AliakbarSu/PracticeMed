@@ -111,7 +111,6 @@ watch(
       store.fetchProfileData();
       store.fetchPortalLink();
       store.fetchTests();
-      store.fetchTestsHistory();
       plansStore.fetchPlans();
     }
   },

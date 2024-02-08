@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useAuthStore } from "../store/auth";
 import type { Answer, SubmittedAnswer, Test } from "@/types/test";
+import type { Results } from "@/types/results";
 
 export const loadTestApi = async (testId: string) => {
   const {
@@ -31,12 +32,12 @@ export const loadDemoTestApi = async () => {
 export const submitTestApi = async (
   testId: string,
   payload: SubmittedAnswer,
-) => {
+): Promise<Results> => {
   const {
     public: { api_endpoint },
   } = useRuntimeConfig();
   const authStore = useAuthStore();
-  const response = await axios.post(
+  const response = await axios.post<{ body: Results }>(
     `${api_endpoint}/test/${testId}/result`,
     payload,
     {
@@ -45,7 +46,7 @@ export const submitTestApi = async (
       },
     },
   );
-  return response.data.body.id as string;
+  return response.data.body;
 };
 
 export const submitAnswerApi = async (payload: Answer, testId?: string) => {

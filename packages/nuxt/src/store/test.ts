@@ -5,6 +5,7 @@ import { computed, ref, watch } from "vue";
 import { useUIStore } from "./UI";
 import { loadDemoTestApi, loadTestApi, submitTestApi } from "../api/testApi";
 import { useTimer } from "vue-timer-hook";
+import { useAppStore } from "./main";
 
 export interface TestInProgress extends Omit<Test, "questions"> {
   questions: QuestionInProgress[];
@@ -24,8 +25,11 @@ export interface QuestionInProgress extends Question {
   isFirst: boolean;
 }
 
+type TestQuestion = Question & { number: number };
+
 export const useTestStore = defineStore("test", () => {
   const UIStore = useUIStore();
+  const appStore = useAppStore();
   const {
     pause: pauseTimer,
     resume: resumeTimer,
@@ -43,8 +47,7 @@ export const useTestStore = defineStore("test", () => {
   const loading = ref(false);
   const hasTestsRemaning = ref(true);
   const test = ref<Test | null>(null);
-  const questions = ref<Question[]>([]);
-  const questionNumber = ref(0);
+  const questions = ref<TestQuestion[]>([]);
   const resultId = ref<string | null>(null);
   const skippedQuestions = ref<QuestionInProgress[]>([]);
   const state = reactive<{
@@ -72,7 +75,6 @@ export const useTestStore = defineStore("test", () => {
   const testDuration = ref(0);
   const instructions = ref<string | null>(null);
   const timeRemained = ref({ h: 0, m: 0, s: 0, mil: 0 });
-  const testEndsIn = ref(0);
   const isTimeOver = ref(false);
   const timer = computed(() => ({
     hours,
@@ -91,7 +93,6 @@ export const useTestStore = defineStore("test", () => {
     openedAt.value = 0;
     instructions.value = null;
     timeRemained.value = { h: 0, m: 0, s: 0, mil: 0 };
-    testEndsIn.value = 0;
     isTimeOver.value = false;
     previewMode.value = false;
     demoMode.value = false;
@@ -115,7 +116,6 @@ export const useTestStore = defineStore("test", () => {
     return currentQuestion
       ? ({
           ...currentQuestion,
-          number: questionNumber.value,
           isFirst: questionIndexes.current === 0,
           isLast,
         } as QuestionInProgress)
@@ -143,7 +143,6 @@ export const useTestStore = defineStore("test", () => {
       }
       test.value = result;
       testDuration.value = test.value.timeLimit * 3.6e6;
-      testEndsIn.value = testDuration.value + new Date().getTime();
     } catch (err: any) {
       UIStore.error = new Error(err as string);
       const statusCode = err.response?.status;
@@ -157,8 +156,8 @@ export const useTestStore = defineStore("test", () => {
 
   const start = () => {
     if (!test.value) return;
-    restartTimer(testEndsIn.value, false);
     const now = new Date().getTime();
+    restartTimer(testDuration.value + now, false);
     state.started_at = now;
     state.started = true;
     questionIndexes.current = 0;
@@ -167,6 +166,8 @@ export const useTestStore = defineStore("test", () => {
   };
 
   const resume = () => {
+    state.ended = false;
+    state.completed = false;
     resumeTimer();
   };
 
@@ -190,7 +191,7 @@ export const useTestStore = defineStore("test", () => {
 
   const setQuestions = (data: QuestionInProgress[]) => {
     if (!test.value) return;
-    questions.value = data;
+    questions.value = data.map((q, i) => ({ ...q, number: i + 1 }));
     questionIndexes.last = data.length - 1;
   };
 
@@ -206,9 +207,13 @@ export const useTestStore = defineStore("test", () => {
       start_at: openedAt.value,
       end_at: new Date().getTime(),
     };
-    submittedAnswers.value = [...submittedAnswers.value, submittedAnswer];
+    const question_already_submitted = submittedAnswers.value.find(
+      (q) => q.question_id === question.value._id,
+    );
+    if (!question_already_submitted) {
+      submittedAnswers.value = [...submittedAnswers.value, submittedAnswer];
+    }
     openedAt.value = new Date().getTime();
-    questionNumber.value += 1;
     nextQuestion();
   };
 
@@ -246,10 +251,10 @@ export const useTestStore = defineStore("test", () => {
           start_at: state.started_at || 0,
           end_at: new Date().getTime(),
         };
-        resultId.value = (await submitTestApi(
-          test.value.id,
-          payload,
-        )) as string;
+        const response = await submitTestApi(test.value.id, payload);
+        appStore.profile?.results.push(response);
+        await Promise.resolve();
+        resultId.value = response.id;
       }
     } catch (err) {
       UIStore.error = new Error(err as string);
@@ -261,10 +266,9 @@ export const useTestStore = defineStore("test", () => {
   };
 
   watch(timeElapsed, async () => {
-    if (timeElapsed.value === 0 && state.started) {
+    if (timeElapsed.value <= 0 && state.started) {
       isTimeOver.value = true;
-      if (!previewMode.value) await submit();
-      state.ended = true;
+      if (!demoMode.value) await submit();
     }
   });
 

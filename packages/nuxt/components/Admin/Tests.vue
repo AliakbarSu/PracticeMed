@@ -63,7 +63,7 @@
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-800">
-                    <tr v-for="test in user.tests" :key="test.id">
+                    <tr v-for="test in user.results" :key="test.id">
                       <td
                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0"
                       >
@@ -130,7 +130,8 @@
 
 <script lang="ts" setup>
 import { useAdminStore } from "../../src/store/admin";
-import { type User, type UserAppMetadata } from "../../src/types/user";
+import { type User } from "../../src/types/user";
+import { type Results } from "../../src/types/results";
 
 const props = defineProps<{
   user: User;
@@ -139,17 +140,24 @@ const props = defineProps<{
 const adminStore = useAdminStore();
 const router = useRouter();
 
-const viewResults = (test: UserAppMetadata["test_history"][0]) => {
+const viewResults = (test: Results) => {
   router.push(`/results/${test.id}`);
 };
 
 const loading = computed(() => adminStore.loading);
 const resubmit = async (id: string) => {
-  const test = props.user.tests_history.find((test: any) => test.id === id);
+  const test = props.user.results.find((test: any) => test.id === id);
   if (!test) {
-    console.warn("Test not found", props.user.tests_history);
+    console.warn("Test not found", props.user.results);
     return;
   }
-  await adminStore.reSubmit({ ...test, user_id: props.user.userId });
+  await adminStore.reSubmit({
+    id: test.id,
+    user_id: props.user.userId,
+    test_id: test.test_id,
+    answers: test.answers,
+    start_at: test.start_at,
+    end_at: test.end_at,
+  });
 };
 </script>

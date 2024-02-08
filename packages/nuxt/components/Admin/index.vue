@@ -15,11 +15,11 @@ const user = ref({});
 const testsPanelRef = ref<HTMLElement | null>(null);
 const adminStore = useAdminStore();
 
-if (adminStore.users.length === 0) {
+const users = computed(() => adminStore.users || []);
+
+if (users.value.length == 0) {
   await adminStore.fetchUsers();
 }
-
-const users = computed(() => adminStore.users || []);
 
 const selectUser = (userObj: User) => {
   const foundUser = users.value.find((u) => u.userId === userObj.userId);

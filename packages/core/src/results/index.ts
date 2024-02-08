@@ -2,12 +2,12 @@ import { Question } from "../../types/Question";
 import { v4 as uuidv4 } from "uuid";
 import {
   AnalyzedAnswer,
+  Results,
   SubmittedAnswer,
   TestPerformanceResult,
   UserSubmittedResult,
 } from "../../types/Result";
 import { Examination } from "../../types/Test";
-import { User } from "../../types/User";
 import { getUser, updateUser } from "../model/users";
 import { getTest } from "../test";
 
@@ -133,33 +133,45 @@ export const saveOrUpdateTestResult = async ({
   user_id: string;
   result: TestPerformanceResult;
   raw_result?: UserSubmittedResult & { user_id?: string; id?: string };
-}): Promise<User> => {
+}): Promise<Results> => {
   const user_data = await getUser(user_id);
-  const { tests_history = [], tests } = user_data;
+  const { results = [] } = user_data;
+  const result_id = raw_result?.id || null;
 
   delete raw_result?.user_id;
-  const updated_tests_history = tests_history.map((test) =>
-    test.id == result.id ? raw_result : test,
-  );
 
-  const updated_tests = tests.map((test) =>
-    test.id == raw_result?.id
-      ? { ...result, id: test.id, timestamp: test.timestamp }
-      : test,
-  );
+  let updated_result: Results | null = null;
 
-  if (!updated_tests_history.find((test) => test.id == raw_result?.id)) {
-    updated_tests_history.push(raw_result);
+  const existing_result = results.find(({ id }) => id == result_id);
+  if (existing_result) {
+    updated_result = {
+      ...existing_result,
+      stats: result.stats,
+      result: result.result,
+    };
+  } else {
+    updated_result = {
+      ...result,
+      ...raw_result,
+      timestamp: Date.now(),
+    } as Results;
   }
 
-  if (!updated_tests.find((test) => test.id == raw_result?.id)) {
-    updated_tests.push(result);
+  if (!updated_result) {
+    throw new Error("Test not found");
   }
 
+  const updated_results = results.map((r) =>
+    r.id === result_id ? updated_result : r,
+  );
+
+  if (!existing_result) {
+    updated_results.push(updated_result);
+  }
   const updated_user_data = {
     ...user_data,
-    tests: updated_tests,
-    tests_history: updated_tests_history,
+    results: updated_results as Results[],
   };
-  return updateUser(user_id, updated_user_data);
+  await updateUser(user_id, updated_user_data);
+  return updated_result;
 };
