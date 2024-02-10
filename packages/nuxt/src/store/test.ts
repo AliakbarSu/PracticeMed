@@ -42,17 +42,16 @@ export const useTestStore = defineStore("test", () => {
     isExpired,
   } = useTimer(10, false);
 
-  const previewMode = ref(false);
   const demoMode = ref(false);
   const loading = ref(false);
   const hasTestsRemaning = ref(true);
   const test = ref<Test | null>(null);
   const questions = ref<TestQuestion[]>([]);
   const resultId = ref<string | null>(null);
-  const skippedQuestions = ref<QuestionInProgress[]>([]);
   const state = reactive<{
     started: boolean;
     ended: boolean;
+    paused: boolean;
     started_at: number | null;
     ended_at: number | null;
     submitting: boolean;
@@ -60,6 +59,7 @@ export const useTestStore = defineStore("test", () => {
   }>({
     started: false,
     ended: false,
+    paused: false,
     started_at: null,
     ended_at: null,
     completed: false,
@@ -84,21 +84,6 @@ export const useTestStore = defineStore("test", () => {
     isExpired: isExpired,
   }));
 
-  const $reset = () => {
-    test.value = null;
-    resultId.value = null;
-    skippedQuestions.value = [];
-    selectedOption.value = null;
-    submittedAnswers.value = [];
-    openedAt.value = 0;
-    instructions.value = null;
-    timeRemained.value = { h: 0, m: 0, s: 0, mil: 0 };
-    isTimeOver.value = false;
-    previewMode.value = false;
-    demoMode.value = false;
-    loading.value = false;
-  };
-
   const isLastQuestion = computed(
     () => questionIndexes.last == questionIndexes.current,
   );
@@ -111,7 +96,7 @@ export const useTestStore = defineStore("test", () => {
     return (totalMilliseconds / testDuration.value) * 100;
   });
   const question = computed((): QuestionInProgress => {
-    const isLast = isLastQuestion.value && skippedQuestions.value.length === 0;
+    const isLast = isLastQuestion.value;
     const currentQuestion = questions.value[questionIndexes.current];
     return currentQuestion
       ? ({
@@ -122,36 +107,66 @@ export const useTestStore = defineStore("test", () => {
       : ({} as QuestionInProgress);
   });
 
+  const $reset = () => {
+    questionIndexes.current = 0;
+    questionIndexes.last = 0;
+    state.started = false;
+    state.ended = false;
+    state.started_at = null;
+    state.ended_at = null;
+    state.submitting = false;
+    state.completed = false;
+    test.value = null;
+    resultId.value = null;
+    selectedOption.value = null;
+    submittedAnswers.value = [];
+    openedAt.value = 0;
+    instructions.value = null;
+    timeRemained.value = { h: 0, m: 0, s: 0, mil: 0 };
+    isTimeOver.value = false;
+    questions.value = [];
+    demoMode.value = false;
+    loading.value = false;
+    restartTimer(0, false);
+  };
+
   const loadTest = async (testId: string) => {
-    await fetchTest(() => loadTestApi(testId));
+    $reset();
+    return fetchTest(() => loadTestApi(testId));
   };
 
   const loadDemoTest = async () => {
     $reset();
     demoMode.value = true;
-    previewMode.value = true;
-    await fetchTest(loadDemoTestApi);
+    return fetchTest(loadDemoTestApi);
   };
 
-  const fetchTest = async (api: () => Promise<Test | null>) => {
+  const fetchTest = async (
+    api: () => Promise<Test | null>,
+  ): Promise<Question[] | null> => {
+    let fetchedQuestions: Question[] | null = null;
     try {
       loading.value = true;
       const result = await api();
       if (!result) {
         console.warn("No test found");
-        return;
+        fetchedQuestions = null;
+      } else {
+        test.value = result;
+        testDuration.value = result?.timeLimit * 3.6e6;
+        fetchedQuestions = result.questions;
       }
-      test.value = result;
-      testDuration.value = test.value.timeLimit * 3.6e6;
     } catch (err: any) {
       UIStore.error = new Error(err as string);
       const statusCode = err.response?.status;
       if (statusCode === 403) {
         hasTestsRemaning.value = false;
       }
+      fetchedQuestions = null;
     } finally {
       loading.value = false;
     }
+    return fetchedQuestions;
   };
 
   const start = () => {
@@ -159,6 +174,7 @@ export const useTestStore = defineStore("test", () => {
     const now = new Date().getTime();
     restartTimer(testDuration.value + now, false);
     state.started_at = now;
+    state.paused = false;
     state.started = true;
     questionIndexes.current = 0;
     openedAt.value = now;
@@ -166,27 +182,19 @@ export const useTestStore = defineStore("test", () => {
   };
 
   const resume = () => {
-    state.ended = false;
-    state.completed = false;
     resumeTimer();
+    state.paused = false;
   };
 
   const pause = () => {
     pauseTimer();
+    state.paused = true;
   };
 
   const setDemoQuestions = () => {
     setQuestions(
       (test?.value?.questions || []).slice(0, 10) as QuestionInProgress[],
     );
-  };
-
-  const setAllQuestions = () => {
-    const loadedQuestions = questions.value;
-    setQuestions([
-      ...loadedQuestions,
-      ...(test?.value?.questions || []).slice(loadedQuestions.length ? 10 : 0),
-    ] as QuestionInProgress[]);
   };
 
   const setQuestions = (data: QuestionInProgress[]) => {
@@ -221,46 +229,32 @@ export const useTestStore = defineStore("test", () => {
     if (!test.value) return;
     selectedOption.value = null;
     if (isLastQuestion.value) {
-      if (skippedQuestions.value.length > 0) {
-        questions.value = [...skippedQuestions.value];
-        questionIndexes.last = skippedQuestions.value.length - 1;
-        questionIndexes.current = 0;
-        skippedQuestions.value = [];
-      } else {
-        submit();
-      }
+      submit();
     } else {
       questionIndexes.current += 1;
     }
   };
 
-  const skip = () => {
-    if (!test.value) return;
-    question.value.skipped = true;
-    skippedQuestions.value = [...skippedQuestions.value, question.value];
-    nextQuestion();
-  };
-
   const submit = async () => {
     try {
-      state.submitting = true;
-      if (test.value && !demoMode.value) {
+      if (test.value) {
         const payload: SubmittedAnswer = {
           test_id: test.value.id,
           answers: submittedAnswers.value,
           start_at: state.started_at || 0,
           end_at: new Date().getTime(),
         };
+        pause();
+        state.submitting = true;
         const response = await submitTestApi(test.value.id, payload);
         appStore.profile?.results.push(response);
-        await Promise.resolve();
         resultId.value = response.id;
+        state.completed = true;
       }
     } catch (err) {
       UIStore.error = new Error(err as string);
     } finally {
       state.ended = true;
-      state.completed = true;
       state.submitting = false;
     }
   };
@@ -268,7 +262,7 @@ export const useTestStore = defineStore("test", () => {
   watch(timeElapsed, async () => {
     if (timeElapsed.value <= 0 && state.started) {
       isTimeOver.value = true;
-      if (!demoMode.value) await submit();
+      await submit();
     }
   });
 
@@ -277,8 +271,7 @@ export const useTestStore = defineStore("test", () => {
     loadDemoTest,
     start,
     setDemoQuestions,
-    setAllQuestions,
-    skip,
+    setQuestions,
     next,
     select,
     submit,
@@ -286,6 +279,7 @@ export const useTestStore = defineStore("test", () => {
     pause,
     resume,
     selectedOption,
+    questionIndexes,
     test,
     question,
     questions,
@@ -295,7 +289,6 @@ export const useTestStore = defineStore("test", () => {
     timeElapsed,
     timeRemained,
     isTimeOver,
-    previewMode,
     demoMode,
     resultId,
     timer,

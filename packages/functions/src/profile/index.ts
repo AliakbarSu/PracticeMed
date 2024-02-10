@@ -23,6 +23,6 @@ export const get_profile = ApiHandler(async _evt => {
     roles: user.roles,
   }
   return {
-    body: JSON.stringify(profile),
+    body: profile as unknown as string,
   }
 })

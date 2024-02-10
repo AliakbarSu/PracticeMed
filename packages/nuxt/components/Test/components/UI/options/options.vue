@@ -1,21 +1,22 @@
 <template>
   <RadioGroup v-model="selected" class="px-2 sm:px-6 lg:px-8">
-    <RadioGroupLabel class="sr-only"> Server size </RadioGroupLabel>
+    <RadioGroupLabel class="sr-only"> Server size</RadioGroupLabel>
     <div class="space-y-4">
       <RadioGroupOption
-        as="template"
         v-for="option in options"
         :key="option.alpha"
-        :value="option.alpha"
         v-slot="{ checked, active }"
+        :value="option.alpha"
+        as="template"
       >
         <div
-          @click="select(option)"
           :class="[
             checked ? 'border-transparent' : 'border-gray-300',
             active ? 'border-indigo-600 ring-2 ring-indigo-600' : '',
-            'relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none sm:flex sm:justify-between'
+            selectOptionError ? 'border-solid border-red-600 border-2' : '',
+            'relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none sm:flex sm:justify-between',
           ]"
+          @click="select(option)"
         >
           <span class="flex items-center">
             <span class="flex text-sm">
@@ -31,7 +32,7 @@
             :class="[
               active ? 'border' : 'border-2',
               checked ? 'border-indigo-600' : 'border-transparent',
-              'pointer-events-none absolute -inset-px rounded-lg'
+              'pointer-events-none absolute -inset-px rounded-lg',
             ]"
             aria-hidden="true"
           />
@@ -42,46 +43,50 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import type { Option } from '@/types/question'
+import type { PropType } from "vue";
+import type { Option } from "@/types/question";
 
 import {
   RadioGroup,
   RadioGroupDescription,
   RadioGroupLabel,
-  RadioGroupOption
-} from '@headlessui/vue'
+  RadioGroupOption,
+} from "@headlessui/vue";
 
 export default {
   components: {
     RadioGroup,
     RadioGroupDescription,
     RadioGroupLabel,
-    RadioGroupOption
+    RadioGroupOption,
   },
   props: {
     options: {
-      type: Object as PropType<Option[]>
-    }
+      type: Object as PropType<Option[]>,
+    },
+    selectOptionError: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       settings: [],
-      selected: ''
-    }
+      selected: "",
+    };
   },
   watch: {
     options: {
       handler() {
-        this.selected = ''
+        this.selected = "";
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     select(option: Option) {
-      this.$emit('select', option)
-    }
-  }
-}
+      this.$emit("select", option);
+    },
+  },
+};
 </script>

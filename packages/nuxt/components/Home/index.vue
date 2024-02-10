@@ -1,8 +1,11 @@
 <template>
   <div>
     <HomeComponentsUIHero />
-    <HomeComponentsTest />
+    <ClientOnly>
+      <HomeComponentsTest />
+    </ClientOnly>
     <HomeComponentsUIStats />
+    <StudyGroups />
     <HomeComponentsUISection />
     <HomeComponentsTestimonial />
     <HomeComponentsUIGetStarted />

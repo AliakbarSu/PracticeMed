@@ -1,5 +1,4 @@
 import type { Test } from "@/types/test";
-import type { Results } from "@/types/results";
 import { type Profile, type RolesEnum } from "@/types/user";
 import { defineStore } from "pinia";
 import { useUIStore } from "./UI";
@@ -12,19 +11,13 @@ export const useAppStore = defineStore("app", () => {
   const profile = ref<Profile | null>(null);
   const portalLink = ref<string | null>(null);
   const portalLinkExpiresIn = ref<number | null>(null);
-  const results = ref<Results[]>([]);
   const tests = ref<Test[]>([]);
   const UIStore = useUIStore();
 
-  function $reset() {
+  const $reset = () => {
     profile.value = null;
-    results.value = [];
     portalLink.value = null;
-  }
-
-  const canTryMockTest = computed(
-    () => !profile?.value?.results?.some((test) => test.demo),
-  );
+  };
 
   const isAdmin = computed(() =>
     profile.value?.roles.includes("admin" as RolesEnum),
@@ -33,7 +26,7 @@ export const useAppStore = defineStore("app", () => {
   const fetchProfileData = async () => {
     try {
       loading.value = true;
-      const result = await loadProfileData();
+      const result = (await loadProfileData()) as any;
       profile.value = {
         ...result,
         results: [...(profile?.value?.results || []), ...result.results],
@@ -86,7 +79,6 @@ export const useAppStore = defineStore("app", () => {
     error,
     $reset,
     portalLink,
-    canTryMockTest,
     isAdmin,
   };
 });
