@@ -1,5 +1,8 @@
 <template>
-  <div v-if="props.user.tests && props.user.tests.length" class="bg-gray-900">
+  <div
+    v-if="props.user.results && props.user.results.length"
+    class="bg-gray-900"
+  >
     <div class="mx-auto max-w-7xl">
       <div class="bg-gray-900 py-10">
         <div class="px-4 sm:px-6 lg:px-8">
