@@ -3,12 +3,14 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { fetchUsersApi } from "../api/adminApi";
 import { submitTestApi } from "../api/testApi";
+import { useAppStore } from "./main";
 
 export const useAdminStore = defineStore("admin", () => {
   const loading = ref(false);
   const error = ref<Error | null>(null);
   const users = ref<any[]>([]);
   const tests = ref<Test[]>([]);
+  const appStore = useAppStore();
 
   const $reset = () => {
     users.value = [];
@@ -19,6 +21,12 @@ export const useAdminStore = defineStore("admin", () => {
     try {
       loading.value = true;
       users.value = (await fetchUsersApi()) as any[];
+      if (appStore.profile?.results) {
+        appStore.profile.results = [
+          ...(appStore?.profile?.results || []),
+          ...users.value.map((user) => user.results).flat(),
+        ];
+      }
     } catch (err) {
       error.value = err as Error;
     } finally {

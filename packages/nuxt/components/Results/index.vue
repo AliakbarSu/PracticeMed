@@ -253,7 +253,6 @@ import { useAppStore } from "../../src/store/main";
 const UIStore = useUIStore();
 const appStore = useAppStore();
 
-const router = useRouter();
 const route = useRoute();
 const resultId = computed<string>(() => route.params.id || "");
 const previous_tests = computed(() => appStore.profile?.results || []);
@@ -363,13 +362,6 @@ const amchartAccuracyOverTime = computed(() => {
     value: Number(key),
   }));
 });
-
-const navigateToDashboard = () => {
-  router.push("/dashboard");
-};
-const printResults = () => {
-  window.print();
-};
 
 const calculateChangeRate = (key: keyof Stats) => {
   const sortedTestHistory = previous_tests.value.sort(

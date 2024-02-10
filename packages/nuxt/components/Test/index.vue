@@ -19,6 +19,7 @@
       />
       <TestComponentsConsole
         v-if="showTestModule"
+        :can-end="true"
         :loading="testStore.loading"
         :questions="questions"
         class="w-full max-w-7xl"
