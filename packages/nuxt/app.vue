@@ -6,19 +6,23 @@
   </NuxtLayout>
 </template>
 <script lang="ts" setup>
+import LogRocket from "logrocket";
 import { useUIStore } from "./src/store/UI";
 import { useAuthStore } from "./src/store/auth";
 import { useAppStore } from "./src/store/main";
-import { usePlansStore } from "./src/store/plans"; // import { buildAuthClient, getAuthToken } from "./src/auth/index";
+import { usePlansStore } from "./src/store/plans";
+
+const {
+  public: { cdn_url, domain_name },
+} = useRuntimeConfig();
+if (domain_name === "https://practicemed.org") {
+  LogRocket.init("4zzmjg/practicemed");
+}
 
 const UIStore = useUIStore();
 const store = useAppStore();
 const authStore = useAuthStore();
 const plansStore = usePlansStore();
-
-const {
-  public: { cdn_url },
-} = useRuntimeConfig();
 
 useHead({
   link: [

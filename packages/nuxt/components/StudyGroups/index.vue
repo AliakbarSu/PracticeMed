@@ -14,9 +14,9 @@
             </h2>
             <p class="mt-6 text-lg leading-8 text-gray-600">
               We can help you to connect with someone who is preparing for the
-              same topic as are and is looking for a study partner. Simply enter
-              your details below and we will be in touch with you if someone is
-              available.
+              same topic as you are and is looking for a study partner. Simply
+              enter your details below and we will be in touch with you if
+              someone is available.
             </p>
           </div>
         </div>

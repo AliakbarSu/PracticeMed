@@ -9,9 +9,9 @@
           <!-- Image section -->
           <div class="col-span-1 md:col-span-2 lg:col-start-1 lg:row-start-1">
             <img
-              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1682296708/practiceMed/Illustrations/Practice_Med-logo.png"
               alt="Practice Med logo"
               class="h-20 w-auto"
+              src="https://res.cloudinary.com/dxuf2ssx6/image/upload/v1682296708/practiceMed/Illustrations/Practice_Med-logo.png"
             />
           </div>
 
@@ -23,8 +23,10 @@
               class="grid grid-cols-1 gap-y-12 sm:col-span-2 sm:grid-cols-2 sm:gap-x-8"
             >
               <div>
-                <h3 class="text-sm font-medium text-gray-900">Programmes</h3>
-                <ul role="list" class="mt-6 space-y-6">
+                <h3 class="text-sm font-medium text-gray-900 hidden">
+                  Programmes
+                </h3>
+                <ul class="mt-6 space-y-6" role="list">
                   <li
                     v-for="item in items.products"
                     :key="item.name"
@@ -33,45 +35,47 @@
                     <RouterLink
                       :to="item.href"
                       class="text-gray-500 hover:text-gray-600"
-                      >{{ item.name }}</RouterLink
-                    >
+                      >{{ item.name }}
+                    </RouterLink>
                   </li>
                 </ul>
               </div>
               <div>
-                <h3 class="text-sm font-medium text-gray-900">Company</h3>
-                <ul role="list" class="mt-6 space-y-6">
+                <h3 class="text-sm font-medium text-gray-900 hidden">
+                  Company
+                </h3>
+                <ul class="mt-6 space-y-6" role="list">
                   <li
                     v-for="item in items.company"
                     :key="item.name"
                     class="text-sm"
                   >
                     <RouterLink
-                      active-class="border-b-2 border-indigo-500"
                       :to="item.href"
+                      active-class="border-b-2 border-indigo-500"
                       class="text-gray-500 hover:text-gray-600"
-                      >{{ item.name }}</RouterLink
-                    >
+                      >{{ item.name }}
+                    </RouterLink>
                   </li>
                 </ul>
               </div>
             </div>
             <div>
-              <h3 class="text-sm font-medium text-gray-900">
+              <h3 class="text-sm font-medium text-gray-900 hidden">
                 Customer Service
               </h3>
-              <ul role="list" class="mt-6 space-y-6">
+              <ul class="mt-6 space-y-6" role="list">
                 <li
                   v-for="item in items.customerService"
                   :key="item.name"
                   class="text-sm"
                 >
                   <RouterLink
-                    active-class="border-b-2 border-indigo-500"
                     :to="item.href"
+                    active-class="border-b-2 border-indigo-500"
                     class="text-gray-500 hover:text-gray-600"
-                    >{{ item.name }}</RouterLink
-                  >
+                    >{{ item.name }}
+                  </RouterLink>
                 </li>
               </ul>
             </div>
@@ -88,27 +92,27 @@
               Stay ahead with our newsletter - get tips, exclusive discounts,
               and more!
             </p>
-            <form @submit="signup" class="mt-2 flex sm:max-w-md">
-              <label for="email-address" class="sr-only">Email address</label>
+            <form class="mt-2 flex sm:max-w-md" @submit="signup">
+              <label class="sr-only" for="email-address">Email address</label>
               <input
-                v-model="email"
                 id="email-address"
-                type="text"
+                v-model="email"
                 autocomplete="email"
-                required
                 class="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                required
+                type="text"
               />
               <div class="ml-4 flex-shrink-0">
                 <button
-                  type="submit"
                   class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  type="submit"
                 >
-                  <div role="status" class="flex justify-center" v-if="loading">
+                  <div v-if="loading" class="flex justify-center" role="status">
                     <svg
                       aria-hidden="true"
                       class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                      viewBox="0 0 100 101"
                       fill="none"
+                      viewBox="0 0 100 101"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
@@ -122,7 +126,7 @@
                     </svg>
                     <span class="sr-only">Loading...</span>
                   </div>
-                  <span v-else>{{ signedup ? 'Done' : 'Sign up' }}</span>
+                  <span v-else>{{ signedup ? "Done" : "Sign up" }}</span>
                 </button>
               </div>
             </form>
@@ -141,38 +145,38 @@
 </template>
 
 <script lang="ts" setup>
-import { useContactStore } from '../../../src/store/contact'
-import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { useContactStore } from "../../../src/store/contact";
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
 // import * as Gtag from '@gtag/index'
 
-const contactStore = useContactStore()
+const contactStore = useContactStore();
 
-const { loading, signedup } = storeToRefs(contactStore)
+const { loading, signedup } = storeToRefs(contactStore);
 
-const email = ref('')
+const email = ref("");
 
 const signup = (event: Event) => {
-  event.preventDefault()
-  if (!email.value) return
+  event.preventDefault();
+  if (!email.value) return;
   // Gtag.news_letter_signup()
-  contactStore.signup(email.value)
-}
+  contactStore.signup(email.value);
+};
 
 const items = {
   products: [
-    { name: 'Audio MCQS', href: '/landing/audio-mock' },
-    { name: 'AMC', href: '/landing/amc-mcq' }
+    { name: "Audio MCQS", href: "/landing/audio-mock" },
+    { name: "AMC", href: "/landing/amc-mcq" },
   ],
   company: [
-    { name: 'Who We Are', href: '/about' },
-    { name: 'Terms & Conditions', href: '/terms-and-conditions' },
-    { name: 'Privacy', href: '/privacy' }
+    { name: "About Us", href: "/about" },
+    { name: "Terms & Conditions", href: "/terms-and-conditions" },
+    { name: "Privacy", href: "/privacy" },
   ],
   customerService: [
-    { name: 'Contact', href: '/contact' },
-    { name: 'Secure Payments', href: '/secure-payments' },
-    { name: 'FAQ', href: '/faqs' }
-  ]
-}
+    { name: "Contact", href: "/contact" },
+    { name: "Secure Payments", href: "/secure-payments" },
+    { name: "FAQ", href: "/faqs" },
+  ],
+};
 </script>

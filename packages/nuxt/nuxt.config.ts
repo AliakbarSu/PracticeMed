@@ -65,6 +65,11 @@ export default defineNuxtConfig({
       ],
     },
   },
+  image: {
+    cloudinary: {
+      baseURL: "https://res.cloudinary.com/dxuf2ssx6/image/upload",
+    },
+  },
   runtimeConfig: {
     public: {
       api_endpoint: "",
@@ -73,7 +78,13 @@ export default defineNuxtConfig({
       cdn_url: "",
     },
   },
-  modules: ["@pinia/nuxt", "@nuxt/devtools", "@vueform/nuxt"],
+  modules: [
+    "@pinia/nuxt",
+    "@nuxt/devtools",
+    "@vueform/nuxt",
+    "@nuxt/image",
+    "nuxt-primevue",
+  ],
 
   alias: {
     "@store": "./src/store",
@@ -84,8 +95,10 @@ export default defineNuxtConfig({
     "mpt-types": "../core/types",
     ...alias,
   },
-
-  css: ["~/assets/css/main.css"],
+  css: [
+    "~/assets/css/main.css",
+    "primevue/resources/themes/aura-light-green/theme.css",
+  ],
   postcss: {
     plugins: {
       tailwindcss: {},
