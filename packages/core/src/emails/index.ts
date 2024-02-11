@@ -23,6 +23,24 @@ export const sendSingleEmail = async (data: any) => {
   });
 };
 
+export const sendNewPartnerAdminNotification = async (email: string) => {
+  const options = {
+    from: "info@practicemed.org",
+    to: "info+partners@practicemed.org",
+    subject: "New Partner Signed Up!",
+    html: `New partner signed up with email: ${email}`,
+  };
+
+  try {
+    await sendgrid.send(options);
+  } catch (e) {
+    const error = e as any;
+    console.log("Error while sending welcome email");
+    console.log(error?.response?.body);
+  }
+  return "email sent";
+};
+
 export const sendWelcomeEmail = async (email: string) => {
   const emailHtml = render(PracticeMedWelcomeEmail());
 

@@ -73,7 +73,7 @@ export default defineNuxtConfig({
       cdn_url: "",
     },
   },
-  modules: ["@pinia/nuxt", "@nuxt/devtools"],
+  modules: ["@pinia/nuxt", "@nuxt/devtools", "@vueform/nuxt"],
 
   alias: {
     "@store": "./src/store",

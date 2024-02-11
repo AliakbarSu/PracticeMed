@@ -1,4 +1,4 @@
-const fnPath = 'packages/functions/src'
+const fnPath = "packages/functions/src";
 export const functions = {
   get_profile: `${fnPath}/profile/index.get_profile`,
   get_reset_password_link: `${fnPath}/reset_password/index.get_reset_password_link`,
@@ -25,5 +25,6 @@ export const functions = {
   submit_answer_queue: `${fnPath}/submit_answer_queue/index.handler`,
   submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`,
   post_add_user: `${fnPath}/user/index.add_user`,
-  admin_get_users: `${fnPath}/admin/index.get_users`
-}
+  admin_get_users: `${fnPath}/admin/index.get_users`,
+  add_study_partner: `${fnPath}/study_partners/index.addStudyPartnerHandler`,
+};
