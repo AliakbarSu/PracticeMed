@@ -2,6 +2,7 @@ import { Question } from "../../types/Question";
 import { v4 as uuidv4 } from "uuid";
 import {
   AnalyzedAnswer,
+  QuestionHistory,
   Results,
   SubmittedAnswer,
   TestPerformanceResult,
@@ -59,6 +60,24 @@ export const analyze = async (
   const { test_id, answers } = submittedTest;
   const loadedTest = await getTest(test_id);
   const analyzedAnswers = analyzeAnswer(answers, loadedTest);
+  const questionsHistory: QuestionHistory[] = submittedTest.answers.map(
+    (answer) => {
+      const question = loadedTest.questions.find(
+        ({ _id }) => _id === answer.question_id,
+      ) as Question;
+      return {
+        question: question.text,
+        correct_option: {
+          id: question.correct_option.id,
+          text: question.correct_option.text,
+        },
+        options: question.options.map((option) => ({
+          option: option.text,
+          selected: answer.option_id,
+        })),
+      };
+    },
+  );
   const totalPoints = calculateTotalPoint(analyzedAnswers);
   const averageTimeTaken = calculateAverageTimeTaken(analyzedAnswers);
   const averageTimeTakenPerField =
@@ -120,6 +139,7 @@ export const analyze = async (
       incorrectResponseCountPerField,
       speedByMinuteInterval,
     },
+    questionsHistory,
     result,
     timestamp: Date.now(),
   };

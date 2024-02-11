@@ -24,6 +24,18 @@ export interface UserSubmittedResult {
   answers: SubmittedAnswer[];
 }
 
+export interface QuestionHistory {
+  question: string;
+  correct_option: {
+    id: string;
+    text: string;
+  };
+  options: {
+    option: string;
+    selected: string;
+  }[];
+}
+
 export interface Stats {
   testScore: number;
   totalPoints: number;
@@ -49,6 +61,7 @@ export interface TestPerformanceResult {
   test_id: string;
   stats: Stats;
   result: ResultEnum;
+  questionsHistory: QuestionHistory[];
   timestamp: number;
 }
 
