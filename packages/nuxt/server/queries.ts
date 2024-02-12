@@ -18,4 +18,22 @@ export const blog = `
         handle
         url
       }
-`
+`;
+
+export const faqs = `
+  query GetFAQS {
+    faqses {
+      question
+      answer
+    }
+  }
+`;
+
+export const terms_conditions = `
+    query Terms {
+      termsConditions {
+        item
+        description
+      }
+    }
+  `;

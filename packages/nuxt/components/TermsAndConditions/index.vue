@@ -12,8 +12,8 @@
         govern access to and use of our platform.
       </p>
       <div class="mt-10 max-w-2xl">
-        <ul role="list" class="mt-8 max-w-xl space-y-8 text-gray-600">
-          <li v-for="term in terms" class="flex gap-x-3">
+        <ul class="mt-8 max-w-xl space-y-8 text-gray-600" role="list">
+          <li v-for="term in props.terms" :key="term.item" class="flex gap-x-3">
             <span
               ><strong class="font-semibold text-gray-900"
                 >{{ term.item }}:</strong
@@ -34,32 +34,12 @@
 </template>
 
 <script lang="ts" setup>
-import { request } from 'graphql-request'
-import { ref } from 'vue'
-import gql from 'graphql-tag'
+const props = defineProps<{
+  terms: TermsAndConditions[];
+}>();
 
 export type TermsAndConditions = {
-  item: string
-  description: string
-}
-
-const terms = ref([] as TermsAndConditions[])
-const fetchTermsAndConditions = async () => {
-  const getTerms = gql`
-    query Terms {
-      termsConditions {
-        item
-        description
-      }
-    }
-  `
-  const config = useRuntimeConfig()
-  const response = request(config.hygraph_endpoint, getTerms) as Promise<{
-    termsConditions: TermsAndConditions[]
-  }>
-  const data = (await response).termsConditions
-  terms.value = data
-}
-
-fetchTermsAndConditions()
+  item: string;
+  description: string;
+};
 </script>

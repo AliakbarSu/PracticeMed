@@ -40,42 +40,13 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/vue/24/outline";
-import { defineComponent } from "vue";
-import { request } from "graphql-request";
-import { getFaqs } from "../components/FAQS/queries";
 
-const config = useRuntimeConfig();
-const HYGRAPH_ENDPOINT = config.public.hygraph_endpoint as string;
-
-export default defineComponent<{
-  faqs: { question: string; answer: string }[];
-}>({
-  name: "Faqs",
-  data() {
-    return {
-      faqs: [],
-    };
-  },
-  components: {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    MinusSmallIcon,
-    PlusSmallIcon,
-  },
-  async created() {
-    const getFAQs = async () => {
-      const data = request(HYGRAPH_ENDPOINT, getFaqs) as Promise<{
-        faqses: [];
-      }>;
-      return (await data).faqses;
-    };
-    this.faqs = await getFAQs();
-  },
-});
+const faqs = ref<{ question: string; answer: string }[]>([]);
+const { data } = await useFetch(`/api/faqs`);
+faqs.value = data.value;
 
 useSeoMeta({
   title: "FAQS | Practice Med",
