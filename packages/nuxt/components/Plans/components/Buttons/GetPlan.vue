@@ -51,7 +51,7 @@ import { loginWithRedirect } from "../../../../src/auth/index";
 const store = useAppStore();
 const plansStore = usePlansStore();
 const authStore = useAuthStore();
-const { gtag } = useGtag();
+const gtm = useGtm();
 
 const subscribing = ref(false);
 
@@ -76,9 +76,21 @@ const isActivePlan = computed(
 );
 
 const subscribe = async () => {
-  gtag("event", "subscribe", {
-    event_category: "plans",
-    event_label: props.plan.id,
+  gtm.trackEvent({
+    event: "begin_checkout",
+    ecommerce: {
+      checkout: {
+        actionField: { step: 1, option: "Stripe" },
+        products: [
+          {
+            name: props.plan.name,
+            id: props.plan.id,
+            price: props.plan.price,
+            quantity: 1,
+          },
+        ],
+      },
+    },
   });
   await loginIfNotAuthenticated();
   subscribing.value = true;
@@ -87,9 +99,21 @@ const subscribe = async () => {
 };
 
 const subscribeToFreeTrial = async () => {
-  gtag("event", "subscribe", {
-    event_category: "plans_free_trial",
-    event_label: props.plan.id,
+  gtm.trackEvent({
+    event: "begin_checkout",
+    ecommerce: {
+      checkout: {
+        actionField: { step: 1, option: "Stripe" },
+        products: [
+          {
+            name: props.plan.name,
+            id: props.plan.id,
+            price: props.plan.price,
+            quantity: 1,
+          },
+        ],
+      },
+    },
   });
   await loginIfNotAuthenticated();
   subscribing.value = true;
