@@ -16,7 +16,16 @@ export default defineNuxtConfig({
     url: "https://practicemed.org",
   },
   sitemap: {
-    exclude: ["/admin/**", "/dashboard/**", "/account/**"],
+    exclude: [
+      "/admin/**",
+      "/dashboard/**",
+      "/account/**",
+      "/login",
+      "/confirmation",
+      "/payment/**",
+      "unsuccessful",
+    ],
+    sources: ["/api/__sitemap__/urls"],
   },
   routeRules: {
     "/resources": { redirect: "/resources/blogs" },
@@ -91,6 +100,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "nuxt-primevue",
     "@nuxtjs/sitemap",
+    "nuxt-simple-robots",
   ],
 
   alias: {

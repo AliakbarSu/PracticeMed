@@ -33,6 +33,7 @@
     "npm-run-all": "^4.1.5",
     "nuxt": "^3.10.1",
     "nuxt-primevue": "^0.3.0",
+    "nuxt-simple-robots": "^4.0.0-rc.14",
     "postcss": "^8.4.22",
     "prettier": "^2.8.4",
     "tailwindcss": "^3.3.1",
