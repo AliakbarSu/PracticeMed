@@ -11,8 +11,13 @@ const alias =
           "./node_modules/vue/server-renderer",
         ),
       };
-
 export default defineNuxtConfig({
+  site: {
+    url: "https://practicemed.org",
+  },
+  sitemap: {
+    exclude: ["/admin/**", "/dashboard/**", "/account/**"],
+  },
   routeRules: {
     "/resources": { redirect: "/resources/blogs" },
     "/resources/amc/prepare-from-scratch": {
@@ -78,12 +83,14 @@ export default defineNuxtConfig({
       cdn_url: "",
     },
   },
+  // @ts-expect-error - no types
   modules: [
     "@pinia/nuxt",
     "@nuxt/devtools",
     "@vueform/nuxt",
     "@nuxt/image",
     "nuxt-primevue",
+    "@nuxtjs/sitemap",
   ],
 
   alias: {
@@ -118,6 +125,9 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
     vscode: {},
+    timeline: {
+      enabled: true,
+    },
   },
   nitro: {
     preset: "aws-lambda",
