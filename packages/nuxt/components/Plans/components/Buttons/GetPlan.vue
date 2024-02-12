@@ -6,15 +6,15 @@
       plan?.mostPopular
         ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500'
         : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300',
-      'mt-8 block rounded-md py-2 px-3 text-center cursor-pointer text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+      'mt-8 block rounded-md py-2 px-3 text-center cursor-pointer text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
     ]"
   >
-    <div role="status" class="flex justify-center" v-if="subscribing">
+    <div v-if="subscribing" class="flex justify-center" role="status">
       <svg
         aria-hidden="true"
         class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-        viewBox="0 0 100 101"
         fill="none"
+        viewBox="0 0 100 101"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -39,62 +39,68 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
-import type { PropType } from 'vue'
-import type { Plan } from '../../../../src/types/plans'
-import * as Gtag from '../../../../src/gtag/index'
-import { useAppStore } from '../../../../src/store/main'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
-import { usePlansStore } from '../../../../src/store/plans'
-import { useAuthStore } from '../../../../src/store/auth'
-import { loginWithRedirect } from '../../../../src/auth/index'
-import { watch } from 'vue'
+import type { PropType } from "vue";
+import { computed, defineProps, watch } from "vue";
+import type { Plan } from "../../../../src/types/plans";
+import { useAppStore } from "../../../../src/store/main";
+import { storeToRefs } from "pinia";
+import { usePlansStore } from "../../../../src/store/plans";
+import { useAuthStore } from "../../../../src/store/auth";
+import { loginWithRedirect } from "../../../../src/auth/index";
 
-const store = useAppStore()
-const plansStore = usePlansStore()
-const authStore = useAuthStore()
+const store = useAppStore();
+const plansStore = usePlansStore();
+const authStore = useAuthStore();
+const { gtag } = useGtag();
 
-const subscribing = ref(false)
+const subscribing = ref(false);
 
-const { loading } = storeToRefs(store)
-const { checkoutUrl, userHasActivePlan } = storeToRefs(plansStore)
+const { loading } = storeToRefs(store);
+const { checkoutUrl, userHasActivePlan } = storeToRefs(plansStore);
 
 const props = defineProps({
   plan: {
     type: Object as PropType<Plan>,
-    default: {}
-  }
-})
+    default: {},
+  },
+});
 
 const loginIfNotAuthenticated = async () => {
   if (!authStore.isAuthenticated) {
-    await loginWithRedirect()
+    await loginWithRedirect();
   }
-}
+};
 
 const isActivePlan = computed(
-  () => plansStore.userActivePlan?.id == props.plan.id
-)
+  () => plansStore.userActivePlan?.id == props.plan.id,
+);
 
 const subscribe = async () => {
-  await loginIfNotAuthenticated()
-  subscribing.value = true
-  await plansStore.subscribe(props.plan)
-  subscribing.value = false
-}
+  gtag("event", "subscribe", {
+    event_category: "plans",
+    event_label: props.plan.id,
+  });
+  await loginIfNotAuthenticated();
+  subscribing.value = true;
+  await plansStore.subscribe(props.plan);
+  subscribing.value = false;
+};
 
 const subscribeToFreeTrial = async () => {
-  await loginIfNotAuthenticated()
-  subscribing.value = true
-  await plansStore.subscribeToFreeTrial(props.plan)
-  subscribing.value = false
-}
+  gtag("event", "subscribe", {
+    event_category: "plans_free_trial",
+    event_label: props.plan.id,
+  });
+  await loginIfNotAuthenticated();
+  subscribing.value = true;
+  await plansStore.subscribeToFreeTrial(props.plan);
+  subscribing.value = false;
+};
 
 watch(checkoutUrl, () => {
   if (checkoutUrl.value && process.client) {
-    window.location.replace(checkoutUrl.value)
-    plansStore.$reset()
+    window.location.replace(checkoutUrl.value);
+    plansStore.$reset();
   }
-})
+});
 </script>
