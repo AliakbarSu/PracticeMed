@@ -230,6 +230,14 @@
               </dd>
             </div>
           </dl>
+          <dl
+            class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
+          >
+            <ResultsComponentsQuestions
+              v-if="questions.length"
+              :questions="questions"
+            />
+          </dl>
         </div>
       </main>
       <div v-if="demoMode" class="my-4">
@@ -245,10 +253,10 @@
 
 <script lang="ts" setup>
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/vue/20/solid";
-import type { UserAppMetadata } from "@/types/user";
 import type { Stats } from "../../src/types/test";
 import { useUIStore } from "../../src/store/UI";
 import { useAppStore } from "../../src/store/main";
+import type { Results } from "../../src/types/results";
 
 const UIStore = useUIStore();
 const appStore = useAppStore();
@@ -261,11 +269,10 @@ const demoMode = ref<boolean>(false);
 
 // const pass = computed(() => testHistory.value?.result === "pass");
 
-const testHistory = computed<UserAppMetadata["test_history"][0] | undefined>(
-  () =>
-    previous_tests.value.find(
-      ({ id, test_id }) => id == resultId.value || test_id == resultId.value,
-    ),
+const testHistory = computed<Results | undefined>(() =>
+  previous_tests.value.find(
+    ({ id, test_id }) => id == resultId.value || test_id == resultId.value,
+  ),
 );
 const testStats = computed(() => {
   if (loading.value) {
@@ -287,8 +294,8 @@ const testStats = computed(() => {
     },
     {
       name: "Average Time (minutes)",
-      stat: testHistory.value.stats.averageTimeTaken.toFixed(2),
-      previousStat: testHistory.value.stats.averageTimeTaken.toFixed(2),
+      stat: testHistory.value?.stats.averageTimeTaken.toFixed(2),
+      previousStat: testHistory.value?.stats.averageTimeTaken.toFixed(2),
       change: calculateChangeRate("averageTimeTaken").toFixed(2),
       changeType: calculateChangeType("averageTimeTaken"),
     },
@@ -301,6 +308,11 @@ const testStats = computed(() => {
     //   changeType: calculateChangeType('fieldsAverageTime')
     // }
   ];
+});
+
+const questions = computed(() => {
+  if (loading.value) return [];
+  return testHistory.value?.questionsHistory || [];
 });
 
 const amLineChartData = computed(() => {

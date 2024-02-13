@@ -67,11 +67,15 @@ export const analyze = async (
       ) as Question;
       return {
         question: question.text,
+        selected_option: answer.option_id,
         correct_option: {
           id: question.correct_option.id,
+          alpha: question.correct_option.alpha,
           text: question.correct_option.text,
         },
         options: question.options.map((option) => ({
+          id: option.id,
+          alpha: option.alpha,
           option: option.text,
           selected: answer.option_id,
         })),

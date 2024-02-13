@@ -26,11 +26,15 @@ export interface UserSubmittedResult {
 
 export interface QuestionHistory {
   question: string;
+  selected_option: string;
   correct_option: {
     id: string;
+    alpha: string;
     text: string;
   };
   options: {
+    id: string;
+    alpha: string;
     option: string;
     selected: string;
   }[];
