@@ -17,11 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  resultId: {
-    default: "",
-    type: String,
-    required: false,
-  },
+const props = withDefaults(defineProps<{ resultId: string | null }>(), {
+  resultId: "",
 });
 </script>
