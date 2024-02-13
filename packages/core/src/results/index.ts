@@ -172,6 +172,7 @@ export const saveOrUpdateTestResult = async ({
       ...existing_result,
       stats: result.stats,
       result: result.result,
+      questionsHistory: result.questionsHistory,
     };
   } else {
     updated_result = {

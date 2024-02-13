@@ -77,6 +77,7 @@ export interface Results {
   result: ResultEnum;
   start_at: string;
   end_at: string;
+  questionsHistory: QuestionHistory[];
   answers: SubmittedAnswer[];
   timestamp: number;
 }
