@@ -1,5 +1,5 @@
 <template>
-  <Accordion class="flow-root p-4 md:p-12">
+  <Accordion :active-index="0" class="flow-root p-4 md:p-12">
     <AccordionTab header="Questions">
       <ul class="mt-2" role="list">
         <li v-for="(event, eventIdx) in updatedQuestions" :key="eventIdx">

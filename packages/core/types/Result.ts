@@ -69,6 +69,11 @@ export interface TestPerformanceResult {
   timestamp: number;
 }
 
+export interface Feedback {
+  aspect: string;
+  recommendation: string;
+}
+
 export interface Results {
   demo: boolean;
   id: string;
@@ -78,6 +83,7 @@ export interface Results {
   start_at: string;
   end_at: string;
   questionsHistory: QuestionHistory[];
+  feedbacks: Feedback[];
   answers: SubmittedAnswer[];
   timestamp: number;
 }

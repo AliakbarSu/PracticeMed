@@ -17,9 +17,10 @@
       <main>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div
+            v-if="feedbacks?.length"
             class="mt-5 pb-2 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:divide-x md:divide-y-0"
           >
-            <ResultsComponentsFeedback />
+            <ResultsComponentsFeedback :feedbacks="feedbacks" />
           </div>
 
           <div v-if="demoMode" class="mb-3">
@@ -313,6 +314,11 @@ const testStats = computed(() => {
 const questions = computed(() => {
   if (loading.value) return [];
   return testHistory.value?.questionsHistory || [];
+});
+
+const feedbacks = computed(() => {
+  if (loading.value) return [];
+  return testHistory.value?.feedbacks || [];
 });
 
 const amLineChartData = computed(() => {

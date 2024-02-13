@@ -11,6 +11,7 @@ import {
 import { Examination } from "../../types/Test";
 import { getUser, updateUser } from "../model/users";
 import { getTest } from "../test";
+import { generate_feedback } from "../personalised_tips/index";
 
 import {
   calculateAverageTimeTaken,
@@ -180,6 +181,15 @@ export const saveOrUpdateTestResult = async ({
       ...raw_result,
       timestamp: Date.now(),
     } as Results;
+  }
+
+  try {
+    const feedbacks = await generate_feedback(result.stats);
+    if (feedbacks.length > 0) {
+      updated_result.feedbacks = feedbacks;
+    }
+  } catch (e) {
+    console.error(e);
   }
 
   if (!updated_result) {

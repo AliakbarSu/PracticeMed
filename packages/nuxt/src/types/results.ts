@@ -17,6 +17,11 @@ export interface QuestionHistory {
   }[];
 }
 
+export interface Feedback {
+  aspect: string;
+  recommendation: string;
+}
+
 export interface Results {
   demo: boolean;
   id: string;
@@ -26,6 +31,7 @@ export interface Results {
   start_at: number;
   end_at: number;
   answers: Answer[];
+  feedbacks: Feedback[];
   questionsHistory: QuestionHistory[];
   timestamp: number;
 }
