@@ -9,8 +9,8 @@ export const configure_parameters = ({ stack }: StackContext) => {
   });
 
   // Chat GPT
-
   const CHAT_GPT_API_KEY = new Config.Secret(stack, "CHAT_GPT_API_KEY");
+  const API_FLASH_KEY = new Config.Secret(stack, "API_FLASH_KEY");
 
   const SANITY_ENDPOINT = new Config.Parameter(stack, "SANITY_ENDPOINT", {
     value: stack.stage === dev ? endpoints.sanity.dev : endpoints.sanity.prod,
@@ -62,5 +62,6 @@ export const configure_parameters = ({ stack }: StackContext) => {
     SENDGRID_API_KEY,
     MONGODB_URI,
     CHAT_GPT_API_KEY,
+    API_FLASH_KEY,
   };
 };

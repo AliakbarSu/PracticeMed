@@ -20,6 +20,7 @@ export function API(context: StackContext) {
     SENDGRID_API_KEY,
     MONGODB_URI,
     CHAT_GPT_API_KEY,
+    API_FLASH_KEY,
   } = configure_parameters(context);
 
   const submit_answer_ddl = new Queue(stack, "ddl", {
@@ -188,6 +189,7 @@ export function API(context: StackContext) {
     SANITY_ENDPOINT,
     MONGODB_URI,
     CHAT_GPT_API_KEY,
+    API_FLASH_KEY,
   ]);
   stack.addOutputs({
     api_domain: api.customDomainUrl,

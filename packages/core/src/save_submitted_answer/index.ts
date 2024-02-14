@@ -1,23 +1,16 @@
-import * as mongodb from 'mongodb'
-import { Config } from 'sst/node/config'
-const MongoClient = mongodb.MongoClient
-let cachedDb: any = null
-
-async function connectToDatabase() {
-  if (cachedDb) {
-    return cachedDb
-  }
-  const client = await MongoClient.connect(Config.MONGODB_URI)
-  cachedDb = await client.db('Users')
-  return cachedDb
-}
+// import * as mongodb from 'mongodb'
+// import { Config } from 'sst/node/config'
+import { SubmittedAnswer } from '../../types/Result' // import { saveSubmittedAnswer as saveSubmittedAnswerModel } from '../model/test'
+// import { saveSubmittedAnswer as saveSubmittedAnswerModel } from '../model/test'
 
 export const saveSubmittedAnswer = async (data: {
-  userId: string
-  testId: string
-  result: any
+  userId: string;
+  testId: string;
+  answer: SubmittedAnswer;
 }) => {
-  const db = await connectToDatabase()
-  const user = await db.collection('users').findOne({ userId: data.userId })
-  return user
-}
+  // return saveSubmittedAnswerModel({
+  //   testId: data.testId,
+  //   userId: data.userId,
+  //   answer: data.answer
+  // })
+};

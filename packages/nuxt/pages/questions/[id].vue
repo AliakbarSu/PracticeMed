@@ -14,7 +14,4 @@ useSeoMeta({
 });
 
 const question: Question = await fetchPublicQuestionApi();
-defineOgImageComponent("Question", {
-  question,
-});
 </script>
