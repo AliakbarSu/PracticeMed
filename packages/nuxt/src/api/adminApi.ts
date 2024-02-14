@@ -25,3 +25,11 @@ export const fetchPublicQuestionApi = async () => {
   );
   return response.data.value?.body;
 };
+
+export const fetchOgImage = async () => {
+  const route = useRoute();
+  const response = await useFetch(`/api/screenshot?id=${route.params.id}`, {
+    method: "GET",
+  });
+  return response.data.value;
+};

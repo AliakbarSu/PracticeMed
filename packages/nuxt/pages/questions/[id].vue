@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { type Question } from "../../src/types/question";
-import { fetchPublicQuestionApi } from "../../src/api/adminApi";
+import { fetchOgImage, fetchPublicQuestionApi } from "../../src/api/adminApi";
 
 useSeoMeta({
   title: "PracticeMed Question",
@@ -14,4 +14,10 @@ useSeoMeta({
 });
 
 const question: Question = await fetchPublicQuestionApi();
+const image = await fetchOgImage();
+
+useSeoMeta({
+  ogTitle: "PracticeMed Question",
+  ogImage: image.url,
+});
 </script>
