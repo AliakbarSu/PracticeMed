@@ -1,4 +1,5 @@
 import * as mongodb from "mongodb";
+import { ObjectId } from "mongodb";
 import { Config } from "sst/node/config";
 import { QuestionObject } from "../../types/Question";
 
@@ -24,5 +25,13 @@ export const getQuestions = async (
     .collection("questions")
     .find({ type: type.toLowerCase(), available: true, ...filters })
     .limit(limit)
+    .toArray();
+};
+
+export const getQuestion = async (id: string): Promise<QuestionObject[]> => {
+  const db = await connectToDatabase();
+  return db
+    .collection("questions")
+    .find({ _id: new ObjectId(id), available: true })
     .toArray();
 };

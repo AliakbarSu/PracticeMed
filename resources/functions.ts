@@ -22,6 +22,7 @@ export const functions = {
   post_contact_form: `${fnPath}/contact_form/index.post_contact_form`,
   post_daily_recalls: `${fnPath}/daily_recalls/index.empty`,
   post_answer: `${fnPath}/submit_answer/index.post_answer`,
+  get_question: `${fnPath}/question/index.get_question`,
   submit_answer_queue: `${fnPath}/submit_answer_queue/index.handler`,
   submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`,
   post_add_user: `${fnPath}/user/index.add_user`,

@@ -127,6 +127,8 @@ export function API(context: StackContext) {
           bind: [submit_answer_queue],
         },
       },
+      // QUESTIONS
+      "GET /api/questions/{id}": functions.get_question,
       // WEBHOOKS
       "POST /api/webhooks/stripe": functions.post_stripe_webhook,
       "POST /api/add-user-to-mongodb": functions.post_add_user,
