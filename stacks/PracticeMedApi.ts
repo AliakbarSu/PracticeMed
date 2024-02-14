@@ -202,5 +202,6 @@ export function API(context: StackContext) {
     queue: submit_answer_queue,
     HYGRAPH_TOKEN,
     HYGRAPH_ENDPOINT,
+    API_FLASH_KEY,
   };
 }
