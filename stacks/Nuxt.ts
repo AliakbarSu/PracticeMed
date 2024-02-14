@@ -73,6 +73,9 @@ export function NuxtStack({ stack }: StackContext) {
       },
       nodejs: {
         install: ["tslib", "uuid"],
+        loader: {
+          ".node": "binary",
+        },
       },
       environment: {
         NUXT_APP_CDN_URL: publicAsset.url || "",

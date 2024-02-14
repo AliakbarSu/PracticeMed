@@ -93,6 +93,7 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "nuxt-simple-robots",
     "@zadigetvoltaire/nuxt-gtm",
+    "nuxt-og-image",
   ],
 
   alias: {
