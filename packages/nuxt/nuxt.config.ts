@@ -95,7 +95,24 @@ export default defineNuxtConfig({
     "@zadigetvoltaire/nuxt-gtm",
     "nuxt-og-image",
   ],
-
+  ogImage: {
+    compatibility: {
+      prerender: {
+        chromium: false,
+      },
+    },
+    // runtimeCompatibility: {
+    //   bindings: {
+    //     chromium: false,
+    //     "css-inline": "node",
+    //     resvg: "wasm",
+    //     satori: "node",
+    //     sharp: false,
+    //   },
+    //   wasmStrategy: "inline",
+    // },
+    debug: true,
+  },
   alias: {
     "@store": "./src/store",
     "@plugins": "./src/plugins",
@@ -134,5 +151,16 @@ export default defineNuxtConfig({
   },
   nitro: {
     preset: "aws-lambda",
+    experimental: {
+      wasm: true,
+    },
+    wasm: {
+      esmImport: true,
+    },
+    rollupConfig: {
+      output: {
+        inlineDynamicImports: true,
+      },
+    },
   },
 });
