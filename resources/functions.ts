@@ -27,5 +27,6 @@ export const functions = {
   submit_answer_ddl: `${fnPath}/submit_answer_queue/index.dd_handler`,
   post_add_user: `${fnPath}/user/index.add_user`,
   admin_get_users: `${fnPath}/admin/index.get_users`,
+  admin_get_questions: `${fnPath}/admin/index.get_questions`,
   add_study_partner: `${fnPath}/study_partners/index.addStudyPartnerHandler`,
 };

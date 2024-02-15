@@ -17,10 +17,6 @@ const adminStore = useAdminStore();
 
 const users = computed(() => adminStore.users || []);
 
-if (users.value.length == 0) {
-  await adminStore.fetchUsers();
-}
-
 const selectUser = (userObj: User) => {
   const foundUser = users.value.find((u) => u.userId === userObj.userId);
   if (foundUser) {

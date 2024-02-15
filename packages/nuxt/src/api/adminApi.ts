@@ -12,6 +12,21 @@ export const fetchUsersApi = async () => {
   return response.data.value?.body;
 };
 
+export const fetchQuestionsApi = async () => {
+  const {
+    public: { api_endpoint },
+  } = useRuntimeConfig();
+  const authStore = useAuthStore();
+  const response = await useFetch<{ body: [] }>(
+    `${api_endpoint}/admin/questions`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    },
+  );
+  return response.data.value?.body;
+};
+
 export const fetchPublicQuestionApi = async () => {
   const {
     public: { api_endpoint },

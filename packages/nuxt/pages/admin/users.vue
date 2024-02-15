@@ -7,5 +7,14 @@
 </template>
 
 <script lang="ts" setup>
+import { useAdminStore } from "../../src/store/admin";
+
+const adminStore = useAdminStore();
+
+const users = computed(() => adminStore.users || []);
+
+if (users.value.length == 0) {
+  await adminStore.fetchUsers();
+}
 definePageMeta({ middleware: ["auth-client"] });
 </script>

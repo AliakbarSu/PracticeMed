@@ -1,7 +1,8 @@
 import type { SubmittedAnswer, Test } from "@/types/test";
+import type { Question } from "../types/question";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { fetchUsersApi } from "../api/adminApi";
+import { fetchQuestionsApi, fetchUsersApi } from "../api/adminApi";
 import { submitTestApi } from "../api/testApi";
 import { useAppStore } from "./main";
 
@@ -10,6 +11,7 @@ export const useAdminStore = defineStore("admin", () => {
   const error = ref<Error | null>(null);
   const users = ref<any[]>([]);
   const tests = ref<Test[]>([]);
+  const questions = ref<Question[]>([]);
   const appStore = useAppStore();
 
   const $reset = () => {
@@ -34,6 +36,17 @@ export const useAdminStore = defineStore("admin", () => {
     }
   };
 
+  const fetchQuestions = async () => {
+    try {
+      loading.value = true;
+      questions.value = (await fetchQuestionsApi()) as any[];
+    } catch (err) {
+      error.value = err as Error;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const reSubmit = async (test: SubmittedAnswer & { user_id: string }) => {
     try {
       loading.value = true;
@@ -47,10 +60,12 @@ export const useAdminStore = defineStore("admin", () => {
 
   return {
     fetchUsers,
+    fetchQuestions,
+    reSubmit,
+    $reset,
+    questions,
     users,
     loading,
     error,
-    reSubmit,
-    $reset,
   };
 });

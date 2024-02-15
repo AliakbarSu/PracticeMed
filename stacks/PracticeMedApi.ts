@@ -97,6 +97,10 @@ export function API(context: StackContext) {
         authorizer: "auth0Authorizer",
         function: functions.admin_get_users,
       },
+      "GET /api/admin/questions": {
+        authorizer: "auth0Authorizer",
+        function: functions.admin_get_questions,
+      },
       // TESTS
       "GET /api/tests": {
         authorizer: "auth0Authorizer",
