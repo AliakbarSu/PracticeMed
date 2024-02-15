@@ -13,12 +13,14 @@ useSeoMeta({
   description: "AMC daily mock questions",
 });
 
+const route = useRoute();
+
 const question: Question = await fetchPublicQuestionApi();
 // const image = await fetchOgImage();
-
-defineOgImageComponent("Question", { question });
+const id = route.params.id;
 
 useSeoMeta({
   ogTitle: "PracticeMed Question",
+  ogImage: `https://res.cloudinary.com/dxuf2ssx6/image/upload/v1707947397/practiceMed/questions/${id}.jpg`,
 });
 </script>
