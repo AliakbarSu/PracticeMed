@@ -57,6 +57,9 @@
                       >
                     </div>
                   </div>
+                  <p class="p-1 text-xs text-gray-500">
+                    {{ event.correct_option.explanation }}
+                  </p>
                 </div>
               </div>
             </div>

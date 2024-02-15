@@ -73,6 +73,7 @@ export const analyze = async (
           id: question.correct_option.id,
           alpha: question.correct_option.alpha,
           text: question.correct_option.text,
+          explanation: question.correct_option.explanation,
         },
         options: question.options.map((option) => ({
           id: option.id,

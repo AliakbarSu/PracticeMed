@@ -8,6 +8,7 @@ export interface QuestionHistory {
     id: string;
     alpha: string;
     text: string;
+    explanation: string;
   };
   options: {
     id: string;
