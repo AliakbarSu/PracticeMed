@@ -101,6 +101,18 @@ export function API(context: StackContext) {
         authorizer: "auth0Authorizer",
         function: functions.admin_get_questions,
       },
+      "POST /api/admin/add-question": {
+        authorizer: "auth0Authorizer",
+        function: functions.admin_add_question,
+      },
+      "PUT /api/admin/update-question": {
+        authorizer: "auth0Authorizer",
+        function: functions.admin_update_question,
+      },
+      "DELETE /api/admin/delete-question/{id}": {
+        authorizer: "auth0Authorizer",
+        function: functions.admin_delete_question,
+      },
       // TESTS
       "GET /api/tests": {
         authorizer: "auth0Authorizer",

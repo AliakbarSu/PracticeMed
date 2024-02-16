@@ -1,8 +1,14 @@
 import type { SubmittedAnswer, Test } from "@/types/test";
-import type { Question } from "../types/question";
+import type { Question, QuestionObject } from "../types/question";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { fetchQuestionsApi, fetchUsersApi } from "../api/adminApi";
+import {
+  addQuestionApi,
+  deleteQuestionApi,
+  fetchQuestionsApi,
+  fetchUsersApi,
+  updateQuestionApi,
+} from "../api/adminApi";
 import { submitTestApi } from "../api/testApi";
 import { useAppStore } from "./main";
 
@@ -47,6 +53,44 @@ export const useAdminStore = defineStore("admin", () => {
     }
   };
 
+  const addQuestion = async (question: QuestionObject) => {
+    try {
+      loading.value = true;
+      const addedQuestion = (await addQuestionApi(question)) as Question;
+      questions.value = [...questions.value, addedQuestion];
+    } catch (err) {
+      error.value = err as Error;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateQuestions = async (question: QuestionObject) => {
+    try {
+      loading.value = true;
+      const updatedQuestion = (await updateQuestionApi(question)) as Question;
+      questions.value = questions.value.map((q) =>
+        q._id === updatedQuestion._id ? updatedQuestion : q,
+      );
+    } catch (err) {
+      error.value = err as Error;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const deleteQuestion = async (id: string) => {
+    try {
+      loading.value = true;
+      const questionId = (await deleteQuestionApi(id)) as string;
+      questions.value = questions.value.filter((q) => q._id !== questionId);
+    } catch (err) {
+      error.value = err as Error;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const reSubmit = async (test: SubmittedAnswer & { user_id: string }) => {
     try {
       loading.value = true;
@@ -61,6 +105,9 @@ export const useAdminStore = defineStore("admin", () => {
   return {
     fetchUsers,
     fetchQuestions,
+    deleteQuestion,
+    updateQuestions,
+    addQuestion,
     reSubmit,
     $reset,
     questions,

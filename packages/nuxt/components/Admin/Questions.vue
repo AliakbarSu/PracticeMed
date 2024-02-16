@@ -9,6 +9,20 @@
               class="mt-6 text-md-body-1 md:text-2xl leading-5 sm:leading-8"
               v-html="question?.text"
             ></h1>
+            <div class="flex gap-2 mt-4">
+              <button
+                class="bg-red-600 text-white py-1 px-3 rounded-md text-sm"
+                type="button"
+                @click="deleteQuestion(question._id)"
+              >
+                Delete
+              </button>
+              <NuxtLink
+                as="button"
+                class="bg-yellow-600 text-white py-1 px-3 rounded-md text-sm"
+                >Update
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
@@ -58,6 +72,9 @@
 
 <script lang="ts" setup>
 import { type Question } from "../../src/types/question";
+import { useAdminStore } from "../../src/store/admin";
+
+const adminStore = useAdminStore();
 
 const colors = {
   a: "bg-indigo-600",
@@ -75,4 +92,8 @@ withDefaults(
     questions: [] as any,
   },
 );
+
+const deleteQuestion = (id: string) => {
+  adminStore.deleteQuestion(id);
+};
 </script>

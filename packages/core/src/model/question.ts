@@ -35,3 +35,18 @@ export const getQuestion = async (id: string): Promise<QuestionObject[]> => {
     .find({ _id: new ObjectId(id), available: true })
     .toArray();
 };
+
+export const addQuestion = async (question: Omit<QuestionObject, "_id">) => {
+  const db = await connectToDatabase();
+  return db.collection("questions").insertOne(question);
+};
+
+export const updateQuestion = async (
+  id: string,
+  question: Partial<Omit<QuestionObject, "_id">>,
+) => {
+  const db = await connectToDatabase();
+  return db
+    .collection("questions")
+    .updateOne({ _id: new ObjectId(id) }, { $set: question });
+};

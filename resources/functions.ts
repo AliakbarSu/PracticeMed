@@ -28,5 +28,8 @@ export const functions = {
   post_add_user: `${fnPath}/user/index.add_user`,
   admin_get_users: `${fnPath}/admin/index.get_users`,
   admin_get_questions: `${fnPath}/admin/index.get_questions`,
+  admin_add_question: `${fnPath}/admin/index.add_question`,
+  admin_update_question: `${fnPath}/admin/index.update_question`,
+  admin_delete_question: `${fnPath}/admin/index.delete_question`,
   add_study_partner: `${fnPath}/study_partners/index.addStudyPartnerHandler`,
 };

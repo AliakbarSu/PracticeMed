@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAdminStore } from "../../src/store/admin";
+import { useAdminStore } from "../../../src/store/admin";
 
 const adminStore = useAdminStore();
 
