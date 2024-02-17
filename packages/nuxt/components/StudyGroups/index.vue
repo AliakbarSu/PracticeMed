@@ -10,7 +10,7 @@
             <h2
               class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
             >
-              Study Together
+              Looking for a study buddy?
             </h2>
             <p class="mt-6 text-lg leading-8 text-gray-600">
               We can help you to connect with someone who is preparing for the
