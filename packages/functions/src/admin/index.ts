@@ -5,15 +5,14 @@ import {
   getQuestions,
   updateQuestion,
 } from '@mpt-sst/core/model/question'
-import { ApiGatewayAuth } from '@mpt-types/System'
 import { RolesEnum } from '@mpt-types/User'
-import { ApiHandler } from 'sst/node/api'
 import { InputQuestion, QuestionObject } from '@mpt-types/Question'
 import { v4 } from 'uuid'
 
-export const get_users = ApiHandler(async _evt => {
-  const userId = (_evt as unknown as ApiGatewayAuth).requestContext.authorizer
-    .jwt.claims.sub
+export const get_users: APIGatewayProxyHandlerV2WithJWTAuthorizer<
+  any
+> = async _evt => {
+  const userId = _evt.requestContext.authorizer.jwt.claims.sub as string
   const { roles } = await getUser(userId)
   if (!roles.includes(RolesEnum.Admin)) {
     return {
@@ -27,9 +26,9 @@ export const get_users = ApiHandler(async _evt => {
     created_at: (user as any)._id.getTimestamp(),
   }))
   return {
-    body: usersWithTimestamp as any as string,
+    body: usersWithTimestamp,
   }
-})
+}
 
 export const get_questions: APIGatewayProxyHandlerV2WithJWTAuthorizer<{
   body: QuestionObject[]

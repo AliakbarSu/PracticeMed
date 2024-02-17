@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div v-if="!videos" class="p-4 pt-8 flex justify-center">
+    <div v-if="!videos.length" class="p-4 pt-8 flex justify-center">
       <div class="text-gray-600">Sorry no video tutorials available!</div>
     </div>
     <Carousel

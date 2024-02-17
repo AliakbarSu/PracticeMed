@@ -50,7 +50,7 @@ export function API(context: StackContext) {
     defaults: {
       function: {
         runtime: "nodejs18.x",
-        timeout: 60,
+        timeout: 160,
         environment: {
           stage,
         },
