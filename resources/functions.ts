@@ -31,5 +31,6 @@ export const functions = {
   admin_add_question: `${fnPath}/admin/index.add_question`,
   admin_update_question: `${fnPath}/admin/index.update_question`,
   admin_delete_question: `${fnPath}/admin/index.delete_question`,
+  paid_media_get_video_url: `${fnPath}/paid_media/index.get_video_url`,
   add_study_partner: `${fnPath}/study_partners/index.addStudyPartnerHandler`,
 };

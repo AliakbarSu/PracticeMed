@@ -37,3 +37,19 @@ export const terms_conditions = `
       }
     }
   `;
+
+export const get_videos = `
+  query GetVideos {
+      videos {
+      thumbnails {
+        id
+        url
+        width
+      }
+      title
+      topic
+      description
+      id
+    }
+  }
+`;

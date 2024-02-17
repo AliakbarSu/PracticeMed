@@ -10,7 +10,10 @@
           resources.
         </p>
         <ResourcesTabs :tabs="tabs" @switchTab="setActiveTab" />
-        <div v-if="!pending" class="mt-10 space-y-16 sm:mt-16">
+        <div
+          v-if="!pending && isActiveTab('Blogs')"
+          class="mt-10 space-y-16 sm:mt-16"
+        >
           <article
             v-for="post in data"
             :key="post.id"
@@ -65,12 +68,21 @@
             </div>
           </article>
         </div>
+        <div v-if="!pending && isActiveTab('videos')">
+          <ResourcesVideos />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useMediaStore } from "../../../src/store/media";
+
+const mediaStore = useMediaStore();
+
+await mediaStore.fetchMedia();
+
 const { data, pending } = await useFetch(`/api/blogs`);
 
 useSeoMeta({
@@ -96,6 +108,11 @@ const tabs = ref([
     current: false,
   },
 ]);
+
+const isActiveTab = (tab: string) => {
+  return tabs.value.find((t) => t.name.toLowerCase() == tab.toLowerCase())
+    ?.current;
+};
 
 const setActiveTab = (tab: string) => {
   tabs.value = tabs.value.map((t) => ({

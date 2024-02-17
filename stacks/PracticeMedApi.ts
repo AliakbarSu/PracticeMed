@@ -1,11 +1,13 @@
-import { Api, Cron, Queue, StackContext } from "sst/constructs";
+import { Api, Cron, Queue, StackContext, use } from "sst/constructs";
 import { endpoints } from "../resources/endpoints";
 import { configure_parameters } from "./Parameters";
 import { dev } from "../resources/stages";
 import { functions } from "../resources/functions";
+import { Storage } from "./StorageStack";
 
 export function API(context: StackContext) {
   const { stack } = context;
+  const storage = use(Storage);
   const stage = stack.stage;
   const {
     HYGRAPH_TOKEN,
@@ -159,6 +161,11 @@ export function API(context: StackContext) {
         authorizer: "auth0Authorizer",
         function: functions.get_tips,
       },
+      // PAID MEDIA
+      "GET /api/paid-media/videos/{key}": {
+        authorizer: "auth0Authorizer",
+        function: functions.paid_media_get_video_url,
+      },
       // STUDY PARTNERS
       "POST /api/study-partners": functions.add_study_partner,
       // AUTOMATIONS
@@ -206,6 +213,7 @@ export function API(context: StackContext) {
     MONGODB_URI,
     CHAT_GPT_API_KEY,
     API_FLASH_KEY,
+    storage.bucket,
   ]);
   stack.addOutputs({
     api_domain: api.customDomainUrl,
