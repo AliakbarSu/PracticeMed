@@ -40,6 +40,15 @@
         </div>
       </template>
     </Carousel>
+    <Dialog
+      v-model:visible="visible"
+      :style="{ width: '25rem' }"
+      header="You do not have access"
+    >
+      <span class="p-text-secondary block mb-5"
+        >Please upgrade your plan to play this video.</span
+      >
+    </Dialog>
   </div>
 </template>
 
@@ -54,6 +63,7 @@ const authStore = useAuthStore();
 const plansStore = usePlansStore();
 const router = useRouter();
 
+const visible = ref(false);
 const videos = computed(() => mediaStore.media);
 
 const responsiveOptions = ref([
@@ -88,6 +98,7 @@ const view = async (id: string) => {
     }
     return;
   } else if (!plansStore.userHasActivePlan) {
+    visible.value = true;
     return;
   } else {
     router.push(`/resources/videos/${id}`);
