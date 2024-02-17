@@ -49,7 +49,7 @@
                 active-class="border-indigo-500 border-b-2"
                 as="a"
                 class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
-                to="/resources"
+                to="/resources/blogs"
                 >Resources
               </NuxtLink>
               <NuxtLink
