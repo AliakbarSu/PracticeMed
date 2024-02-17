@@ -48,5 +48,9 @@ export const updateQuestion = async (
   const db = await connectToDatabase();
   return db
     .collection("questions")
-    .updateOne({ _id: new ObjectId(id) }, { $set: question });
+    .findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: question },
+      { returnDocument: "after" },
+    );
 };

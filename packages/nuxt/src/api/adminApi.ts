@@ -1,5 +1,5 @@
-import { useAuthStore } from "../store/auth";
-import type { QuestionObject } from "../types/question";
+import { useAuthStore } from "store/auth";
+import type { QuestionObject } from "types/question";
 
 export const fetchUsersApi = async () => {
   const {
@@ -58,7 +58,7 @@ export const addQuestionApi = async (question: QuestionObject) => {
   return response.data.value?.body;
 };
 
-export const updateQuestionApi = async (question: QuestionObject) => {
+export const updateQuestionApi = async (question: Partial<QuestionObject>) => {
   const {
     public: { api_endpoint },
   } = useRuntimeConfig();

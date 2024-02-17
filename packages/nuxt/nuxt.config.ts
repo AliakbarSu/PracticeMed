@@ -91,6 +91,7 @@ export default defineNuxtConfig({
     types: "~/src/types",
     "@gtag": "./src/gtag",
     auth: "~/src/auth",
+    api: "~/src/api",
     "mpt-types": "../core/types",
     ...alias,
   },

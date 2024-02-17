@@ -113,14 +113,15 @@ export const update_question: APIGatewayProxyHandlerV2WithJWTAuthorizer =
   async _evt => {
     const userId = _evt.requestContext.authorizer.jwt.claims.sub as string
     const { roles } = await getUser(userId)
-    if (!roles.includes(RolesEnum.Admin)) {
+    const data = JSON.parse((_evt as any).body)
+    const questionId = data.id
+    if (!roles.includes(RolesEnum.Admin) || !questionId) {
       return {
         statusCode: 403,
         body: 'Forbidden',
       }
     }
-    const data = JSON.parse((_evt as any).body)
-    const questionId = data.id
+
     const updatedQuestion = await updateQuestion(questionId, data)
     return {
       body: updatedQuestion,

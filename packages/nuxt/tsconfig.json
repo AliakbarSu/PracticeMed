@@ -24,6 +24,9 @@
       "auth/*": [
         "./src/auth/*"
       ],
+      "api/*": [
+        "./src/api/*"
+      ],
       "@gtag/*": [
         "./src/gtag/*"
       ],

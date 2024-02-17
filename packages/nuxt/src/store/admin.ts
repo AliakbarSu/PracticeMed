@@ -1,5 +1,5 @@
 import type { SubmittedAnswer, Test } from "@/types/test";
-import type { Question, QuestionObject } from "../types/question";
+import type { Question, QuestionObject } from "types/question";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import {
@@ -8,8 +8,8 @@ import {
   fetchQuestionsApi,
   fetchUsersApi,
   updateQuestionApi,
-} from "../api/adminApi";
-import { submitTestApi } from "../api/testApi";
+} from "api/adminApi";
+import { submitTestApi } from "api/testApi";
 import { useAppStore } from "./main";
 
 export const useAdminStore = defineStore("admin", () => {
@@ -65,7 +65,7 @@ export const useAdminStore = defineStore("admin", () => {
     }
   };
 
-  const updateQuestions = async (question: QuestionObject) => {
+  const updateQuestions = async (question: Partial<QuestionObject>) => {
     try {
       loading.value = true;
       const updatedQuestion = (await updateQuestionApi(question)) as Question;

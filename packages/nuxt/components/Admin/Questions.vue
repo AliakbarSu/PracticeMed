@@ -4,18 +4,65 @@
       <div class="mx-auto text-base leading-7 text-gray-700">
         <div class="overflow-hidden rounded-lg bg-white shadow">
           <div class="px-4 py-5 sm:p-6">
-            <Badge v-if="(question as any).demo" value="Demo"></Badge>
+            <p class="py-3">
+              ID: <b>{{ question._id }}</b>
+            </p>
+            <div class="flex gap-2">
+              <Badge v-if="(question as any).demo" value="Demo"></Badge>
+              <Badge
+                v-if="(question as any).available"
+                severity="info"
+                value="Active"
+              ></Badge>
+            </div>
             <h1
               class="mt-6 text-md-body-1 md:text-2xl leading-5 sm:leading-8"
               v-html="question?.text"
             ></h1>
             <div class="flex gap-2 mt-4">
               <button
+                :disabled="loading"
                 class="bg-red-600 text-white py-1 px-3 rounded-md text-sm"
                 type="button"
                 @click="deleteQuestion(question._id)"
               >
                 Delete
+              </button>
+              <button
+                v-if="question.available"
+                :disabled="loading"
+                class="bg-red-600 text-white py-1 px-3 rounded-md text-sm"
+                type="button"
+                @click="deactivate(question._id)"
+              >
+                Deactivate
+              </button>
+              <button
+                v-if="!question.available"
+                :disabled="loading"
+                class="bg-red-600 text-white py-1 px-3 rounded-md text-sm"
+                type="button"
+                @click="activate(question._id)"
+              >
+                Activate
+              </button>
+              <button
+                v-if="!question.demo"
+                :disabled="loading"
+                class="bg-red-600 text-white py-1 px-3 rounded-md text-sm"
+                type="button"
+                @click="markAsDemo(question._id)"
+              >
+                Mark as demo
+              </button>
+              <button
+                v-if="question.demo"
+                :disabled="loading"
+                class="bg-red-600 text-white py-1 px-3 rounded-md text-sm"
+                type="button"
+                @click="unmarkAsDemo(question._id)"
+              >
+                Unmark as demo
               </button>
               <NuxtLink
                 as="button"
@@ -71,10 +118,11 @@
 </template>
 
 <script lang="ts" setup>
-import { type Question } from "../../src/types/question";
-import { useAdminStore } from "../../src/store/admin";
+import { type QuestionObject } from "types/question";
+import { useAdminStore } from "store/admin";
 
 const adminStore = useAdminStore();
+const loading = computed(() => adminStore.loading);
 
 const colors = {
   a: "bg-indigo-600",
@@ -86,7 +134,7 @@ const colors = {
 
 withDefaults(
   defineProps<{
-    questions?: Question[];
+    questions?: QuestionObject[];
   }>(),
   {
     questions: [] as any,
@@ -95,5 +143,21 @@ withDefaults(
 
 const deleteQuestion = (id: string) => {
   adminStore.deleteQuestion(id);
+};
+
+const deactivate = (id: string) => {
+  adminStore.updateQuestions({ id: id, available: false } as QuestionObject);
+};
+
+const activate = (id: string) => {
+  adminStore.updateQuestions({ id: id, available: true } as QuestionObject);
+};
+
+const markAsDemo = (id: string) => {
+  adminStore.updateQuestions({ id: id, demo: true } as QuestionObject);
+};
+
+const unmarkAsDemo = (id: string) => {
+  adminStore.updateQuestions({ id: id, demo: false } as QuestionObject);
 };
 </script>

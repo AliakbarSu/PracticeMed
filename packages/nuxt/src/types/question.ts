@@ -13,6 +13,8 @@ export interface Question {
 }
 
 export interface QuestionObject {
+  _id: string;
+  available: boolean;
   text: string;
   field: string;
   options: {
