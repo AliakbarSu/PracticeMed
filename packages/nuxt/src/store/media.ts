@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { fetchVideosApi } from "../api/mediaApi";
-import { type Video } from "../types/video";
+import { fetchVideoPresignedUrlApi, fetchVideosApi } from "../api/mediaApi";
+import { type Video } from "types/video";
 
 export const useMediaStore = defineStore("media", () => {
   const media = ref<Video[]>([]);
   const loading = ref(false);
+  const videoPresignedUrl = ref<string | null>(null);
   const $reset = () => {
     loading.value = false;
   };
@@ -22,10 +23,23 @@ export const useMediaStore = defineStore("media", () => {
     }
   };
 
+  const fetchVideoPresignedUrl = async (key: string) => {
+    try {
+      loading.value = true;
+      videoPresignedUrl.value = (await fetchVideoPresignedUrlApi(key)) as any;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     $reset,
     fetchMedia,
+    fetchVideoPresignedUrl,
     media,
+    videoPresignedUrl,
     loading,
   };
 });

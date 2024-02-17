@@ -3,14 +3,33 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@plugins/*": ["./src/plugins/*"],
-      "@custom-auth/*": ["./src/auth/*"],
-      "@store/*": ["./src/store/*"],
-      "@types/*": ["./src/types/*"],
-      "@gtag/*": ["./src/gtag/*"],
-      "mpt-types/*": ["../core/types/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@plugins/*": [
+        "./src/plugins/*"
+      ],
+      "@custom-auth/*": [
+        "./src/auth/*"
+      ],
+      "store/*": [
+        "./src/store/*"
+      ],
+      "types/*": [
+        "./src/types/*"
+      ],
+      "auth/*": [
+        "./src/auth/*"
+      ],
+      "@gtag/*": [
+        "./src/gtag/*"
+      ],
+      "mpt-types/*": [
+        "../core/types/*"
+      ]
     }
   }
 }

@@ -11,5 +11,5 @@ export const get_video_presigned_url = async (
     Key: key,
     RequestPayer: "requester",
   });
-  return getSignedUrl(client, command, { expiresIn: 10000 });
+  return getSignedUrl(client, command, { expiresIn: 3600 });
 };

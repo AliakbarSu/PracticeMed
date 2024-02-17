@@ -12,25 +12,25 @@
     >
       <template #item="slotProps">
         <div class="border-1 surface-border border-round m-2 p-3">
-          <div class="mb-3">
+          <div class="mb-3" @click="view(slotProps.data.id)">
             <div class="relative mx-auto">
               <img
                 :alt="slotProps.data.id"
                 :src="slotProps.data.thumbnails[0].url"
                 class="w-full border-round"
               />
-              <!--              <Tag-->
-              <!--                :severity="getSeverity(slotProps.data.inventoryStatus)"-->
-              <!--                :value="slotProps.data.inventoryStatus"-->
-              <!--                class="absolute"-->
-              <!--                style="left: 5px; top: 5px"-->
-              <!--              />-->
+              <Tag
+                :severity="getSeverity('INSTOCK') as any"
+                class="absolute"
+                style="left: 5px; top: 5px"
+                value="Trending"
+              />
             </div>
           </div>
-          <div class="mb-3 font-medium">{{ slotProps.data.title }}</div>
+          <div class="mb-3 mt-10 font-medium">{{ slotProps.data.title }}</div>
           <div class="flex justify-content-between align-items-center">
             <div class="mt-0 font-semibold text-sm">
-              ${{ slotProps.data.description }}
+              {{ slotProps.data.description }}
             </div>
             <span>
               <Button icon="pi pi-heart" outlined severity="secondary" />
@@ -44,9 +44,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useMediaStore } from "../../src/store/media";
+import { useMediaStore } from "store/media";
+import { useAuthStore } from "store/auth";
+import { signupWithPopup } from "auth/index";
+import { usePlansStore } from "store/plans";
 
 const mediaStore = useMediaStore();
+const authStore = useAuthStore();
+const plansStore = usePlansStore();
+const router = useRouter();
 
 const videos = computed(() => mediaStore.media);
 
@@ -73,19 +79,34 @@ const responsiveOptions = ref([
   },
 ]);
 
-// const getSeverity = (status) => {
-//   switch (status) {
-//     case "INSTOCK":
-//       return "success";
-//
-//     case "LOWSTOCK":
-//       return "warning";
-//
-//     case "OUTOFSTOCK":
-//       return "danger";
-//
-//     default:
-//       return null;
-//   }
-// };
+const view = async (id: string) => {
+  if (!authStore.isAuthenticated) {
+    try {
+      await signupWithPopup();
+    } catch (e) {
+      console.error(e);
+    }
+    return;
+  } else if (!plansStore.userHasActivePlan) {
+    return;
+  } else {
+    router.push(`/resources/videos/${id}`);
+  }
+};
+
+const getSeverity = (status: string) => {
+  switch (status) {
+    case "INSTOCK":
+      return "success";
+
+    case "LOWSTOCK":
+      return "warning";
+
+    case "OUTOFSTOCK":
+      return "danger";
+
+    default:
+      return null;
+  }
+};
 </script>

@@ -50,6 +50,7 @@ export const get_videos = `
       topic
       description
       id
+      objectKey
     }
   }
 `;

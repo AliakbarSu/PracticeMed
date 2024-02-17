@@ -9,9 +9,9 @@ import { RolesEnum } from '@mpt-types/User'
 import { InputQuestion, QuestionObject } from '@mpt-types/Question'
 import { v4 } from 'uuid'
 
-export const get_users: APIGatewayProxyHandlerV2WithJWTAuthorizer<
-  any
-> = async _evt => {
+export const get_users: APIGatewayProxyHandlerV2WithJWTAuthorizer<{
+  body: any
+}> = async _evt => {
   const userId = _evt.requestContext.authorizer.jwt.claims.sub as string
   const { roles } = await getUser(userId)
   if (!roles.includes(RolesEnum.Admin)) {
@@ -44,7 +44,6 @@ export const get_questions: APIGatewayProxyHandlerV2WithJWTAuthorizer<{
   const questions = await getQuestions()
   return {
     body: questions,
-    statusCode: 200,
   }
 }
 
@@ -143,6 +142,5 @@ export const delete_question: APIGatewayProxyHandlerV2WithJWTAuthorizer<{
   const question = await updateQuestion(questionId, { deleted: true })
   return {
     body: question,
-    statusCode: 200,
   }
 }
