@@ -1,19 +1,35 @@
 <template>
   <div class="py-3 px-16">
-    <Vueform v-bind="vueform" />
+    <Vueform ref="form" v-bind="vueform" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useAdminStore } from "../../src/store/admin";
+import { type QuestionObject } from "types/question";
+import { useAdminStore } from "store/admin";
+import type { Vueform } from "@vueform/vueform";
 
 const adminStore = useAdminStore();
 
+const props = defineProps<{
+  question?: QuestionObject;
+  updateMode: boolean;
+}>();
+
 const createQuestion = async (FormData, form$) => {
   const requestData = form$.requestData;
+  if (props.updateMode) {
+    await adminStore.updateQuestions({
+      id: props.question._id,
+      text: requestData.question,
+    } as QuestionObject);
+    return;
+  }
   await adminStore.addQuestion(requestData);
 };
+
+const form = ref<Vueform | null>(null);
 
 const vueform = ref({
   size: "md",
@@ -127,11 +143,37 @@ const vueform = ref({
     register: {
       type: "button",
       submits: true,
-      buttonLabel: "Create Question",
+      buttonLabel: props.updateMode ? "Update Question" : "Create Question",
       full: true,
       size: "lg",
     },
   },
+});
+
+onMounted(() => {
+  if (props.question && form.value) {
+    const form$ = form.value as Vueform;
+    form$.update({
+      question: props.question.text,
+      field: props.question.field,
+      option_a: props.question.options.find((o) => o.alpha == "A")?.text,
+      option_a_explanation: props.question.options.find((o) => o.alpha == "A")
+        ?.explanation,
+      option_b: props.question.options.find((o) => o.alpha == "B")?.text,
+      option_b_explanation: props.question.options.find((o) => o.alpha == "B")
+        ?.explanation,
+      option_c: props.question.options.find((o) => o.alpha == "C")?.text,
+      option_c_explanation: props.question.options.find((o) => o.alpha == "C")
+        ?.explanation,
+      option_d: props.question.options.find((o) => o.alpha == "D")?.text,
+      option_d_explanation: props.question.options.find((o) => o.alpha == "D")
+        ?.explanation,
+      correct_option: props.question.options
+        .find((o) => o.is_correct)
+        ?.alpha.toLowerCase(),
+      demo: props.question.demo,
+    });
+  }
 });
 </script>
 

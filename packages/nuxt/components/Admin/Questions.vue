@@ -65,7 +65,8 @@
                 Unmark as demo
               </button>
               <NuxtLink
-                as="button"
+                :to="`/admin/questions/update/${question._id}`"
+                as="a"
                 class="bg-yellow-600 text-white py-1 px-3 rounded-md text-sm"
                 >Update
               </NuxtLink>

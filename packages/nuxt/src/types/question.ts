@@ -1,6 +1,7 @@
 export interface Option {
   alpha: string; // e.g a, b, c
   id: string;
+  is_correct: boolean;
   text: string;
 }
 

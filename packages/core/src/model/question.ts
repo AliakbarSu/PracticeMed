@@ -45,6 +45,7 @@ export const updateQuestion = async (
   id: string,
   question: Partial<Omit<QuestionObject, "_id">>,
 ) => {
+  delete (question as any).id;
   const db = await connectToDatabase();
   return db
     .collection("questions")
