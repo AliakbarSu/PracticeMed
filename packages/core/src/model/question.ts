@@ -28,6 +28,16 @@ export const getQuestions = async (
     .toArray();
 };
 
+export const getAllQuestions = async (
+  filters: any = {},
+): Promise<QuestionObject[]> => {
+  const db = await connectToDatabase();
+  return db
+    .collection("questions")
+    .find({ ...filters })
+    .toArray();
+};
+
 export const getQuestion = async (id: string): Promise<QuestionObject[]> => {
   const db = await connectToDatabase();
   return db
@@ -38,7 +48,8 @@ export const getQuestion = async (id: string): Promise<QuestionObject[]> => {
 
 export const addQuestion = async (question: Omit<QuestionObject, "_id">) => {
   const db = await connectToDatabase();
-  return db.collection("questions").insertOne(question);
+  const doc = db.collection("questions").insertOne(question);
+  return { id: doc.insertedId, ...question };
 };
 
 export const updateQuestion = async (
@@ -51,7 +62,7 @@ export const updateQuestion = async (
     .collection("questions")
     .findOneAndUpdate(
       { _id: new ObjectId(id) },
-      { $set: question },
+      { $set: { ...question, updated_at: Date.now() } },
       { returnDocument: "after" },
     );
 };

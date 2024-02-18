@@ -2,7 +2,7 @@ import { getAllUsers, getUser } from '@mpt-sst/core/model/users'
 import { APIGatewayProxyHandlerV2WithJWTAuthorizer } from 'aws-lambda'
 import {
   addQuestion,
-  getQuestions,
+  getAllQuestions,
   updateQuestion,
 } from '@mpt-sst/core/model/question'
 import { RolesEnum } from '@mpt-types/User'
@@ -41,7 +41,7 @@ export const get_questions: APIGatewayProxyHandlerV2WithJWTAuthorizer<{
       body: 'Forbidden',
     }
   }
-  const questions = await getQuestions()
+  const questions = await getAllQuestions()
   return {
     body: questions,
   }
@@ -105,7 +105,7 @@ export const add_question: APIGatewayProxyHandlerV2WithJWTAuthorizer<{
   }
   const addedQuestion = await addQuestion(formattedData)
   return {
-    body: addedQuestion as QuestionObject,
+    body: addedQuestion as unknown as QuestionObject,
   }
 }
 

@@ -64,7 +64,7 @@
               class="rounded-md shadow-2xl ring-1 ring-gray-900/10"
               provider="cloudinary"
               quality="30"
-              src="/v1682630656/practiceMed/Illustrations/hero_image.png"
+              src="/v1708219053/practiceMed/Illustrations/doctor_image.jpg"
               width="2432"
             />
           </div>

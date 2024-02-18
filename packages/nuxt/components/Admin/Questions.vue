@@ -1,11 +1,62 @@
 <template>
   <div class="bg-white py-2 px-2 md:px-16 md:py-10">
+    <div
+      class="mb-16 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-3 md:divide-x md:divide-y-0"
+    >
+      <div v-for="item in stats" :key="item.name" class="px-4 py-5 sm:p-6">
+        <dt class="text-base font-normal text-gray-900">
+          {{ item.name }}
+        </dt>
+        <ResultsComponentsUILoadingContentSkeleton v-if="loading" />
+        <dd
+          v-if="!loading"
+          class="mt-1 flex items-baseline justify-between md:block lg:flex"
+        >
+          <div
+            class="flex items-baseline text-2xl font-semibold text-indigo-600"
+          >
+            {{ item.stat }}
+            <span class="ml-2 text-sm font-medium text-gray-500"
+              >from {{ item.previousStat }}</span
+            >
+          </div>
+
+          <div
+            :class="[
+              item.changeType === 'increase'
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800',
+              'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0',
+            ]"
+          >
+            <ArrowUpIcon
+              v-if="item.changeType === 'increase'"
+              aria-hidden="true"
+              class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500"
+            />
+            <ArrowDownIcon
+              v-else
+              aria-hidden="true"
+              class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-red-500"
+            />
+            <span class="sr-only">
+              {{ item.changeType === "increase" ? "Increased" : "Decreased" }}
+              by
+            </span>
+            {{ item.change }}
+          </div>
+        </dd>
+      </div>
+    </div>
     <div v-for="question in questions" :key="question._id" class="mb-5">
       <div class="mx-auto text-base leading-7 text-gray-700">
         <div class="overflow-hidden rounded-lg bg-white shadow">
           <div class="px-4 py-5 sm:p-6">
             <p class="py-3">
-              ID: <b>{{ question._id }}</b>
+              ID:
+              <b class="cursor-pointer" @click="copyText(question._id)">{{
+                question._id
+              }}</b>
             </p>
             <div class="flex gap-2">
               <Badge v-if="(question as any).demo" value="Demo"></Badge>
@@ -121,8 +172,10 @@
 <script lang="ts" setup>
 import { type QuestionObject } from "types/question";
 import { useAdminStore } from "store/admin";
+import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/vue/20/solid";
 
 const adminStore = useAdminStore();
+const copyText = useCopyText();
 const loading = computed(() => adminStore.loading);
 
 const colors = {
@@ -133,7 +186,7 @@ const colors = {
   e: "bg-green-600",
 };
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     questions?: QuestionObject[];
   }>(),
@@ -141,6 +194,30 @@ withDefaults(
     questions: [] as any,
   },
 );
+
+const stats = [
+  {
+    name: "Total Questions",
+    stat: props.questions.length,
+    previousStat: props.questions.length,
+    change: "0",
+    changeType: "increase",
+  },
+  {
+    name: "Active Questions",
+    stat: props.questions.filter((q) => q.available).length,
+    previousStat: props.questions.length,
+    change: "0",
+    changeType: "increase",
+  },
+  {
+    name: "Demo Questions",
+    stat: props.questions.filter((q) => q.demo).length,
+    previousStat: props.questions.filter((q) => q.available).length,
+    change: "0",
+    changeType: "increase",
+  },
+];
 
 const deleteQuestion = (id: string) => {
   adminStore.deleteQuestion(id);

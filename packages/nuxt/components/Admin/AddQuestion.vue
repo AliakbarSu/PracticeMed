@@ -22,6 +22,7 @@ const createQuestion = async (FormData, form$) => {
   if (props.updateMode) {
     await adminStore.updateQuestions({
       id: props.question._id,
+      field: requestData.field,
       text: requestData.question,
     } as QuestionObject);
     return;
